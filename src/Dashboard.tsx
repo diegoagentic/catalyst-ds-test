@@ -7,10 +7,10 @@ import {
     PlusIcon, DocumentDuplicateIcon, DocumentTextIcon, EnvelopeIcon, Squares2X2Icon,
     EllipsisHorizontalIcon, ListBulletIcon, SunIcon, MoonIcon,
     ChevronDownIcon, ChevronRightIcon, EyeIcon, PencilIcon, TrashIcon,
-    CheckCircleIcon, MapPinIcon, UserIcon, ClockIcon
+    CheckCircleIcon, MapPinIcon, UserIcon, ClockIcon, ShoppingBagIcon, ExclamationTriangleIcon
 } from '@heroicons/react/24/outline'
 import { useState, useMemo } from 'react'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts'
 import { useTheme } from './useTheme'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
@@ -32,7 +32,6 @@ const salesData = [
     { name: 'Apr', sales: 2780, costs: 3908 },
     { name: 'May', sales: 1890, costs: 4800 },
     { name: 'Jun', sales: 2390, costs: 3800 },
-    { name: 'Jun', sales: 2390, costs: 3800 },
 ]
 
 const trackingSteps = [
@@ -50,8 +49,6 @@ const recentOrders = [
 
 export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: () => void, onNavigateToDetail: () => void }) {
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-    const [isMainOpen, setIsMainOpen] = useState(true)
-    const [isOperationsOpen, setIsOperationsOpen] = useState(true)
     const { theme, toggleTheme } = useTheme()
 
     const [searchQuery, setSearchQuery] = useState('')
@@ -79,561 +76,452 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
     }, [searchQuery, selectedStatuses])
 
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex font-sans text-zinc-900 dark:text-zinc-50 transition-colors duration-200">
-            {/* Sidebar */}
-            <aside className="w-64 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 hidden md:flex flex-col">
-                <div className="h-16 flex items-center px-6 border-b border-zinc-100 dark:border-zinc-800">
-                    <div className="h-8 flex items-center">
-                        <img src="/logo-on-light.jpg" alt="Strata" className="h-full w-auto block dark:hidden" />
-                        <img src="/logo-on-dark.jpg" alt="Strata" className="h-full w-auto hidden dark:block" />
-                    </div>
-                </div>
-                <nav className="flex-1 p-4 space-y-4 overflow-y-auto">
-                    {/* Main Category */}
-                    <div className="space-y-1">
-                        <button
-                            type="button"
-                            onClick={() => setIsMainOpen(!isMainOpen)}
-                            className="flex items-center justify-between w-full px-3 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors"
-                        >
-                            <span>Main</span>
-                            {isMainOpen ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
-                        </button>
-                        {isMainOpen && (
-                            <div className="space-y-1 px-2">
-                                <a href="#" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white">
-                                    <HomeIcon className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
-                                    Overview
-                                </a>
-                            </div>
-                        )}
+        <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 font-sans text-gray-900 dark:text-gray-100 pb-10">
+            {/* Floating Glassmorphism Navbar */}
+            <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+                <nav className="flex items-center gap-1 p-2 rounded-full border border-white/20 shadow-lg backdrop-blur-xl bg-white/70 dark:bg-black/60 dark:border-white/10 transition-all duration-300">
+
+                    {/* Brand / Logo */}
+                    <div className="pl-4 pr-2 flex items-center">
+                        <img className="h-6 w-auto hidden dark:block" src="/logo-on-dark.jpg" alt="Strata" />
+                        <img className="h-6 w-auto block dark:hidden" src="/logo-on-light.jpg" alt="Strata" />
                     </div>
 
-                    {/* Operations Category */}
-                    <div className="space-y-1">
-                        <button
-                            type="button"
-                            onClick={() => setIsOperationsOpen(!isOperationsOpen)}
-                            className="flex items-center justify-between w-full px-3 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors"
-                        >
-                            <span>Operations</span>
-                            {isOperationsOpen ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
+                    <div className="w-px h-6 bg-gray-300 dark:bg-white/20 mx-2"></div>
+
+                    {/* Navigation Items */}
+                    <div className="flex items-center gap-1">
+                        <NavItem icon={<HomeIcon className="w-5 h-5" />} label="Overview" active />
+                        <NavItem icon={<CubeIcon className="w-5 h-5" />} label="Inventory" />
+                        <NavItem icon={<ArrowTrendingUpIcon className="w-5 h-5" />} label="Production" />
+                        <NavItem icon={<ClipboardDocumentListIcon className="w-5 h-5" />} label="Orders" />
+                    </div>
+
+                    <div className="w-px h-6 bg-gray-300 dark:bg-white/20 mx-2"></div>
+
+                    {/* Right Actions */}
+                    <div className="flex items-center gap-2 pr-2">
+                        <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors">
+                            {theme === 'dark' ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
                         </button>
-                        {isOperationsOpen && (
-                            <div className="space-y-1 px-2">
-                                <a href="#" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors">
-                                    <CubeIcon className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
-                                    Inventory
-                                </a>
-                                <a href="#" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors">
-                                    <ArrowTrendingUpIcon className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
-                                    Production
-                                </a>
-                                <a href="#" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors">
-                                    <ClipboardDocumentListIcon className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
-                                    Orders
-                                </a>
-                                <a href="#" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors">
-                                    <TruckIcon className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
-                                    Logistics
-                                </a>
+
+                        <div className="relative group">
+                            <button className="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                                    JD
+                                </div>
+                            </button>
+                            {/* User Dropdown */}
+                            <div className="absolute top-full right-0 mt-2 w-48 py-1 rounded-xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
+                                <div className="px-4 py-2 border-b border-gray-200 dark:border-white/10">
+                                    <p className="text-sm font-medium">Jhon Doe</p>
+                                    <p className="text-xs text-gray-500">Admin</p>
+                                </div>
+                                <button onClick={onLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-2">
+                                    <ArrowRightOnRectangleIcon className="w-4 h-4" />
+                                    Sign Out
+                                </button>
                             </div>
-                        )}
+                        </div>
                     </div>
                 </nav>
-                <div className="p-4 border-t border-zinc-100 dark:border-zinc-800">
-                    <div className="flex items-center gap-3 px-2 py-2">
-                        <div className="h-8 w-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-xs font-medium text-zinc-600 dark:text-zinc-300">JD</div>
-                        <div className="flex-1 overflow-hidden">
-                            <p className="text-sm font-medium leading-none truncate text-zinc-900 dark:text-zinc-100">Jhon Doe</p>
-                            <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">Admin</p>
+            </div>
+
+            {/* Main Content Content - Padded top to account for floating nav */}
+            <div className="pt-24 px-4 max-w-7xl mx-auto space-y-6">
+                {/* Page Title & Search */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
+                            Operational Overview
+                        </h1>
+                        <p className="text-gray-500 dark:text-gray-400 mt-1">
+                            Jan 1 - Jan 31, 2025
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                            </div>
+                            <input
+                                type="text"
+                                className="block w-full md:w-64 pl-10 pr-3 py-2 border border-gray-200 dark:border-white/10 rounded-xl leading-5 bg-white/50 dark:bg-black/20 text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all shadow-sm"
+                                placeholder="Search everything..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
                         </div>
-                        <button onClick={onLogout} className="text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300">
-                            <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                        <button className="p-2 rounded-xl border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/20 backdrop-blur-sm hover:bg-white dark:hover:bg-white/10 transition-all shadow-sm text-gray-500">
+                            <BellIcon className="h-5 w-5" />
                         </button>
                     </div>
                 </div>
-            </aside>
 
-            {/* Main Content */}
-            <main className="flex-1 overflow-hidden flex flex-col">
-                {/* Header */}
-                <header className="h-16 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-8">
-                    <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
-                        <span>Dashboard</span>
-                        <span className="text-zinc-300 dark:text-zinc-700">/</span>
-                        <span className="text-zinc-900 dark:text-zinc-100 font-medium">Operational Overview</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <div className="relative w-64">
-                            <MagnifyingGlassIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-400 dark:text-zinc-500" />
-                            <input type="text" placeholder="Search..." className="pl-9 h-9 w-full rounded-md border-0 bg-zinc-50 dark:bg-zinc-800 ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700 focus:ring-2 focus:ring-inset focus:ring-zinc-900 dark:focus:ring-white text-sm dark:text-white dark:placeholder-zinc-500" />
-                        </div>
-                        <button className="flex items-center gap-2 h-9 px-3 rounded-md border border-zinc-200 dark:border-zinc-700 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800">
-                            <CalendarIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
-                            Jan 1 - Jan 31, 2025
-                        </button>
-                        <button className="relative p-2 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300">
-                            <BellIcon className="h-5 w-5" />
-                            <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-zinc-900"></span>
-                        </button>
-                        <button onClick={toggleTheme} className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200">
-                            {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
-                        </button>
-                    </div>
-                </header>
-
-                {/* Scrollable Area */}
-                <div className="flex-1 overflow-auto p-8 space-y-8">
-
-                    {/* KPI Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {[
-                            { label: 'Total Inventory Value', value: '$1.2M', change: '+0.2% vs last month', positive: true, icon: CurrencyDollarIcon },
-                            { label: 'Production Efficiency', value: '88%', change: '+3.5% vs last month', positive: true, icon: ChartBarIcon },
-                            { label: 'Pending Orders', value: '142', change: '-12 vs yesterday', neutral: true, icon: ClipboardDocumentListIcon },
-                            { label: 'Low Stock Alerts', value: '15', change: 'Requires attention', negative: true, icon: ExclamationCircleIcon },
-                        ].map((stat, i) => (
-                            <div key={i} className="bg-white dark:bg-zinc-900 p-6 rounded-xl shadow-sm ring-1 ring-zinc-900/5 dark:ring-white/10">
-                                <dt className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">{stat.label}</dt>
-                                <dd className="text-2xl font-semibold text-zinc-900 dark:text-white mb-2">{stat.value}</dd>
-                                <div className={cn("text-xs flex items-center gap-1 font-medium",
-                                    stat.positive ? "text-green-600 dark:text-green-400" : stat.negative ? "text-red-600 dark:text-red-400" : "text-zinc-500 dark:text-zinc-400"
-                                )}>
-                                    {stat.positive && <ArrowTrendingUpIcon className="h-3 w-3" />}
-                                    {stat.negative && <ExclamationCircleIcon className="h-3 w-3" />}
-                                    {stat.change}
-                                </div>
+                {/* KPI Cards */}
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Inventory</p>
+                                <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">$1.2M</p>
                             </div>
-                        ))}
+                            <div className="p-3 bg-blue-50 dark:bg-blue-500/10 rounded-xl text-blue-600 dark:text-blue-400">
+                                <CurrencyDollarIcon className="w-6 h-6" />
+                            </div>
+                        </div>
+                        <div className="mt-4 flex items-center text-sm text-green-600">
+                            <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
+                            <span className="font-medium">+0.2%</span> <span className="text-gray-400 ml-1">vs last month</span>
+                        </div>
                     </div>
 
-                    {/* Quick Actions */}
-                    <div>
-                        <h2 className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-4">Quick Actions</h2>
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Efficiency</p>
+                                <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">88%</p>
+                            </div>
+                            <div className="p-3 bg-purple-50 dark:bg-purple-500/10 rounded-xl text-purple-600 dark:text-purple-400">
+                                <ChartBarIcon className="w-6 h-6" />
+                            </div>
+                        </div>
+                        <div className="mt-4 flex items-center text-sm text-green-600">
+                            <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
+                            <span className="font-medium">+3.5%</span> <span className="text-gray-400 ml-1">vs last month</span>
+                        </div>
+                    </div>
+
+                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pending Orders</p>
+                                <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">142</p>
+                            </div>
+                            <div className="p-3 bg-orange-50 dark:bg-orange-500/10 rounded-xl text-orange-600 dark:text-orange-400">
+                                <ClipboardDocumentListIcon className="w-6 h-6" />
+                            </div>
+                        </div>
+                        <div className="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span className="font-medium">-12</span> <span className="ml-1">vs yesterday</span>
+                        </div>
+                    </div>
+
+                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Low Stock</p>
+                                <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">15</p>
+                            </div>
+                            <div className="p-3 bg-red-50 dark:bg-red-500/10 rounded-xl text-red-600 dark:text-red-400">
+                                <ExclamationCircleIcon className="w-6 h-6" />
+                            </div>
+                        </div>
+                        <div className="mt-4 flex items-center text-sm text-red-500">
+                            <span className="font-medium">Requires attention</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="mb-8 overflow-x-auto">
+                    <div className="flex items-center gap-6 min-w-max">
+                        <h2 className="text-lg font-medium text-gray-500 dark:text-gray-400">Quick Actions</h2>
+                        <div className="flex items-center gap-4">
                             {[
-                                { label: 'New Order', icon: PlusIcon, bg: 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' },
-                                { label: 'Duplicate', icon: DocumentDuplicateIcon, color: 'text-zinc-500 dark:text-zinc-400' },
-                                { label: 'Export PDF', icon: DocumentTextIcon, color: 'text-zinc-500 dark:text-zinc-400' },
-                                { label: 'Send Email', icon: EnvelopeIcon, color: 'text-zinc-500 dark:text-zinc-400' },
-                                { label: 'Templates', icon: Squares2X2Icon, color: 'text-zinc-500 dark:text-zinc-400' },
+                                { icon: <PlusIcon className="w-5 h-5" />, label: "New Order" },
+                                { icon: <DocumentDuplicateIcon className="w-5 h-5" />, label: "Duplicate" },
+                                { icon: <DocumentTextIcon className="w-5 h-5" />, label: "Export PDF" },
+                                { icon: <EnvelopeIcon className="w-5 h-5" />, label: "Send Email" },
+                                { icon: <DocumentDuplicateIcon className="w-5 h-5" />, label: "Templates" },
                             ].map((action, i) => (
-                                <button key={i} className="h-24 flex flex-col justify-center items-center gap-3 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-xl shadow-sm ring-1 ring-zinc-900/5 dark:ring-white/10 transition-all">
-                                    <div className={cn("p-1.5 rounded-md", action.bg || "bg-zinc-100 dark:bg-zinc-800")}>
-                                        <action.icon className={cn("h-5 w-5", action.color || "text-white dark:text-white")} />
+                                <button key={i} className="flex flex-col items-center gap-2 group">
+                                    <div className="w-12 h-12 rounded-full bg-white dark:bg-white/5 border border-dashed border-gray-300 dark:border-white/20 flex items-center justify-center text-gray-500 dark:text-gray-400 group-hover:border-blue-500 group-hover:bg-blue-50 dark:group-hover:bg-blue-500/10 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all shadow-sm">
+                                        {action.icon}
                                     </div>
-                                    <span className="text-sm font-medium text-zinc-900 dark:text-white">{action.label}</span>
+                                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{action.label}</span>
                                 </button>
                             ))}
                         </div>
                     </div>
+                </div>
 
-                    {/* Main Charts & Content */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Recent Orders - The Grid/List view handled here */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="lg:col-span-3">
+                        <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl rounded-3xl border border-white/20 shadow-lg overflow-hidden">
+                            {/* Header for Orders */}
+                            <div className="p-6 border-b border-gray-200 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                    Recent Orders
+                                    <span className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-white/10 text-xs text-gray-500 dark:text-gray-400 font-normal">Active</span>
+                                </h3>
 
-                        {/* Orders Table */}
-                        <div className="lg:col-span-3 bg-white dark:bg-zinc-900 rounded-xl shadow-sm ring-1 ring-zinc-900/5 dark:ring-white/10">
-                            <div className="px-6 py-5 border-b border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <h3 className="text-base font-semibold text-zinc-900 dark:text-white">Recent Orders</h3>
-                                <div className="flex items-center gap-3">
-                                    <div className="relative">
-                                        <MagnifyingGlassIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-400" />
-                                        <input
-                                            type="text"
-                                            placeholder="Search orders..."
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="pl-9 h-9 w-64 rounded-md border-0 bg-zinc-50 dark:bg-zinc-800 ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700 focus:ring-2 focus:ring-inset focus:ring-zinc-900 dark:focus:ring-white text-sm dark:text-white dark:placeholder-zinc-500"
-                                        />
-                                    </div>
-                                    <div className="flex bg-zinc-100 dark:bg-zinc-800 rounded-lg p-1 gap-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="flex bg-gray-100 dark:bg-black/30 p-1 rounded-lg">
                                         <button
                                             onClick={() => setViewMode('list')}
-                                            className={cn("p-1 rounded-md transition-all", viewMode === 'list' ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200")}
+                                            className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-zinc-800 text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                                         >
                                             <ListBulletIcon className="h-4 w-4" />
                                         </button>
                                         <button
                                             onClick={() => setViewMode('grid')}
-                                            className={cn("p-1 rounded-md transition-all", viewMode === 'grid' ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200")}
+                                            className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-zinc-800 text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                                         >
                                             <Squares2X2Icon className="h-4 w-4" />
                                         </button>
                                     </div>
-                                    <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-700"></div>
+                                    <div className="h-6 w-px bg-gray-200 dark:bg-white/10 mx-1"></div>
+                                    {/* Filter Button */}
                                     <Menu as="div" className="relative">
-                                        <MenuButton className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700">
-                                            Status
-                                            <ChevronDownIcon className="h-3 w-3" />
+                                        <MenuButton className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-white/10 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                            <span>Filter Status</span>
+                                            <ChevronDownIcon className="h-4 w-4 text-gray-400" />
                                         </MenuButton>
-                                        <MenuItems className="absolute right-0 z-10 mt-1 w-48 origin-top-right rounded-md bg-white dark:bg-zinc-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-1">
-                                            {['Pending Review', 'In Production', 'Shipped'].map((status) => (
-                                                <MenuItem key={status}>
-                                                    {({ active }) => (
-                                                        <label className={cn("flex items-center gap-2 px-3 py-2 text-xs cursor-pointer rounded-md", active ? 'bg-zinc-50 dark:bg-zinc-700' : '')}>
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={selectedStatuses.includes(status)}
-                                                                onChange={(e) => {
-                                                                    if (e.target.checked) {
-                                                                        setSelectedStatuses([...selectedStatuses, status])
-                                                                    } else {
+                                        <Transition
+                                            as={Fragment}
+                                            enter="transition ease-out duration-100"
+                                            enterFrom="transform opacity-0 scale-95"
+                                            enterTo="transform opacity-100 scale-100"
+                                            leave="transition ease-in duration-75"
+                                            leaveFrom="transform opacity-100 scale-100"
+                                            leaveTo="transform opacity-0 scale-95"
+                                        >
+                                            <MenuItems className="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10 border border-gray-100 dark:border-white/10 p-2">
+                                                <div className="space-y-1">
+                                                    {['Pending Review', 'In Production', 'Shipped'].map((status) => (
+                                                        <MenuItem key={status}>
+                                                            {({ active }) => (
+                                                                <div className={cn("flex items-center px-2 py-2 rounded-lg cursor-pointer", active ? "bg-gray-50 dark:bg-white/5" : "")} onClick={(e) => {
+                                                                    e.preventDefault(); // Prevent menu close on click
+                                                                    if (selectedStatuses.includes(status)) {
                                                                         setSelectedStatuses(selectedStatuses.filter(s => s !== status))
+                                                                    } else {
+                                                                        setSelectedStatuses([...selectedStatuses, status])
                                                                     }
-                                                                }}
-                                                                className="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900 dark:bg-zinc-900 dark:border-zinc-600 dark:checked:bg-white dark:focus:ring-white"
-                                                            />
-                                                            <span className="text-zinc-900 dark:text-zinc-100">{status}</span>
-                                                        </label>
-                                                    )}
-                                                </MenuItem>
-                                            ))}
-                                            <div className="border-t border-zinc-100 dark:border-zinc-700 mt-1 pt-1">
-                                                <MenuItem>
-                                                    <button
-                                                        onClick={() => setSelectedStatuses([])}
-                                                        className="w-full text-left px-3 py-2 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                                                    >
-                                                        Clear Filter
-                                                    </button>
-                                                </MenuItem>
-                                            </div>
-                                        </MenuItems>
+                                                                }}>
+                                                                    <input type="checkbox" checked={selectedStatuses.includes(status)} className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 bg-transparent" readOnly />
+                                                                    <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{status}</span>
+                                                                </div>
+                                                            )}
+                                                        </MenuItem>
+                                                    ))}
+                                                    <div className="border-t border-gray-100 dark:border-white/10 my-1"></div>
+                                                    <MenuItem>
+                                                        <button onClick={() => setSelectedStatuses([])} className="w-full text-left px-2 py-1.5 text-xs text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg">Clear Filters</button>
+                                                    </MenuItem>
+                                                </div>
+                                            </MenuItems>
+                                        </Transition>
                                     </Menu>
                                 </div>
                             </div>
-                            {viewMode === 'list' ? (
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-800">
-                                        <thead className="bg-zinc-50 dark:bg-zinc-800/50">
-                                            <tr>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Order ID</th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Customer</th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Amount</th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Status</th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Due Date</th>
-                                                <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="bg-white dark:bg-zinc-900 divide-y divide-zinc-200 dark:divide-zinc-800">
-                                            {filteredOrders.map((order) => (
-                                                <>
-                                                    <tr
-                                                        key={order.id}
-                                                        onClick={() => toggleExpand(order.id)}
-                                                        className={cn(
-                                                            "cursor-pointer transition-colors border-b border-zinc-100 dark:border-zinc-800/50",
-                                                            expandedIds.has(order.id) ? "bg-zinc-50 dark:bg-zinc-800/50" : "hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-                                                        )}
-                                                    >
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-white flex items-center gap-2">
-                                                            {expandedIds.has(order.id) ? <ChevronDownIcon className="h-4 w-4 text-zinc-400" /> : <ChevronRightIcon className="h-4 w-4 text-zinc-400" />}
-                                                            {order.id}
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            <div className="flex items-center gap-3">
-                                                                <div className="h-6 w-6 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-600 dark:text-zinc-300">{order.initials}</div>
-                                                                <div className="text-sm text-zinc-900 dark:text-zinc-100">{order.customer}</div>
-                                                            </div>
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400">{order.amount}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            <span className={cn("inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset", order.statusColor)}>
-                                                                {order.status}
-                                                            </span>
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400">{order.date}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium" onClick={(e) => e.stopPropagation()}>
-                                                            <Menu as="div" className="relative inline-block text-left">
-                                                                <MenuButton className="p-2 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                    <EllipsisHorizontalIcon className="h-5 w-5" />
-                                                                </MenuButton>
-                                                                <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-1">
-                                                                    <MenuItem>
-                                                                        <button onClick={onNavigateToDetail} className="group flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                            <EyeIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100" />
-                                                                            View Details
-                                                                        </button>
-                                                                    </MenuItem>
-                                                                    <MenuItem>
-                                                                        <button className="group flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                            <PencilIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100" />
-                                                                            Edit
-                                                                        </button>
-                                                                    </MenuItem>
-                                                                    <MenuItem>
-                                                                        <button className="group flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                            <TrashIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100" />
-                                                                            Delete
-                                                                        </button>
-                                                                    </MenuItem>
-                                                                    <MenuItem>
-                                                                        <button className="group flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                            <EnvelopeIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100" />
-                                                                            Contact
-                                                                        </button>
-                                                                    </MenuItem>
-                                                                </MenuItems>
-                                                            </Menu>
-                                                        </td>
-                                                    </tr>
-                                                    {expandedIds.has(order.id) && (
-                                                        <tr className="bg-zinc-50/50 dark:bg-zinc-800/30">
-                                                            <td colSpan={6} className="px-6 py-4">
-                                                                <div className="space-y-6">
-                                                                    <div className="flex flex-col md:flex-row justify-between gap-4">
-                                                                        <div className="flex items-start gap-3">
-                                                                            <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center">
-                                                                                <UserIcon className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />
-                                                                            </div>
-                                                                            <div>
-                                                                                <p className="text-sm font-medium text-zinc-900 dark:text-white">Sarah Johnson</p>
-                                                                                <p className="text-xs text-zinc-500 dark:text-zinc-400">Project Manager</p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="grid grid-cols-2 gap-8">
-                                                                            <div>
-                                                                                <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">LOCATION</p>
-                                                                                <div className="flex items-center gap-1.5 text-sm text-zinc-900 dark:text-white">
-                                                                                    <MapPinIcon className="h-4 w-4 text-zinc-400" />
-                                                                                    New York, NY
-                                                                                </div>
-                                                                            </div>
-                                                                            <div>
-                                                                                <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">PROJECT ID</p>
-                                                                                <p className="text-sm text-zinc-900 dark:text-white">PRJ-2024-0087</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
 
-                                                                    <div className="relative pt-2 pb-6">
-                                                                        <div className="absolute top-[15px] left-0 w-full h-[2px] bg-zinc-200 dark:bg-zinc-700" />
-                                                                        <div className="relative z-10 flex justify-between">
-                                                                            {['Order Placed', 'Manufacturing', 'Quality Check', 'Shipping'].map((step, i) => (
-                                                                                <div key={i} className="flex flex-col items-center bg-zinc-50 dark:bg-zinc-900 px-2 rounded-full">
-                                                                                    <div className={cn("w-8 h-8 rounded-full flex items-center justify-center ring-1 ring-inset transition-colors", i <= 1 ? 'bg-zinc-900 dark:bg-zinc-50 ring-zinc-900 dark:ring-zinc-50 text-white dark:text-zinc-900' : 'bg-white dark:bg-zinc-900 ring-zinc-300 dark:ring-zinc-600 text-zinc-300 dark:text-zinc-600')}>
-                                                                                        {i < 1 ? <CheckCircleIcon className="h-5 w-5" /> : i === 1 ? <ClockIcon className="h-5 w-5" /> : <div className="h-2 w-2 rounded-full bg-zinc-300 dark:bg-zinc-600" />}
-                                                                                    </div>
-                                                                                    <span className="text-[10px] mt-1 font-medium text-zinc-600 dark:text-zinc-400">{step}</span>
-                                                                                </div>
-                                                                            ))}
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div className="flex items-center gap-3 p-3 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-700">
-                                                                        <TruckIcon className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
-                                                                        <div>
-                                                                            <p className="text-sm font-medium text-zinc-900 dark:text-white">Truck delayed at Customs - New ETA +24h</p>
-                                                                            <p className="text-xs text-zinc-500 dark:text-zinc-400">The delivery truck has been delayed at the export checkpoint. Estimated arrival updated.</p>
-                                                                        </div>
-                                                                        <button
-                                                                            onClick={() => setTrackingOrder(order)}
-                                                                            className="ml-auto text-xs px-3 py-1.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-md font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200"
-                                                                        >
-                                                                            Track
-                                                                        </button>
-                                                                    </div>
+                            {/* Content */}
+                            <div className="p-6 bg-gray-50/50 dark:bg-black/20 min-h-[300px]">
+                                {viewMode === 'list' ? (
+                                    <div className="overflow-x-auto">
+                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-white/10">
+                                            <thead>
+                                                <tr>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th className="relative px-3 py-3.5"><span className="sr-only">Actions</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-200 dark:divide-white/10 bg-transparent">
+                                                {filteredOrders.map((order) => (
+                                                    <Fragment key={order.id}>
+                                                        <tr
+                                                            className={`hover:bg-white/50 dark:hover:bg-white/5 transition-colors cursor-pointer ${expandedIds.has(order.id) ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''}`}
+                                                            onClick={() => toggleExpand(order.id)}
+                                                        >
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                                                                {expandedIds.has(order.id) ? <ChevronDownIcon className="h-4 w-4 text-blue-500" /> : <ChevronRightIcon className="h-4 w-4 text-gray-400" />}
+                                                                {order.id}
+                                                            </td>
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
+                                                                <div className="flex items-center gap-2">
+                                                                    <div className="h-6 w-6 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-xs font-medium text-gray-700 dark:text-gray-200">{order.initials}</div>
+                                                                    {order.customer}
                                                                 </div>
                                                             </td>
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">{order.amount}</td>
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm">
+                                                                <span className={cn("inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset", order.statusColor)}>
+                                                                    {order.status}
+                                                                </span>
+                                                            </td>
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">{order.date}</td>
+                                                            <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-medium">
+                                                                <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><EllipsisHorizontalIcon className="h-5 w-5" /></button>
+                                                            </td>
                                                         </tr>
-                                                    )}
-                                                </>
-                                            ))}
-                                            {filteredOrders.length === 0 && (
-                                                <tr>
-                                                    <td colSpan={6} className="px-6 py-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
-                                                        No orders found matching your criteria.
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
-                                    {filteredOrders.map((order) => (
-                                        <div
-                                            key={order.id}
-                                            className={cn(
-                                                "rounded-lg border transition-all cursor-pointer",
-                                                expandedIds.has(order.id)
-                                                    ? "border-zinc-300 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-800/30"
-                                                    : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
-                                            )}
-                                            onClick={() => toggleExpand(order.id)}
-                                        >
-                                            <div className="p-4">
-                                                <div className="flex justify-between items-start mb-4">
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="font-semibold text-zinc-900 dark:text-white">{order.id}</div>
-                                                            {expandedIds.has(order.id) ? <ChevronDownIcon className="h-4 w-4 text-zinc-400" /> : <ChevronRightIcon className="h-4 w-4 text-zinc-400" />}
-                                                        </div>
-                                                        <div className="text-sm text-zinc-500 dark:text-zinc-400">{order.customer}</div>
-                                                    </div>
-                                                    <div onClick={(e) => e.stopPropagation()}>
-                                                        <Menu as="div" className="relative text-left">
-                                                            <MenuButton className="p-1 -mr-1 text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                <EllipsisHorizontalIcon className="h-5 w-5" />
-                                                            </MenuButton>
-                                                            <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-1">
-                                                                <MenuItem>
-                                                                    <button onClick={onNavigateToDetail} className="group flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                        <EyeIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100" />
-                                                                        View Details
-                                                                    </button>
-                                                                </MenuItem>
-                                                                <MenuItem>
-                                                                    <button className="group flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                        <PencilIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100" />
-                                                                        Edit
-                                                                    </button>
-                                                                </MenuItem>
-                                                                <MenuItem>
-                                                                    <button className="group flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                        <TrashIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100" />
-                                                                        Delete
-                                                                    </button>
-                                                                </MenuItem>
-                                                                <MenuItem>
-                                                                    <button className="group flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                                                                        <EnvelopeIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100" />
-                                                                        Contact
-                                                                    </button>
-                                                                </MenuItem>
-                                                            </MenuItems>
-                                                        </Menu>
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-zinc-500 dark:text-zinc-400">Amount</span>
-                                                        <span className="font-medium text-zinc-900 dark:text-white">{order.amount}</span>
-                                                    </div>
-                                                    <div className="flex justify-between text-sm">
-                                                        <span className="text-zinc-500 dark:text-zinc-400">Due Date</span>
-                                                        <span className="text-zinc-900 dark:text-white">{order.date}</span>
-                                                    </div>
-                                                    <div className="flex justify-between items-center mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800">
-                                                        <span className={cn("inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset", order.statusColor)}>
-                                                            {order.status}
-                                                        </span>
-                                                        <div className="h-6 w-6 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-600 dark:text-zinc-300">{order.initials}</div>
-                                                    </div>
-                                                </div>
-                                                {expandedIds.has(order.id) && (
-                                                    <div className="pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-4 cursor-default" onClick={(e) => e.stopPropagation()}>
+                                                        {/* Details Row */}
+                                                        {expandedIds.has(order.id) && (
+                                                            <tr>
+                                                                <td colSpan={6} className="px-0 py-0 border-b border-gray-200 dark:border-white/10">
+                                                                    <div className="p-4 bg-gray-50 dark:bg-black/40 pl-12">
+                                                                        <div className="flex items-start gap-4">
+                                                                            <div className="flex-1 space-y-4">
+                                                                                <div className="flex items-center gap-3">
+                                                                                    <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center"><UserIcon className="w-6 h-6 text-gray-500" /></div>
+                                                                                    <div>
+                                                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">Sarah Johnson</p>
+                                                                                        <p className="text-xs text-gray-500">Project Manager</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="h-px bg-gray-200 dark:bg-white/10 w-full"></div>
+                                                                                {/* Progress Bar Simple */}
+                                                                                <div className="relative">
+                                                                                    <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-700 -translate-y-1/2"></div>
+                                                                                    <div className="relative flex justify-between">
+                                                                                        {['Placed', 'Mfg', 'Qual', 'Ship'].map((step, i) => (
+                                                                                            <div key={i} className={`flex flex-col items-center gap-2 ${i < 2 ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400'}`}>
+                                                                                                <div className={`w-3 h-3 rounded-full ${i < 2 ? 'bg-blue-600 ring-4 ring-blue-50 dark:ring-blue-900/30' : 'bg-gray-300 dark:bg-gray-600'}`}></div>
+                                                                                                <span className="text-xs font-medium">{step}</span>
+                                                                                            </div>
+                                                                                        ))}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="w-64">
+                                                                                <div className="p-3 bg-white dark:bg-zinc-800 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                                                                                    <p className="text-xs font-medium text-gray-500 uppercase">Alert</p>
+                                                                                    <div className="mt-2 flex items-start gap-2">
+                                                                                        <ExclamationTriangleIcon className="h-5 w-5 text-orange-500 flex-shrink-0" />
+                                                                                        <div>
+                                                                                            <p className="text-sm font-medium text-orange-700 dark:text-orange-400">Customs Delay</p>
+                                                                                            <p className="text-xs text-gray-500 mt-1">Shipment held at port. ETA +24h.</p>
+                                                                                            <button onClick={() => setTrackingOrder(order)} className="mt-2 text-xs font-medium text-blue-600 hover:underline">Track Shipment</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        )}
+                                                    </Fragment>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                                        {filteredOrders.map((order) => (
+                                            <div
+                                                key={order.id}
+                                                className={`group relative bg-white dark:bg-zinc-900 rounded-2xl border ${expandedIds.has(order.id) ? 'border-blue-500 ring-1 ring-blue-500' : 'border-gray-200 dark:border-white/10'} shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden`}
+                                                onClick={() => toggleExpand(order.id)}
+                                            >
+                                                <div className="p-5">
+                                                    <div className="flex items-center justify-between mb-4">
                                                         <div className="flex items-center gap-3">
-                                                            <div className="h-8 w-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center">
-                                                                <UserIcon className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
+                                                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-md">
+                                                                {order.initials}
                                                             </div>
                                                             <div>
-                                                                <p className="text-sm font-medium text-zinc-900 dark:text-white">Sarah Johnson</p>
-                                                                <p className="text-xs text-zinc-500 dark:text-zinc-400">Project Manager</p>
+                                                                <h4 className="text-sm font-bold text-gray-900 dark:text-white">{order.customer}</h4>
+                                                                <p className="text-xs text-gray-500">{order.id}</p>
                                                             </div>
                                                         </div>
+                                                        <button className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400"><EllipsisHorizontalIcon className="h-5 w-5" /></button>
+                                                    </div>
 
-                                                        <div className="grid grid-cols-2 gap-4">
-                                                            <div>
-                                                                <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">LOCATION</p>
-                                                                <div className="flex items-center gap-1.5 text-sm text-zinc-900 dark:text-white">
-                                                                    <MapPinIcon className="h-4 w-4 text-zinc-400" />
-                                                                    NY, USA
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">PROJECT ID</p>
-                                                                <p className="text-sm text-zinc-900 dark:text-white">PRJ-24-87</p>
-                                                            </div>
+                                                    <div className="space-y-3">
+                                                        <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-white/5">
+                                                            <span className="text-xs text-gray-500">Amount</span>
+                                                            <span className="text-sm font-semibold text-gray-900 dark:text-white">{order.amount}</span>
                                                         </div>
+                                                        <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-white/5">
+                                                            <span className="text-xs text-gray-500">Date</span>
+                                                            <span className="text-sm text-gray-700 dark:text-gray-300">{order.date}</span>
+                                                        </div>
+                                                        <div className="flex justify-between items-center pt-2">
+                                                            <span className={cn("inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset", order.statusColor)}>
+                                                                {order.status}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                        <div className="space-y-2 bg-zinc-50 dark:bg-zinc-900 p-3 rounded-lg">
-                                                            {['Order Placed', 'Manufacturing', 'Quality', 'Shipping'].map((step, i) => (
-                                                                <div key={i} className="flex items-center gap-3">
-                                                                    <div className={cn("h-2 w-2 rounded-full ring-2 ring-white dark:ring-zinc-800", i <= 1 ? "bg-zinc-900 dark:bg-zinc-100" : "bg-zinc-300 dark:bg-zinc-600")} />
-                                                                    <span className={cn("text-xs", i <= 1 ? "text-zinc-900 dark:text-zinc-100 font-medium" : "text-zinc-500 dark:text-zinc-500")}>{step}</span>
+                                                {/* Expanded Grid Content */}
+                                                {expandedIds.has(order.id) && (
+                                                    <div className="bg-gray-50 dark:bg-white/5 p-4 border-t border-gray-200 dark:border-white/10">
+                                                        <div className="flex items-center gap-2 mb-3">
+                                                            <ShoppingBagIcon className="h-4 w-4 text-gray-400" />
+                                                            <span className="text-xs font-medium text-gray-600 dark:text-gray-300">Order Items (3)</span>
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            {['Office Chair Ergonomic', 'Standing Desk Motorized'].map((item, i) => (
+                                                                <div key={i} className="flex justify-between text-xs">
+                                                                    <span className="text-gray-500">{item}</span>
+                                                                    <span className="text-gray-900 dark:text-white font-medium">x1</span>
                                                                 </div>
                                                             ))}
                                                         </div>
-
-                                                        <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-100 dark:border-zinc-800 flex gap-2 items-center">
-                                                            <TruckIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400 shrink-0" />
-                                                            <div className="flex-1">
-                                                                <p className="text-xs font-medium text-zinc-900 dark:text-white">Delay: Customs</p>
-                                                                <p className="text-[10px] text-zinc-500 dark:text-zinc-400">+24h ETA</p>
-                                                            </div>
-                                                            <button
-                                                                onClick={() => setTrackingOrder(order)}
-                                                                className="text-[10px] px-2 py-1 bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-white rounded hover:bg-zinc-300 dark:hover:bg-zinc-600 font-medium"
-                                                            >
-                                                                Track
-                                                            </button>
-                                                        </div>
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); setTrackingOrder(order); }}
+                                                            className="mt-4 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium shadow-md transition-all flex items-center justify-center gap-2"
+                                                        >
+                                                            <MapPinIcon className="h-3 w-3" /> Track Shipment
+                                                        </button>
                                                     </div>
                                                 )}
                                             </div>
-                                        </div>
-                                    ))}
-                                    {filteredOrders.length === 0 && (
-                                        <div className="col-span-full py-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
-                                            No orders found matching your criteria.
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Metrics */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:col-span-3">
-                            {[
-                                { label: 'Total Revenue', value: '$2,847,500', icon: ArrowTrendingUpIcon },
-                                { label: 'Operational Costs', value: '$1,625,000', icon: ChartBarIcon },
-                                { label: 'Net Profit', value: '$1,222,500', icon: CurrencyDollarIcon },
-                            ].map((metric, i) => (
-                                <div key={i} className="bg-white dark:bg-zinc-900 p-6 rounded-xl shadow-sm ring-1 ring-zinc-900/5 dark:ring-white/10 flex items-center justify-between">
-                                    <div>
-                                        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">{metric.label}</p>
-                                        <p className="text-xl font-bold text-zinc-900 dark:text-white mt-1">{metric.value}</p>
+                                        ))}
                                     </div>
-                                    <metric.icon className="h-5 w-5 text-zinc-400 dark:text-zinc-500" />
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Charts Section */}
-                        <div className="lg:col-span-2 bg-white dark:bg-zinc-900 rounded-xl shadow-sm ring-1 ring-zinc-900/5 dark:ring-white/10 p-6">
-                            <h3 className="text-base font-semibold text-zinc-900 dark:text-white mb-6">Inventory Turnover by Category</h3>
-                            <div className="h-[300px] w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart data={inventoryData}>
-                                        <XAxis dataKey="name" stroke="#a1a1aa" fontSize={12} tickLine={false} axisLine={false} />
-                                        <YAxis stroke="#a1a1aa" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
-                                        <Tooltip cursor={{ fill: '#f4f4f5' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                                        <Bar dataKey="value" fill="#18181b" radius={[4, 4, 0, 0]} />
-                                    </BarChart>
-                                </ResponsiveContainer>
+                                )}
                             </div>
                         </div>
-
-                        <div className="lg:col-span-1 bg-white dark:bg-zinc-900 rounded-xl shadow-sm ring-1 ring-zinc-900/5 dark:ring-white/10 p-6">
-                            <h3 className="text-base font-semibold text-zinc-900 dark:text-white mb-6">Sales vs. Material Costs</h3>
-                            <div className="h-[300px] w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <LineChart data={salesData}>
-                                        <XAxis dataKey="name" stroke="#a1a1aa" fontSize={12} tickLine={false} axisLine={false} />
-                                        <YAxis stroke="#a1a1aa" fontSize={12} tickLine={false} axisLine={false} />
-                                        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                                        <Line type="monotone" dataKey="sales" stroke="#18181b" strokeWidth={2} dot={false} />
-                                        <Line type="monotone" dataKey="costs" stroke="#a1a1aa" strokeWidth={2} dot={false} strokeDasharray="5 5" />
-                                    </LineChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
-            </main>
+
+                {/* Charts Area */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl rounded-2xl border border-white/20 shadow-sm p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Revenue Trend</h3>
+                        <div className="h-80 w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={salesData}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} vertical={false} />
+                                    <XAxis dataKey="name" stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
+                                    <YAxis stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
+                                    <Tooltip
+                                        contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '12px', borderColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)' }}
+                                        itemStyle={{ color: '#1F2937' }}
+                                    />
+                                    <Line type="monotone" dataKey="sales" stroke="#3B82F6" strokeWidth={3} dot={{ r: 4, strokeWidth: 2, fill: '#fff' }} activeDot={{ r: 6 }} />
+                                    <Line type="monotone" dataKey="costs" stroke="#9CA3AF" strokeWidth={2} strokeDasharray="5 5" dot={false} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+
+                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl rounded-2xl border border-white/20 shadow-sm p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Inventory Breakdown</h3>
+                        <div className="h-80 w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={inventoryData}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} vertical={false} />
+                                    <XAxis dataKey="name" stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
+                                    <YAxis stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
+                                    <Tooltip cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', borderRadius: '12px', border: 'none', color: '#fff' }} />
+                                    <Bar dataKey="value" fill="#8B5CF6" radius={[6, 6, 0, 0]} barSize={40} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
             <Transition appear show={!!trackingOrder} as={Fragment}>
                 <Dialog as="div" className="relative z-50" onClose={() => setTrackingOrder(null)}>
@@ -732,5 +620,16 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                 </Dialog>
             </Transition>
         </div>
+    )
+}
+
+function NavItem({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
+    return (
+        <button className={`relative flex items-center justify-center h-10 px-3 rounded-full transition-all duration-300 group overflow-hidden ${active ? 'bg-black/5 dark:bg-white/10 text-blue-600 dark:text-blue-400' : 'hover:bg-black/5 dark:hover:bg-white/5 text-gray-500 dark:text-gray-400'}`}>
+            <span className="relative z-10">{icon}</span>
+            <span className={`ml-2 text-sm font-medium whitespace-nowrap max-w-0 opacity-0 group-hover:max-w-xs group-hover:opacity-100 transition-all duration-300 ease-in-out ${active ? 'max-w-xs opacity-100' : ''}`}>
+                {label}
+            </span>
+        </button>
     )
 }

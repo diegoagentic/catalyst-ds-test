@@ -1,166 +1,241 @@
-import { useState } from 'react'
-import { EyeIcon, EyeSlashIcon, ExclamationTriangleIcon, LockClosedIcon, BuildingOffice2Icon, ArrowRightIcon } from '@heroicons/react/24/outline'
-import { Listbox, Transition } from '@headlessui/react'
-import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { useState, useRef, useEffect } from 'react'
+import { EyeIcon, EyeSlashIcon, ArrowRightIcon, ChevronDownIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline'
 
-function cn(...inputs: (string | undefined | null | false)[]) {
-    return twMerge(clsx(inputs))
-}
+const organizations = [
+    { name: 'Strata Manufacturing HQ', users: 245, type: 'Primary workspace' },
+    { name: 'Strata Sales Division', users: 120, type: 'Regional hub' },
+    { name: 'Strata Logistics Link', users: 85, type: 'Distribution center' }
+]
 
 export default function Login({ onLoginSuccess }: { onLoginSuccess: () => void }) {
     const [showPassword, setShowPassword] = useState(false)
-    const [selectedOrg, setSelectedOrg] = useState({ name: 'Strata Manufacturing HQ', users: '245 users', active: true })
+    const [isRegistering, setIsRegistering] = useState(false)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [selectedOrg, setSelectedOrg] = useState(organizations[0])
+    const dropdownRef = useRef<HTMLDivElement>(null)
 
-    const organizations = [
-        { name: 'Strata Manufacturing HQ', users: '245 users', active: true },
-        { name: 'Strata West Coast Division', users: '89 users', active: false },
-        { name: 'Strata Europe Operations', users: '156 users', active: true },
-    ]
+    const handleAction = () => {
+        onLoginSuccess()
+    }
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false)
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside)
+        }
+    }, [])
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-zinc-100 p-4 font-sans text-zinc-900">
-            <div className="w-full max-w-[480px] shadow-xl ring-1 ring-zinc-900/5 bg-white rounded-xl overflow-hidden">
-                <div className="p-8 space-y-8">
-                    {/* Header */}
-                    <div className="space-y-6 text-center">
-                        <div className="mx-auto w-32 h-16 bg-zinc-100 flex items-center justify-center text-zinc-400 text-xs tracking-widest uppercase font-semibold border border-zinc-200">
-                            Client Logo
-                        </div>
-                        <div className="space-y-1">
-                            <h1 className="text-2xl font-normal text-zinc-900">Sign In</h1>
-                            <p className="text-zinc-500 text-sm">Access your workspace</p>
+        <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 font-sans bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
+            {/* Left Side - Branding */}
+            <div className="relative overflow-hidden flex flex-col justify-center p-12 lg:p-20 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white transition-colors duration-300">
+                {/* Decorative background element */}
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-zinc-100/50 to-zinc-200/50 dark:from-zinc-800/20 dark:to-zinc-950/20 pointer-events-none" />
+
+                <div className="relative z-10 max-w-lg space-y-8">
+                    <div className="flex items-center gap-3 mb-12">
+                        {/* Logo */}
+                        <div className="h-10 w-auto">
+                            <img src="/logo-on-light.jpg" alt="Strata" className="h-8 w-auto block dark:hidden" />
+                            <img src="/logo-on-dark.jpg" alt="Strata" className="h-8 w-auto hidden dark:block" />
                         </div>
                     </div>
 
+                    <h1 className="text-5xl font-bold leading-tight text-zinc-900 dark:text-white">
+                        Transform your workflow with Strata
+                    </h1>
+
+                    <p className="text-zinc-600 dark:text-zinc-400 text-lg leading-relaxed">
+                        At Strata, we provide comprehensive solutions for contract dealers and manufacturers, combining sales enablement, financial services, and expert consulting with cutting-edge technology to optimize operations and drive business growth.
+                    </p>
+
+                    <div className="flex gap-4 pt-4">
+                        <button className="px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors flex items-center gap-2">
+                            Talk to an Expert <ArrowRightIcon className="w-4 h-4" />
+                        </button>
+                        <button className="px-6 py-3 bg-transparent text-zinc-900 dark:text-white font-semibold rounded-full hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors border border-zinc-300 dark:border-white/30">
+                            Browse all Services
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Right Side - Form */}
+            <div className="flex items-center justify-center p-8 relative overflow-hidden bg-[url('/login-bg.jpg')] bg-cover bg-center">
+                {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+
+                <div className="w-full max-w-[440px] p-8 rounded-2xl bg-white/10 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-2xl relative z-10 transition-all duration-300">
                     <div className="space-y-6">
-                        {/* Alert */}
-                        <div className="rounded-md bg-red-50 p-4 border border-red-100">
-                            <div className="flex">
-                                <div className="flex-shrink-0">
-                                    <ExclamationTriangleIcon className="h-5 w-5 text-red-900" aria-hidden="true" />
-                                </div>
-                                <div className="ml-3">
-                                    <h3 className="text-sm font-medium text-red-900">Authentication Failed for selected Organization</h3>
-                                    <div className="mt-1 text-xs text-red-700">
-                                        <p>Please check your credentials and organization selection</p>
-                                    </div>
-                                </div>
+                        <div className="space-y-2 text-center lg:text-left">
+                            <h2 className="text-3xl font-bold text-white">
+                                {isRegistering ? 'Create Account' : 'Welcome Back!'}
+                            </h2>
+                            <div className="flex flex-wrap gap-1 text-sm text-zinc-200 dark:text-zinc-300 justify-center lg:justify-start">
+                                <span>{isRegistering ? 'Already have an account?' : "Don't have an account?"}</span>
+                                <button
+                                    onClick={() => {
+                                        setIsRegistering(!isRegistering);
+                                        // Reset state if desired, or keep consistent
+                                    }}
+                                    className="font-medium text-white hover:underline decoration-white/50 underline-offset-4"
+                                >
+                                    {isRegistering ? 'Login now' : 'Create a new account now,'}
+                                </button>
+                                {!isRegistering && <span>it's FREE! Takes less than a minute.</span>}
                             </div>
                         </div>
 
                         <div className="space-y-5">
-                            {/* Organization Select */}
-                            <Listbox value={selectedOrg} onChange={setSelectedOrg}>
-                                <div className="relative mt-1">
-                                    <Listbox.Label className="block text-sm font-medium leading-6 text-zinc-900 mb-2">Select Organization</Listbox.Label>
-                                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-3 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-zinc-300 focus:outline-none focus:ring-2 focus:ring-zinc-950 sm:text-sm sm:leading-6">
-                                        <span className="block truncate">{selectedOrg.name}</span>
-                                        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                            <ChevronUpDownIcon className="h-5 w-5 text-zinc-400" aria-hidden="true" />
-                                        </span>
-                                    </Listbox.Button>
-                                    <Transition leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
-                                        <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                            {organizations.map((org, orgIdx) => (
-                                                <Listbox.Option
-                                                    key={orgIdx}
-                                                    className={({ active }) =>
-                                                        cn(
-                                                            active ? 'bg-zinc-100 text-zinc-900' : 'text-zinc-900',
-                                                            'relative cursor-default select-none py-3 pl-3 pr-9'
-                                                        )
-                                                    }
-                                                    value={org}
-                                                >
-                                                    {({ selected }) => (
-                                                        <div className="flex items-center gap-3">
-                                                            <div className="bg-zinc-100 p-1.5 rounded-md"><BuildingOffice2Icon className="h-4 w-4 text-zinc-500" /></div>
-                                                            <div className="flex flex-col">
-                                                                <span className={cn(selected ? 'font-semibold' : 'font-medium', 'block truncate')}>
-                                                                    {org.name}
-                                                                </span>
-                                                                <span className="text-xs text-zinc-500">{org.users}</span>
+                            {!isRegistering && (
+                                <>
+                                    <button className="w-full h-12 flex items-center justify-center gap-3 bg-white/10 border border-white/20 text-white rounded-xl hover:bg-white/20 transition-colors">
+                                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" style={{ filter: 'brightness(0.9) contrast(1.2)' }} />
+                                        Login with Google
+                                    </button>
+
+                                    <div className="relative">
+                                        <div className="absolute inset-0 flex items-center">
+                                            <span className="w-full border-t border-white/20" />
+                                        </div>
+                                        <div className="relative flex justify-center text-xs uppercase">
+                                            <span className="bg-transparent px-2 text-zinc-300 font-medium tracking-wider">Or login with email</span>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleAction(); }}>
+                                {isRegistering && (
+                                    <div ref={dropdownRef}>
+                                        <label className="text-zinc-200 dark:text-zinc-300 text-sm font-medium mb-1 block">Select Organization</label>
+                                        <div className="relative group">
+                                            <button
+                                                type="button"
+                                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                                className="w-full bg-white/10 border border-white/20 hover:bg-white/15 text-white rounded-xl p-3 flex items-center gap-3 transition-colors text-left"
+                                            >
+                                                <div className="h-10 w-10 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
+                                                    <BuildingOfficeIcon className="w-6 h-6 text-zinc-200" />
+                                                </div>
+                                                <div className="flex-1 overflow-hidden">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="font-semibold text-sm truncate">{selectedOrg.name}</span>
+                                                        <span className="h-2 w-2 rounded-full bg-emerald-500 shrink-0"></span>
+                                                    </div>
+                                                    <div className="text-xs text-zinc-400 truncate">{selectedOrg.type} • {selectedOrg.users} users</div>
+                                                </div>
+                                                <ChevronDownIcon className={`w-5 h-5 text-zinc-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                                            </button>
+
+                                            {isDropdownOpen && (
+                                                <div className="absolute top-full left-0 right-0 mt-2 bg-[#18181b] border border-white/10 rounded-xl shadow-xl overflow-hidden z-50">
+                                                    {organizations.map((org, index) => (
+                                                        <button
+                                                            key={index}
+                                                            type="button"
+                                                            className={`w-full p-3 flex items-center gap-3 text-left hover:bg-white/5 transition-colors ${selectedOrg.name === org.name ? 'bg-white/5' : ''}`}
+                                                            onClick={() => {
+                                                                setSelectedOrg(org)
+                                                                setIsDropdownOpen(false)
+                                                            }}
+                                                        >
+                                                            <div className="h-8 w-8 bg-white/5 rounded-lg flex items-center justify-center shrink-0">
+                                                                <BuildingOfficeIcon className="w-4 h-4 text-zinc-400" />
                                                             </div>
-                                                            <span className={cn("ml-auto h-2 w-2 rounded-full", org.active ? "bg-green-500" : "bg-zinc-300")} />
-                                                        </div>
-                                                    )}
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </Transition>
-                                </div>
-                            </Listbox>
+                                                            <div className="flex-1">
+                                                                <div className="font-medium text-sm text-white">{org.name}</div>
+                                                                <div className="text-xs text-zinc-500">{org.type}</div>
+                                                            </div>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
 
-                            {/* Work Email */}
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium leading-6 text-zinc-900 mb-2">Work Email</label>
-                                <div className="relative mt-2 rounded-md shadow-sm">
+                                <div>
+                                    <label className="text-zinc-200 dark:text-zinc-300 text-sm font-medium mb-1 block">{isRegistering ? 'Work Email' : 'Email'}</label>
                                     <input
-                                        type="email"
                                         name="email"
-                                        id="email"
-                                        className="block w-full rounded-md border-0 py-3 text-zinc-900 shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-zinc-950 sm:text-sm sm:leading-6"
-                                        defaultValue="maria.gonzalez@estrata.com"
+                                        type="email"
+                                        defaultValue="hisalim.ux@gmail.com"
+                                        className="w-full bg-white/10 border border-white/20 text-white focus:border-white/40 focus:ring-0 rounded-lg h-12 px-4 placeholder:text-zinc-400 outline-none transition-colors"
                                     />
                                 </div>
-                            </div>
 
-                            {/* Password */}
-                            <div>
-                                <label htmlFor="password" className="block text-sm font-medium leading-6 text-zinc-900 mb-2">Password</label>
-                                <div className="relative mt-2 rounded-md shadow-sm">
-                                    <input
-                                        type={showPassword ? 'text' : 'password'}
-                                        name="password"
-                                        id="password"
-                                        className="block w-full rounded-md border-0 py-3 pr-10 text-zinc-900 shadow-sm ring-1 ring-inset ring-zinc-300 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-zinc-950 sm:text-sm sm:leading-6"
-                                        defaultValue="SecurePass2025!"
-                                    />
-                                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                        <button onClick={() => setShowPassword(!showPassword)} className="text-zinc-400 hover:text-zinc-600">
-                                            {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
+                                <div>
+                                    <label className="text-zinc-200 dark:text-zinc-300 text-sm font-medium mb-1 block">Password</label>
+                                    <div className="relative">
+                                        <input
+                                            name="password"
+                                            type={showPassword ? 'text' : 'password'}
+                                            defaultValue={isRegistering ? "Password123!" : ""}
+                                            className="w-full bg-white/10 border border-white/20 text-white focus:border-white/40 focus:ring-0 rounded-lg h-12 px-4 pr-10 outline-none transition-colors"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-3 top-3.5 text-zinc-300 hover:text-white transition-colors"
+                                        >
+                                            {showPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
                                         </button>
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* Requirements */}
-                            <div className="bg-zinc-50 p-3 rounded-md border border-zinc-100 space-y-2">
-                                <div className="flex items-center gap-2 text-xs text-zinc-500 font-medium">
-                                    <ExclamationTriangleIcon className="h-3 w-3" /> Password must contain:
+                                {isRegistering && (
+                                    <div className="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+                                        <div className="flex items-start gap-2 text-xs text-emerald-400">
+                                            <div className="mt-0.5">
+                                                <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-emerald-200 mb-1">Password requirements met:</p>
+                                                <ul className="space-y-1 ml-1">
+                                                    <li className="flex items-center gap-2">
+                                                        <svg className="w-3 h-3 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                        <span>Minimum 8 characters</span>
+                                                    </li>
+                                                    <li className="flex items-center gap-2">
+                                                        <svg className="w-3 h-3 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                        <span>At least one uppercase letter</span>
+                                                    </li>
+                                                    <li className="flex items-center gap-2">
+                                                        <svg className="w-3 h-3 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                        <span>At least one number</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <button type="submit" className="w-full h-12 rounded-xl bg-white text-zinc-900 hover:bg-zinc-100 font-bold text-base shadow-lg shadow-black/10 transition-colors">
+                                    {isRegistering ? 'Create Account' : 'Login Now'}
+                                </button>
+                            </form>
+
+                            {!isRegistering && (
+                                <div className="text-center">
+                                    <button className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">
+                                        Forget password <span className="text-white underline decoration-zinc-400 underline-offset-4 pointer-events-auto">Click here</span>
+                                    </button>
                                 </div>
-                                <ul className="text-[10px] text-zinc-500 space-y-1 pl-1">
-                                    {['Minimum 8 characters', 'At least one uppercase letter', 'At least one number', 'At least one special character (!@#$%)'].map((req, i) => (
-                                        <li key={i} className="flex items-center gap-1.5"><div className="h-1 w-1 rounded-full bg-zinc-400" /> {req}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="space-y-4 pt-2">
-                            <button
-                                type="button"
-                                onClick={onLoginSuccess}
-                                className="flex w-full justify-center rounded-md bg-zinc-900 px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900 items-center"
-                            >
-                                Log In <ArrowRightIcon className="ml-2 h-4 w-4" />
-                            </button>
-                            <div className="text-center">
-                                <a href="#" className="text-sm font-medium text-zinc-500 hover:text-zinc-900">Forgot Password?</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="w-full pt-6 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-400">
-                        <div className="flex gap-4">
-                            <a href="#" className="hover:text-zinc-600">Need access?</a>
-                            <a href="#" className="hover:text-zinc-600">Contact Admin</a>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                            <LockClosedIcon className="h-3 w-3 text-zinc-400" /> Secure Login
+                            )}
                         </div>
                     </div>
                 </div>

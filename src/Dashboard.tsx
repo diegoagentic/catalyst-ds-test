@@ -1,4 +1,4 @@
-import { Menu, MenuButton, MenuItem, MenuItems, Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
+import { Menu, MenuButton, MenuItem, MenuItems, Dialog, DialogPanel, Transition, TransitionChild, Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { Fragment } from 'react'
 import {
     HomeIcon, CubeIcon, ClipboardDocumentListIcon, TruckIcon,
@@ -6,8 +6,8 @@ import {
     CurrencyDollarIcon, ChartBarIcon, ArrowTrendingUpIcon, ExclamationCircleIcon,
     PlusIcon, DocumentDuplicateIcon, DocumentTextIcon, EnvelopeIcon, Squares2X2Icon,
     EllipsisHorizontalIcon, ListBulletIcon, SunIcon, MoonIcon,
-    ChevronDownIcon, ChevronRightIcon, EyeIcon, PencilIcon, TrashIcon,
-    CheckCircleIcon, MapPinIcon, UserIcon, ClockIcon, ShoppingBagIcon, ExclamationTriangleIcon
+    ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, EyeIcon, PencilIcon, TrashIcon,
+    CheckIcon, MapPinIcon, UserIcon, ClockIcon, ShoppingBagIcon, ExclamationTriangleIcon, PencilSquareIcon
 } from '@heroicons/react/24/outline'
 import { useState, useMemo } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts'
@@ -49,6 +49,7 @@ const recentOrders = [
 
 export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: () => void, onNavigateToDetail: () => void }) {
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+    const [showMetrics, setShowMetrics] = useState(false);
     const { theme, toggleTheme } = useTheme()
 
     const [searchQuery, setSearchQuery] = useState('')
@@ -77,32 +78,70 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 font-sans text-gray-900 dark:text-gray-100 pb-10">
-            {/* Floating Glassmorphism Navbar */}
-            <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
-                <nav className="flex items-center gap-1 p-2 rounded-full border border-white/20 shadow-lg backdrop-blur-xl bg-white/70 dark:bg-black/60 dark:border-white/10 transition-all duration-300">
+            {/* Floating Info Navbar */}
+            <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+                <div className="flex items-center p-2 rounded-full gap-2 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-lg">
 
-                    {/* Brand / Logo */}
-                    <div className="pl-4 pr-2 flex items-center">
-                        <img className="h-6 w-auto hidden dark:block" src="/logo-on-dark.jpg" alt="Strata" />
-                        <img className="h-6 w-auto block dark:hidden" src="/logo-on-light.jpg" alt="Strata" />
+                    {/* Logo */}
+                    <div className="px-4">
+                        <img src="/logo-on-light.jpg" alt="Strata" className="h-5 w-auto block dark:hidden" />
+                        <img src="/logo-on-dark.jpg" alt="Strata" className="h-5 w-auto hidden dark:block" />
                     </div>
 
-                    <div className="w-px h-6 bg-gray-300 dark:bg-white/20 mx-2"></div>
+                    <div className="h-6 w-px bg-gray-200 dark:bg-white/10 mx-1"></div>
 
                     {/* Navigation Items */}
                     <div className="flex items-center gap-1">
-                        <NavItem icon={<HomeIcon className="w-5 h-5" />} label="Overview" active />
-                        <NavItem icon={<CubeIcon className="w-5 h-5" />} label="Inventory" />
-                        <NavItem icon={<ArrowTrendingUpIcon className="w-5 h-5" />} label="Production" />
-                        <NavItem icon={<ClipboardDocumentListIcon className="w-5 h-5" />} label="Orders" />
+                        <NavItem icon={<HomeIcon className="w-4 h-4" />} label="Overview" active />
+                        <NavItem icon={<CubeIcon className="w-4 h-4" />} label="Inventory" />
+                        <NavItem icon={<ArrowTrendingUpIcon className="w-4 h-4" />} label="Production" />
+                        <NavItem icon={<ClipboardDocumentListIcon className="w-4 h-4" />} label="Orders" />
                     </div>
 
-                    <div className="w-px h-6 bg-gray-300 dark:bg-white/20 mx-2"></div>
+                    <div className="h-6 w-px bg-gray-200 dark:bg-white/10 mx-1"></div>
 
                     {/* Right Actions */}
                     <div className="flex items-center gap-2 pr-2">
-                        <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors">
-                            {theme === 'dark' ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
+                        <Popover className="relative">
+                            <PopoverButton className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors outline-none">
+                                <Squares2X2Icon className="w-4 h-4" />
+                            </PopoverButton>
+                            <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-200"
+                                enterFrom="opacity-0 translate-y-1"
+                                enterTo="opacity-100 translate-y-0"
+                                leave="transition ease-in duration-150"
+                                leaveFrom="opacity-100 translate-y-0"
+                                leaveTo="opacity-0 translate-y-1"
+                            >
+                                <PopoverPanel className="fixed top-[90px] left-1/2 -translate-x-1/2 w-[400px] p-4 bg-white/85 dark:bg-zinc-900/85 backdrop-blur-xl border border-white/20 shadow-2xl rounded-3xl z-[100] overflow-hidden">
+                                    <div className="grid grid-cols-3 gap-4">
+                                        {[
+                                            { icon: <HomeIcon className="w-8 h-8" />, label: "Portal", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-500/10" },
+                                            { icon: <UserIcon className="w-8 h-8" />, label: "CRM", color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-50 dark:bg-purple-500/10" },
+                                            { icon: <DocumentTextIcon className="w-8 h-8" />, label: "Invoice", color: "text-green-600 dark:text-green-400", bg: "bg-green-50 dark:bg-green-500/10" },
+                                            { icon: <CubeIcon className="w-8 h-8" />, label: "Inventory", color: "text-orange-600 dark:text-orange-400", bg: "bg-orange-50 dark:bg-orange-500/10" },
+                                            { icon: <ChartBarIcon className="w-8 h-8" />, label: "Analytics", color: "text-pink-600 dark:text-pink-400", bg: "bg-pink-50 dark:bg-pink-500/10" },
+                                            { icon: <ExclamationCircleIcon className="w-8 h-8" />, label: "Support", color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-50 dark:bg-cyan-500/10" },
+                                            { icon: <Squares2X2Icon className="w-8 h-8" />, label: "Board", color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-50 dark:bg-indigo-500/10" },
+                                            { icon: <CalendarIcon className="w-8 h-8" />, label: "Calendar", color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-500/10" },
+                                            { icon: <EllipsisHorizontalIcon className="w-8 h-8" />, label: "More", color: "text-gray-600 dark:text-gray-400", bg: "bg-gray-100 dark:bg-gray-800" },
+                                        ].map((app, i) => (
+                                            <button key={i} className="flex flex-col items-center gap-3 p-3 rounded-2xl hover:bg-black/5 dark:hover:bg-white/10 transition-all group">
+                                                <div className={`p-3 rounded-2xl ${app.bg} ${app.color} group-hover:scale-110 transition-transform shadow-sm`}>
+                                                    {app.icon}
+                                                </div>
+                                                <span className="text-xs font-semibold text-gray-700 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white">{app.label}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </PopoverPanel>
+                            </Transition>
+                        </Popover>
+
+                        <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                            {theme === 'dark' ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
                         </button>
 
                         <div className="relative group">
@@ -110,6 +149,11 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                                 <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
                                     JD
                                 </div>
+                                <div className="text-left hidden md:block">
+                                    <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white">Jhon Doe</p>
+                                    <p className="text-[10px] text-gray-500 dark:text-gray-400">Admin</p>
+                                </div>
+                                <ChevronDownIcon className="w-3 h-3 text-gray-400 dark:text-gray-500" />
                             </button>
                             {/* User Dropdown */}
                             <div className="absolute top-full right-0 mt-2 w-48 py-1 rounded-xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
@@ -124,7 +168,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                             </div>
                         </div>
                     </div>
-                </nav>
+                </div>
             </div>
 
             {/* Main Content Content - Padded top to account for floating nav */}
@@ -132,9 +176,11 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                 {/* Page Title & Search */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
-                            Operational Overview
-                        </h1>
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
+                                Operational Overview
+                            </h1>
+                        </div>
                         <p className="text-gray-500 dark:text-gray-400 mt-1">
                             Jan 1 - Jan 31, 2025
                         </p>
@@ -160,92 +206,149 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                 </div>
 
                 {/* KPI Cards */}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Inventory</p>
-                                <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">$1.2M</p>
-                            </div>
-                            <div className="p-3 bg-blue-50 dark:bg-blue-500/10 rounded-xl text-blue-600 dark:text-blue-400">
-                                <CurrencyDollarIcon className="w-6 h-6" />
-                            </div>
+                {showMetrics ? (
+                    <>
+                        <div className="flex justify-end mb-2">
+                            <button onClick={() => setShowMetrics(false)} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
+                                Hide Details <ChevronUpIcon className="w-4 h-4" />
+                            </button>
                         </div>
-                        <div className="mt-4 flex items-center text-sm text-green-600">
-                            <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
-                            <span className="font-medium">+0.2%</span> <span className="text-gray-400 ml-1">vs last month</span>
-                        </div>
-                    </div>
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 animate-in fade-in zoom-in duration-300">
+                            <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Inventory</p>
+                                        <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">$1.2M</p>
+                                    </div>
+                                    <div className="p-3 bg-blue-50 dark:bg-blue-500/10 rounded-xl text-blue-600 dark:text-blue-400">
+                                        <CurrencyDollarIcon className="w-6 h-6" />
+                                    </div>
+                                </div>
+                                <div className="mt-4 flex items-center text-sm text-green-600">
+                                    <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
+                                    <span className="font-medium">+0.2%</span> <span className="text-gray-400 ml-1">vs last month</span>
+                                </div>
+                            </div>
 
-                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Efficiency</p>
-                                <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">88%</p>
+                            <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Efficiency</p>
+                                        <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">88%</p>
+                                    </div>
+                                    <div className="p-3 bg-purple-50 dark:bg-purple-500/10 rounded-xl text-purple-600 dark:text-purple-400">
+                                        <ChartBarIcon className="w-6 h-6" />
+                                    </div>
+                                </div>
+                                <div className="mt-4 flex items-center text-sm text-green-600">
+                                    <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
+                                    <span className="font-medium">+3.5%</span> <span className="text-gray-400 ml-1">vs last month</span>
+                                </div>
                             </div>
-                            <div className="p-3 bg-purple-50 dark:bg-purple-500/10 rounded-xl text-purple-600 dark:text-purple-400">
-                                <ChartBarIcon className="w-6 h-6" />
-                            </div>
-                        </div>
-                        <div className="mt-4 flex items-center text-sm text-green-600">
-                            <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
-                            <span className="font-medium">+3.5%</span> <span className="text-gray-400 ml-1">vs last month</span>
-                        </div>
-                    </div>
 
-                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pending Orders</p>
-                                <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">142</p>
+                            <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pending Orders</p>
+                                        <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">142</p>
+                                    </div>
+                                    <div className="p-3 bg-orange-50 dark:bg-orange-500/10 rounded-xl text-orange-600 dark:text-orange-400">
+                                        <ClipboardDocumentListIcon className="w-6 h-6" />
+                                    </div>
+                                </div>
+                                <div className="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                                    <span className="font-medium">-12</span> <span className="ml-1">vs yesterday</span>
+                                </div>
                             </div>
-                            <div className="p-3 bg-orange-50 dark:bg-orange-500/10 rounded-xl text-orange-600 dark:text-orange-400">
-                                <ClipboardDocumentListIcon className="w-6 h-6" />
-                            </div>
-                        </div>
-                        <div className="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
-                            <span className="font-medium">-12</span> <span className="ml-1">vs yesterday</span>
-                        </div>
-                    </div>
 
-                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Low Stock</p>
-                                <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">15</p>
-                            </div>
-                            <div className="p-3 bg-red-50 dark:bg-red-500/10 rounded-xl text-red-600 dark:text-red-400">
-                                <ExclamationCircleIcon className="w-6 h-6" />
+                            <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Low Stock</p>
+                                        <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">15</p>
+                                    </div>
+                                    <div className="p-3 bg-red-50 dark:bg-red-500/10 rounded-xl text-red-600 dark:text-red-400">
+                                        <ExclamationCircleIcon className="w-6 h-6" />
+                                    </div>
+                                </div>
+                                <div className="mt-4 flex items-center text-sm text-red-500">
+                                    <span className="font-medium">Requires attention</span>
+                                </div>
                             </div>
                         </div>
-                        <div className="mt-4 flex items-center text-sm text-red-500">
-                            <span className="font-medium">Requires attention</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Quick Actions */}
-                <div className="mb-8 overflow-x-auto">
-                    <div className="flex items-center gap-6 min-w-max">
-                        <h2 className="text-lg font-medium text-gray-500 dark:text-gray-400">Quick Actions</h2>
-                        <div className="flex items-center gap-4">
+                        {/* Quick Actions below grid when expanded */}
+                        <div className="flex items-center gap-4 mt-6 animate-in fade-in slide-in-from-top-2 duration-500">
+                            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Quick Actions:</span>
                             {[
                                 { icon: <PlusIcon className="w-5 h-5" />, label: "New Order" },
                                 { icon: <DocumentDuplicateIcon className="w-5 h-5" />, label: "Duplicate" },
                                 { icon: <DocumentTextIcon className="w-5 h-5" />, label: "Export PDF" },
                                 { icon: <EnvelopeIcon className="w-5 h-5" />, label: "Send Email" },
-                                { icon: <DocumentDuplicateIcon className="w-5 h-5" />, label: "Templates" },
                             ].map((action, i) => (
-                                <button key={i} className="flex flex-col items-center gap-2 group">
-                                    <div className="w-12 h-12 rounded-full bg-white dark:bg-white/5 border border-dashed border-gray-300 dark:border-white/20 flex items-center justify-center text-gray-500 dark:text-gray-400 group-hover:border-blue-500 group-hover:bg-blue-50 dark:group-hover:bg-blue-500/10 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all shadow-sm">
-                                        {action.icon}
-                                    </div>
-                                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{action.label}</span>
+                                <button key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400 text-gray-500 dark:text-gray-400 transition-all text-xs font-medium">
+                                    {action.icon}
+                                    <span>{action.label}</span>
                                 </button>
                             ))}
                         </div>
+                    </>
+                ) : (
+                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-md rounded-2xl p-4 border border-gray-200 dark:border-white/10 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-300">
+                        <div className="flex items-center gap-6 overflow-x-auto w-full scrollbar-hide">
+                            <div className="flex items-center gap-2 whitespace-nowrap">
+                                <span className="text-sm text-gray-500 dark:text-gray-400">Inventory:</span>
+                                <span className="text-lg font-semibold text-gray-900 dark:text-white">$1.2M</span>
+                                <span className="text-xs text-green-500 font-medium bg-green-50 dark:bg-green-900/20 px-1.5 py-0.5 rounded-md self-center">+0.2%</span>
+                            </div>
+                            <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden sm:block"></div>
+                            <div className="flex items-center gap-2 whitespace-nowrap">
+                                <span className="text-sm text-gray-500 dark:text-gray-400">Efficiency:</span>
+                                <span className="text-lg font-semibold text-gray-900 dark:text-white">88%</span>
+                                <span className="text-xs text-green-500 font-medium bg-green-50 dark:bg-green-900/20 px-1.5 py-0.5 rounded-md self-center">+3.5%</span>
+                            </div>
+                            <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden sm:block"></div>
+                            <div className="flex items-center gap-2 whitespace-nowrap">
+                                <span className="text-sm text-gray-500 dark:text-gray-400">Pending:</span>
+                                <span className="text-lg font-semibold text-gray-900 dark:text-white">142</span>
+                            </div>
+                            <div className="w-px h-8 bg-gray-200 dark:bg-white/10 hidden sm:block"></div>
+                            <div className="flex items-center gap-2 whitespace-nowrap">
+                                <span className="text-sm text-gray-500 dark:text-gray-400">Low Stock:</span>
+                                <span className="text-lg font-semibold text-gray-900 dark:text-white">15</span>
+                                <span className="text-xs text-red-500 font-medium bg-red-50 dark:bg-red-900/20 px-1.5 py-0.5 rounded-md self-center">Alert</span>
+                            </div>
+                        </div>
+                        <div className="w-px h-12 bg-gray-200 dark:bg-white/10 hidden xl:block mx-2"></div>
+                        {/* Quick Actions Integrated */}
+                        <div className="flex items-center gap-3 overflow-x-auto min-w-max pl-4 border-l border-gray-200 dark:border-white/10 xl:border-none xl:pl-0">
+                            {[
+                                { icon: <PlusIcon className="w-4 h-4" />, label: "New" },
+                                { icon: <DocumentDuplicateIcon className="w-4 h-4" />, label: "Copy" },
+                                { icon: <DocumentTextIcon className="w-4 h-4" />, label: "PDF" },
+                                { icon: <EnvelopeIcon className="w-4 h-4" />, label: "Email" },
+                            ].map((action, i) => (
+                                <button key={i} className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors">
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                        {action.icon}
+                                    </div>
+                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{action.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                        <div className="w-px h-12 bg-gray-200 dark:bg-white/10 hidden xl:block mx-2"></div>
+                        <button
+                            onClick={() => setShowMetrics(true)}
+                            className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors"
+                        >
+                            <div className="text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                <ChevronDownIcon className="w-4 h-4" />
+                            </div>
+                            <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Details</span>
+                        </button>
                     </div>
-                </div>
+                )}
+
+
 
                 {/* Recent Orders - The Grid/List view handled here */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -359,7 +462,53 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                                                             </td>
                                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">{order.date}</td>
                                                             <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-medium">
-                                                                <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><EllipsisHorizontalIcon className="h-5 w-5" /></button>
+                                                                <Menu as="div" className="relative inline-block text-left">
+                                                                    <MenuButton onClick={(e) => e.stopPropagation()} className="bg-transparent p-1 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                                                                        <EllipsisHorizontalIcon className="h-5 w-5" />
+                                                                    </MenuButton>
+                                                                    <Transition
+                                                                        as={Fragment}
+                                                                        enter="transition ease-out duration-100"
+                                                                        enterFrom="transform opacity-0 scale-95"
+                                                                        enterTo="transform opacity-100 scale-100"
+                                                                        leave="transition ease-in duration-75"
+                                                                        leaveFrom="transform opacity-100 scale-100"
+                                                                        leaveTo="transform opacity-0 scale-95"
+                                                                    >
+                                                                        <MenuItems className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-xl bg-white dark:bg-zinc-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none border border-gray-100 dark:border-white/10">
+                                                                            <div className="py-1">
+                                                                                <MenuItem>
+                                                                                    {({ active }) => (
+                                                                                        <button onClick={(e) => { e.stopPropagation(); onNavigateToDetail(); }} className={`${active ? 'bg-gray-50 dark:bg-white/5' : ''} group flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}>
+                                                                                            <span className="w-4 h-4 mr-2" ><DocumentTextIcon /></span> View Details
+                                                                                        </button>
+                                                                                    )}
+                                                                                </MenuItem>
+                                                                                <MenuItem>
+                                                                                    {({ active }) => (
+                                                                                        <button onClick={(e) => e.stopPropagation()} className={`${active ? 'bg-gray-50 dark:bg-white/5' : ''} group flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}>
+                                                                                            <span className="w-4 h-4 mr-2" ><PencilSquareIcon /></span> Edit
+                                                                                        </button>
+                                                                                    )}
+                                                                                </MenuItem>
+                                                                                <MenuItem>
+                                                                                    {({ active }) => (
+                                                                                        <button onClick={(e) => e.stopPropagation()} className={`${active ? 'bg-gray-50 dark:bg-white/5' : ''} group flex w-full items-center px-4 py-2 text-sm text-red-600 dark:text-red-400`}>
+                                                                                            <span className="w-4 h-4 mr-2" ><TrashIcon /></span> Delete
+                                                                                        </button>
+                                                                                    )}
+                                                                                </MenuItem>
+                                                                                <MenuItem>
+                                                                                    {({ active }) => (
+                                                                                        <button onClick={(e) => e.stopPropagation()} className={`${active ? 'bg-gray-50 dark:bg-white/5' : ''} group flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}>
+                                                                                            <span className="w-4 h-4 mr-2" ><EnvelopeIcon /></span> Contact
+                                                                                        </button>
+                                                                                    )}
+                                                                                </MenuItem>
+                                                                            </div>
+                                                                        </MenuItems>
+                                                                    </Transition>
+                                                                </Menu>
                                                             </td>
                                                         </tr>
                                                         {/* Details Row */}
@@ -432,7 +581,40 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                                                                 <p className="text-xs text-gray-500">{order.id}</p>
                                                             </div>
                                                         </div>
-                                                        <button className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400"><EllipsisHorizontalIcon className="h-5 w-5" /></button>
+                                                        <div className="flex items-center gap-1">
+                                                            <button onClick={(e) => { e.stopPropagation(); onNavigateToDetail(); }} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                                                                <DocumentTextIcon className="h-5 w-5" />
+                                                            </button>
+                                                            <button onClick={(e) => e.stopPropagation()} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                                                                <PencilSquareIcon className="h-5 w-5" />
+                                                            </button>
+                                                            <Menu as="div" className="relative inline-block text-left">
+                                                                <MenuButton onClick={(e) => e.stopPropagation()} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400">
+                                                                    <EllipsisHorizontalIcon className="h-5 w-5" />
+                                                                </MenuButton>
+                                                                <Transition
+                                                                    as={Fragment}
+                                                                    enter="transition ease-out duration-100"
+                                                                    enterFrom="transform opacity-0 scale-95"
+                                                                    enterTo="transform opacity-100 scale-100"
+                                                                    leave="transition ease-in duration-75"
+                                                                    leaveFrom="transform opacity-100 scale-100"
+                                                                    leaveTo="transform opacity-0 scale-95"
+                                                                >
+                                                                    <MenuItems className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-xl bg-white dark:bg-zinc-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none border border-gray-100 dark:border-white/10">
+                                                                        <div className="py-1">
+                                                                            <MenuItem>
+                                                                                {({ active }) => (
+                                                                                    <button onClick={(e) => e.stopPropagation()} className={`${active ? 'bg-gray-50 dark:bg-white/5' : ''} group flex w-full items-center px-4 py-2 text-sm text-red-600 dark:text-red-400`}>
+                                                                                        <span className="w-4 h-4 mr-2" ><TrashIcon /></span> Delete
+                                                                                    </button>
+                                                                                )}
+                                                                            </MenuItem>
+                                                                        </div>
+                                                                    </MenuItems>
+                                                                </Transition>
+                                                            </Menu>
+                                                        </div>
                                                     </div>
 
                                                     <div className="space-y-3">
@@ -452,8 +634,52 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                                                     </div>
                                                 </div>
 
-                                                {/* Expanded Grid Content */}
                                                 {expandedIds.has(order.id) && (
+                                                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/5">
+                                                        <div className="flex flex-col md:flex-row gap-8">
+                                                            <div className="flex-1 space-y-6">
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className="h-8 w-8 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-gray-500">
+                                                                        <UserIcon className="h-4 w-4" />
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className="text-sm font-bold text-gray-900 dark:text-white">Sarah Johnson</p>
+                                                                        <p className="text-xs text-gray-500">Project Manager</p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="relative py-2">
+                                                                    <div className="absolute top-3 left-0 w-full h-0.5 bg-gray-200 dark:bg-zinc-700" />
+                                                                    <div className="relative z-10 flex justify-between">
+                                                                        {['Placed', 'Mfg', 'Qual', 'Ship'].map((step, i) => (
+                                                                            <div key={i} className="flex flex-col items-center bg-white dark:bg-zinc-900 px-1">
+                                                                                <div className={`h-6 w-6 rounded-full flex items-center justify-center ${i <= 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-zinc-700 text-gray-400'}`}>
+                                                                                    {i < 1 ? <CheckIcon className="h-4 w-4" /> : <div className={`h-2 w-2 rounded-full ${i <= 1 ? 'bg-white' : 'bg-white/50'}`} />}
+                                                                                </div>
+                                                                                <span className={`mt-2 text-xs font-medium ${i <= 1 ? 'text-blue-500' : 'text-gray-500'}`}>{step}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="w-full md:w-[280px]">
+                                                                <div className="rounded-xl border border-orange-200 dark:border-orange-500/20 bg-orange-50 dark:bg-orange-500/10 p-4">
+                                                                    <div className="flex gap-3">
+                                                                        <ExclamationTriangleIcon className="h-5 w-5 text-orange-500 shrink-0" />
+                                                                        <div>
+                                                                            <h5 className="text-sm font-bold text-orange-700 dark:text-orange-400">Alert: Customs Delay</h5>
+                                                                            <p className="mt-1 text-xs text-orange-600/80 dark:text-orange-400/70">Held at port. ETA +24h.</p>
+                                                                            <button onClick={(e) => { e.stopPropagation(); setTrackingOrder(order); }} className="mt-2 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                                                                                Track Shipment
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}                                                {expandedIds.has(order.id) && (
                                                     <div className="bg-gray-50 dark:bg-white/5 p-4 border-t border-gray-200 dark:border-white/10">
                                                         <div className="flex items-center gap-2 mb-3">
                                                             <ShoppingBagIcon className="h-4 w-4 text-gray-400" />
@@ -482,10 +708,10 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                             </div>
                         </div>
                     </div>
-                </div>
+                </div >
 
                 {/* Charts Area */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                < div className="grid grid-cols-1 lg:grid-cols-2 gap-6" >
                     <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl rounded-2xl border border-white/20 shadow-sm p-6">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Revenue Trend</h3>
                         <div className="h-80 w-full">
@@ -519,9 +745,9 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                             </ResponsiveContainer>
                         </div>
                     </div>
-                </div>
+                </div >
 
-            </div>
+            </div >
 
             <Transition appear show={!!trackingOrder} as={Fragment}>
                 <Dialog as="div" className="relative z-50" onClose={() => setTrackingOrder(null)}>
@@ -619,13 +845,13 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                     </div>
                 </Dialog>
             </Transition>
-        </div>
+        </div >
     )
 }
 
 function NavItem({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
     return (
-        <button className={`relative flex items-center justify-center h-10 px-3 rounded-full transition-all duration-300 group overflow-hidden ${active ? 'bg-black/5 dark:bg-white/10 text-blue-600 dark:text-blue-400' : 'hover:bg-black/5 dark:hover:bg-white/5 text-gray-500 dark:text-gray-400'}`}>
+        <button className={`relative flex items-center justify-center h-9 px-3 rounded-full transition-all duration-300 group overflow-hidden ${active ? 'bg-black/5 dark:bg-white/10 text-blue-600 dark:text-blue-400' : 'hover:bg-black/5 dark:hover:bg-white/5 text-gray-500 dark:text-gray-400'}`}>
             <span className="relative z-10">{icon}</span>
             <span className={`ml-2 text-sm font-medium whitespace-nowrap max-w-0 opacity-0 group-hover:max-w-xs group-hover:opacity-100 transition-all duration-300 ease-in-out ${active ? 'max-w-xs opacity-100' : ''}`}>
                 {label}

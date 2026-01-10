@@ -176,7 +176,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess: () => void }
                                         <input
                                             name="password"
                                             type={showPassword ? 'text' : 'password'}
-                                            defaultValue={isRegistering ? "Password123!" : ""}
+                                            defaultValue="Password123!"
                                             className="w-full bg-white/10 border border-white/20 text-white focus:border-white/40 focus:ring-0 rounded-lg h-12 px-4 pr-10 outline-none transition-colors"
                                         />
                                         <button

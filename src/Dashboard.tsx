@@ -9,7 +9,7 @@ import {
     ChevronDownIcon, ChevronRightIcon, ChevronUpIcon, EyeIcon, PencilIcon, TrashIcon,
     CheckIcon, MapPinIcon, UserIcon, ClockIcon, ShoppingBagIcon, ExclamationTriangleIcon, PencilSquareIcon
 } from '@heroicons/react/24/outline'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts'
 import { useTheme } from './useTheme'
 import { clsx } from 'clsx'
@@ -42,9 +42,10 @@ const trackingSteps = [
 ]
 
 const recentOrders = [
-    { id: "#ORD-2055", customer: "AutoManfacture Co.", amount: "$385,000", status: "Pending Review", date: "Dec 20, 2025", initials: "AC", statusColor: "bg-zinc-100 text-zinc-700" },
-    { id: "#ORD-2054", customer: "TechDealer Solutions", amount: "$62,500", status: "In Production", date: "Nov 15, 2025", initials: "TS", statusColor: "bg-blue-50 text-blue-700 ring-blue-600/20" },
-    { id: "#ORD-2053", customer: "Urban Living Inc.", amount: "$112,000", status: "Shipped", date: "Oct 30, 2025", initials: "UL", statusColor: "bg-green-50 text-green-700 ring-green-600/20" },
+    { id: "#ORD-2055", customer: "AutoManfacture Co.", client: "AutoManfacture Co.", project: "Office Renovation", amount: "$385,000", status: "Pending Review", date: "Dec 20, 2025", initials: "AC", statusColor: "bg-zinc-100 text-zinc-700" },
+    { id: "#ORD-2054", customer: "TechDealer Solutions", client: "TechDealer Solutions", project: "HQ Upgrade", amount: "$62,500", status: "In Production", date: "Nov 15, 2025", initials: "TS", statusColor: "bg-blue-50 text-blue-700 ring-blue-600/20" },
+    { id: "#ORD-2053", customer: "Urban Living Inc.", client: "Urban Living Inc.", project: "Lobby Refresh", amount: "$112,000", status: "Shipped", date: "Oct 30, 2025", initials: "UL", statusColor: "bg-green-50 text-green-700 ring-green-600/20" },
+    { id: "#ORD-2052", customer: "Global Logistics", client: "Global Logistics", project: "Warehouse Expansion", amount: "$45,000", status: "Delivered", date: "Oct 15, 2025", initials: "GL", statusColor: "bg-gray-100 text-gray-700" },
 ]
 
 export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: () => void, onNavigateToDetail: () => void }) {
@@ -53,7 +54,29 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
     const { theme, toggleTheme } = useTheme()
 
     const [searchQuery, setSearchQuery] = useState('')
-    const [selectedStatuses, setSelectedStatuses] = useState<string[]>([])
+    const [selectedClient, setSelectedClient] = useState('All Clients')
+    const [selectedProject, setSelectedProject] = useState('All Projects')
+    const [activeTab, setActiveTab] = useState<'active' | 'completed' | 'all'>('active')
+
+    const clients = ['All Clients', ...Array.from(new Set(recentOrders.map(o => o.client)))]
+
+    // Filter projects based on selected client
+    const availableProjects = useMemo(() => {
+        if (selectedClient === 'All Clients') {
+            return ['All Projects', ...Array.from(new Set(recentOrders.map(o => o.project)))]
+        }
+        return ['All Projects', ...Array.from(new Set(recentOrders.filter(o => o.client === selectedClient).map(o => o.project)))]
+    }, [selectedClient])
+
+    // Update selectedProject when selectedClient changes
+    useEffect(() => {
+        if (selectedClient !== 'All Clients' && availableProjects.length > 1) {
+            // Auto-select first specific project as requested
+            setSelectedProject(availableProjects[1])
+        } else {
+            setSelectedProject('All Projects')
+        }
+    }, [selectedClient, availableProjects])
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
     const [trackingOrder, setTrackingOrder] = useState<any>(null)
 
@@ -71,10 +94,28 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
         return recentOrders.filter(order => {
             const matchesSearch = order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 order.customer.toLowerCase().includes(searchQuery.toLowerCase())
-            const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(order.status)
-            return matchesSearch && matchesStatus
+
+            const matchesProject = selectedProject === 'All Projects' || order.project === selectedProject
+            const matchesClient = selectedClient === 'All Clients' || order.client === selectedClient
+
+            let matchesTab = true;
+            if (activeTab === 'active') {
+                matchesTab = !['Delivered', 'Completed'].includes(order.status)
+            } else if (activeTab === 'completed') {
+                matchesTab = ['Delivered', 'Completed'].includes(order.status)
+            }
+
+            return matchesSearch && matchesProject && matchesClient && matchesTab
         })
-    }, [searchQuery, selectedStatuses])
+    }, [searchQuery, selectedProject, selectedClient, activeTab])
+
+    const counts = useMemo(() => {
+        return {
+            active: recentOrders.filter(o => !['Delivered', 'Completed'].includes(o.status)).length,
+            completed: recentOrders.filter(o => ['Delivered', 'Completed'].includes(o.status)).length,
+            all: recentOrders.length
+        }
+    }, [])
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 font-sans text-gray-900 dark:text-gray-100 pb-10">
@@ -355,13 +396,80 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                     <div className="lg:col-span-3">
                         <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl rounded-3xl border border-white/20 shadow-lg overflow-hidden">
                             {/* Header for Orders */}
-                            <div className="p-6 border-b border-gray-200 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                    Recent Orders
-                                    <span className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-white/10 text-xs text-gray-500 dark:text-gray-400 font-normal">Active</span>
-                                </h3>
+                            <div className="p-6 border-b border-gray-200 dark:border-white/10 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                        Recent Orders
+                                    </h3>
+                                    {/* Tabs */}
+                                    <div className="flex gap-1 mt-4 bg-gray-100 dark:bg-white/5 p-1 rounded-lg w-fit">
+                                        {[
+                                            { id: 'active', label: 'Active', count: counts.active },
+                                            { id: 'completed', label: 'Completed', count: counts.completed },
+                                            { id: 'all', label: 'All', count: counts.all }
+                                        ].map((tab) => (
+                                            <button
+                                                key={tab.id}
+                                                onClick={() => setActiveTab(tab.id as any)}
+                                                className={cn(
+                                                    "px-4 py-1.5 text-sm font-medium rounded-md transition-all flex items-center gap-2 outline-none",
+                                                    activeTab === tab.id
+                                                        ? "bg-white dark:bg-zinc-800 text-gray-900 dark:text-white shadow-sm"
+                                                        : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                                                )}
+                                            >
+                                                {tab.label}
+                                                <span className={cn(
+                                                    "text-xs px-1.5 py-0.5 rounded-full transition-colors",
+                                                    activeTab === tab.id
+                                                        ? "bg-gray-100 dark:bg-zinc-700"
+                                                        : "bg-gray-200 dark:bg-zinc-800 group-hover:bg-gray-300 dark:group-hover:bg-zinc-700"
+                                                )}>
+                                                    {tab.count}
+                                                </span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
 
-                                <div className="flex items-center gap-2">
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <div className="relative group">
+                                        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        <input
+                                            type="text"
+                                            placeholder="Search orders..."
+                                            className="pl-9 pr-4 py-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-900 dark:text-white w-full sm:w-64 focus:ring-2 focus:ring-blue-500 outline-none placeholder:text-gray-400"
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                        />
+                                    </div>
+
+                                    {/* Client Filter */}
+                                    <div className="relative group">
+                                        <select
+                                            className="appearance-none pl-3 pr-8 py-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                                            value={selectedClient}
+                                            onChange={(e) => setSelectedClient(e.target.value)}
+                                        >
+                                            {clients.map(c => <option key={c} value={c}>{c}</option>)}
+                                        </select>
+                                        <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                    </div>
+
+                                    {/* Project Filter */}
+                                    <div className="relative group">
+                                        <select
+                                            className="appearance-none pl-3 pr-8 py-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                                            value={selectedProject}
+                                            onChange={(e) => setSelectedProject(e.target.value)}
+                                        >
+                                            {availableProjects.map(p => <option key={p} value={p}>{p}</option>)}
+                                        </select>
+                                        <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                    </div>
+
+                                    <div className="h-6 w-px bg-gray-200 dark:bg-white/10 mx-1 hidden sm:block"></div>
+
                                     <div className="flex bg-gray-100 dark:bg-black/30 p-1 rounded-lg">
                                         <button
                                             onClick={() => setViewMode('list')}
@@ -376,49 +484,6 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
                                             <Squares2X2Icon className="h-4 w-4" />
                                         </button>
                                     </div>
-                                    <div className="h-6 w-px bg-gray-200 dark:bg-white/10 mx-1"></div>
-                                    {/* Filter Button */}
-                                    <Menu as="div" className="relative">
-                                        <MenuButton className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-white/10 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                                            <span>Filter Status</span>
-                                            <ChevronDownIcon className="h-4 w-4 text-gray-400" />
-                                        </MenuButton>
-                                        <Transition
-                                            as={Fragment}
-                                            enter="transition ease-out duration-100"
-                                            enterFrom="transform opacity-0 scale-95"
-                                            enterTo="transform opacity-100 scale-100"
-                                            leave="transition ease-in duration-75"
-                                            leaveFrom="transform opacity-100 scale-100"
-                                            leaveTo="transform opacity-0 scale-95"
-                                        >
-                                            <MenuItems className="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10 border border-gray-100 dark:border-white/10 p-2">
-                                                <div className="space-y-1">
-                                                    {['Pending Review', 'In Production', 'Shipped'].map((status) => (
-                                                        <MenuItem key={status}>
-                                                            {({ active }) => (
-                                                                <div className={cn("flex items-center px-2 py-2 rounded-lg cursor-pointer", active ? "bg-gray-50 dark:bg-white/5" : "")} onClick={(e) => {
-                                                                    e.preventDefault(); // Prevent menu close on click
-                                                                    if (selectedStatuses.includes(status)) {
-                                                                        setSelectedStatuses(selectedStatuses.filter(s => s !== status))
-                                                                    } else {
-                                                                        setSelectedStatuses([...selectedStatuses, status])
-                                                                    }
-                                                                }}>
-                                                                    <input type="checkbox" checked={selectedStatuses.includes(status)} className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 bg-transparent" readOnly />
-                                                                    <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{status}</span>
-                                                                </div>
-                                                            )}
-                                                        </MenuItem>
-                                                    ))}
-                                                    <div className="border-t border-gray-100 dark:border-white/10 my-1"></div>
-                                                    <MenuItem>
-                                                        <button onClick={() => setSelectedStatuses([])} className="w-full text-left px-2 py-1.5 text-xs text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg">Clear Filters</button>
-                                                    </MenuItem>
-                                                </div>
-                                            </MenuItems>
-                                        </Transition>
-                                    </Menu>
                                 </div>
                             </div>
 

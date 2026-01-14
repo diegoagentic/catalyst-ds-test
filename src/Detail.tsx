@@ -4,7 +4,7 @@ import {
     ExclamationTriangleIcon, ChevronDownIcon, ChevronUpIcon, EllipsisHorizontalIcon, SunIcon, MoonIcon,
     XMarkIcon, HomeIcon, Squares2X2Icon, ArrowTrendingUpIcon, ClipboardDocumentListIcon,
     UserIcon, CalendarIcon, ChartBarIcon, ExclamationCircleIcon, ArrowRightOnRectangleIcon, PencilSquareIcon, EnvelopeIcon, SparklesIcon, ArrowPathIcon,
-    PaperAirplaneIcon, ChatBubbleLeftRightIcon, PhotoIcon, PaperClipIcon
+    PaperAirplaneIcon, ChatBubbleLeftRightIcon, PhotoIcon, PaperClipIcon, ClockIcon, CheckIcon, PencilIcon
 } from '@heroicons/react/24/outline'
 import { Transition, TransitionChild, Popover, PopoverButton, PopoverPanel, Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import { Fragment } from 'react'
@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { useTheme } from './useTheme'
+import Navbar from './components/Navbar'
 
 function cn(...inputs: (string | undefined | null | false)[]) {
     return twMerge(clsx(inputs))
@@ -93,97 +94,7 @@ export default function Detail({ onBack }: { onBack: () => void }) {
     return (
         <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-sans text-zinc-900 dark:text-zinc-50 transition-colors duration-200">
             {/* Floating Info Navbar */}
-            <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-                <div className="flex items-center p-2 rounded-full gap-2 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-lg">
-
-                    {/* Logo */}
-                    <div className="px-4">
-                        <img src="/logo-on-light.jpg" alt="Strata" className="h-5 w-auto block dark:hidden" />
-                        <img src="/logo-on-dark.jpg" alt="Strata" className="h-5 w-auto hidden dark:block" />
-                    </div>
-
-                    <div className="h-6 w-px bg-gray-200 dark:bg-white/10 mx-1"></div>
-
-                    {/* Navigation Items */}
-                    <div className="flex items-center gap-1">
-                        <NavItem icon={<HomeIcon className="w-4 h-4" />} label="Overview" active />
-                        <NavItem icon={<CubeIcon className="w-4 h-4" />} label="Inventory" />
-                        <NavItem icon={<ArrowTrendingUpIcon className="w-4 h-4" />} label="Production" />
-                        <NavItem icon={<ClipboardDocumentListIcon className="w-4 h-4" />} label="Orders" />
-                    </div>
-
-                    <div className="h-6 w-px bg-gray-200 dark:bg-white/10 mx-1"></div>
-
-                    {/* Right Actions */}
-                    <div className="flex items-center gap-2 pr-2">
-                        <Popover className="relative">
-                            <PopoverButton className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors outline-none">
-                                <Squares2X2Icon className="w-4 h-4" />
-                            </PopoverButton>
-                            <Transition
-                                as={Fragment}
-                                enter="transition ease-out duration-200"
-                                enterFrom="opacity-0 translate-y-1"
-                                enterTo="opacity-100 translate-y-0"
-                                leave="transition ease-in duration-150"
-                                leaveFrom="opacity-100 translate-y-0"
-                                leaveTo="opacity-0 translate-y-1"
-                            >
-                                <PopoverPanel className="fixed top-[90px] left-1/2 -translate-x-1/2 w-[400px] p-4 bg-white/85 dark:bg-zinc-900/85 backdrop-blur-xl border border-white/20 shadow-2xl rounded-3xl z-[100] overflow-hidden">
-                                    <div className="grid grid-cols-3 gap-4">
-                                        {[
-                                            { icon: <HomeIcon className="w-8 h-8" />, label: "Portal", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-500/10" },
-                                            { icon: <UserIcon className="w-8 h-8" />, label: "CRM", color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-50 dark:bg-purple-500/10" },
-                                            { icon: <DocumentTextIcon className="w-8 h-8" />, label: "Invoice", color: "text-green-600 dark:text-green-400", bg: "bg-green-50 dark:bg-green-500/10" },
-                                            { icon: <CubeIcon className="w-8 h-8" />, label: "Inventory", color: "text-orange-600 dark:text-orange-400", bg: "bg-orange-50 dark:bg-orange-500/10" },
-                                            { icon: <ChartBarIcon className="w-8 h-8" />, label: "Analytics", color: "text-pink-600 dark:text-pink-400", bg: "bg-pink-50 dark:bg-pink-500/10" },
-                                            { icon: <ExclamationCircleIcon className="w-8 h-8" />, label: "Support", color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-50 dark:bg-cyan-500/10" },
-                                            { icon: <Squares2X2Icon className="w-8 h-8" />, label: "Board", color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-50 dark:bg-indigo-500/10" },
-                                            { icon: <CalendarIcon className="w-8 h-8" />, label: "Calendar", color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-500/10" },
-                                            { icon: <EllipsisHorizontalIcon className="w-8 h-8" />, label: "More", color: "text-gray-600 dark:text-gray-400", bg: "bg-gray-100 dark:bg-gray-800" },
-                                        ].map((app, i) => (
-                                            <button key={i} className="flex flex-col items-center gap-3 p-3 rounded-2xl hover:bg-black/5 dark:hover:bg-white/10 transition-all group">
-                                                <div className={`p-3 rounded-2xl ${app.bg} ${app.color} group-hover:scale-110 transition-transform shadow-sm`}>
-                                                    {app.icon}
-                                                </div>
-                                                <span className="text-xs font-semibold text-gray-700 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white">{app.label}</span>
-                                            </button>
-                                        ))}
-                                    </div>
-                                </PopoverPanel>
-                            </Transition>
-                        </Popover>
-
-                        <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-                            {theme === 'dark' ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
-                        </button>
-
-                        <div className="relative group">
-                            <button className="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
-                                    JD
-                                </div>
-                                <div className="text-left hidden md:block">
-                                    <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white">Jhon Doe</p>
-                                    <p className="text-[10px] text-gray-500 dark:text-gray-400">Admin</p>
-                                </div>
-                                <ChevronDownIcon className="w-3 h-3 text-gray-400 dark:text-gray-500" />
-                            </button>
-                            {/* User Dropdown */}
-                            <div className="absolute top-full right-0 mt-2 w-48 py-1 rounded-xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/20 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
-                                <div className="px-4 py-2 border-b border-gray-200 dark:border-white/10">
-                                    <p className="text-sm font-medium">Jhon Doe</p>
-                                    <p className="text-xs text-gray-500">Admin</p>
-                                </div>
-                                <button onClick={onLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-2">
-                                    <ArrowRightOnRectangleIcon className="w-4 h-4" />
-                                    Sign Out
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Navbar onLogout={onLogout} activeTab="Inventory" />
 
             {/* Page Header (moved from original header, adjusted for floating nav) */}
             <div className="pt-24 px-6 pb-4 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 bg-transparent transition-colors duration-200">
@@ -210,7 +121,7 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col p-6 gap-6 overflow-hidden">
+            <div className="flex flex-col p-6 gap-6">
                 {/* Collapsible Summary */}
                 {isSummaryExpanded ? (
                     <>
@@ -319,8 +230,8 @@ export default function Detail({ onBack }: { onBack: () => void }) {
 
 
                 {/* Main Content Area */}
-                <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
-                    <TabGroup className="flex-1 flex flex-col min-h-0">
+                <div className="flex flex-col">
+                    <TabGroup className="flex flex-col">
                         <div className="px-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-white dark:bg-zinc-900">
                             <TabList className="flex gap-6">
                                 <Tab
@@ -349,11 +260,11 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                 </Tab>
                             </TabList>
                         </div>
-                        <TabPanels className="flex-1 min-h-0">
-                            <TabPanel className="h-full flex flex-col overflow-hidden focus:outline-none">
-                                <div className="flex-1 min-h-0 grid grid-cols-12 gap-6 p-6">
+                        <TabPanels className="">
+                            <TabPanel className="flex flex-col focus:outline-none">
+                                <div className="grid grid-cols-12 gap-6 p-6">
                                     {/* Left Panel: List */}
-                                    <div className="col-span-8 flex flex-col h-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm">
+                                    <div className="col-span-8 flex flex-col bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm">
                                         {/* Search and Filter Bar */}
                                         <div className="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800">
                                             <div className="flex-1 max-w-lg relative">
@@ -379,7 +290,7 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                         </div>
 
                                         {/* Table */}
-                                        <div className="flex-1 overflow-auto">
+                                        <div className="">
                                             <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-800">
                                                 <thead className="bg-zinc-50 dark:bg-zinc-800/50">
                                                     <tr>
@@ -459,7 +370,7 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                     </div>
 
                                     {/* Right Panel: Details */}
-                                    <div className="col-span-4 flex flex-col h-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm">
+                                    <div className="col-span-4 flex flex-col bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm">
                                         {/* Details Header */}
                                         <div className="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800">
                                             <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Item Details</h3>
@@ -484,7 +395,7 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                             </div>
                                         </div>
 
-                                        <div className="flex-1 overflow-y-auto p-4 space-y-6">
+                                        <div className="p-4 space-y-6">
                                             {/* AI Side Panel Section */}
                                             {selectedItem.aiStatus && (
                                                 <div>
@@ -740,33 +651,41 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                     </div>
                                 </div>
                             </TabPanel>
-                            <TabPanel className="h-full flex focus:outline-none">
-                                <div className="flex-1 flex flex-col min-w-0 bg-zinc-50 dark:bg-zinc-950/50">
+                            <TabPanel className="flex focus:outline-none min-h-[800px]">
+                                <div className="flex flex-col min-w-0 bg-zinc-50 dark:bg-zinc-950/50 w-full">
                                     {/* Chat Header */}
                                     <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
                                         <div>
-                                            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Activity Stream</h3>
+                                            <div className="flex items-center gap-2">
+                                                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Activity Stream</h3>
+                                                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">#ORD-2055</span>
+                                            </div>
                                             <p className="text-sm text-zinc-500 dark:text-zinc-400">Real-time updates and collaboration</p>
                                         </div>
-                                        <div className="flex -space-x-2">
-                                            {collaborators.map((c, i) => (
-                                                <div key={i} className="relative inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-zinc-900">
-                                                    {c.avatar === 'AI' ? (
-                                                        <div className="h-full w-full rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold text-white">AI</div>
-                                                    ) : (
-                                                        <img className="h-full w-full rounded-full object-cover" src={c.avatar} alt={c.name} />
-                                                    )}
-                                                    <span className={cn(
-                                                        "absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white dark:ring-zinc-900",
-                                                        c.status === 'online' ? "bg-green-400" : "bg-zinc-300"
-                                                    )} />
-                                                </div>
-                                            ))}
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex -space-x-2">
+                                                {collaborators.map((c, i) => (
+                                                    <div key={i} className="relative inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-zinc-900">
+                                                        {c.avatar === 'AI' ? (
+                                                            <div className="h-full w-full rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold text-white">AI</div>
+                                                        ) : (
+                                                            <img className="h-full w-full rounded-full object-cover" src={c.avatar} alt={c.name} />
+                                                        )}
+                                                        <span className={cn(
+                                                            "absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white dark:ring-zinc-900",
+                                                            c.status === 'online' ? "bg-green-400" : "bg-zinc-300"
+                                                        )} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <button className="h-8 w-8 flex items-center justify-center rounded-full border border-zinc-300 dark:border-zinc-700 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
+                                                <PlusIcon className="h-4 w-4" />
+                                            </button>
                                         </div>
                                     </div>
 
                                     {/* Messages Area */}
-                                    <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                                    <div className="p-6 space-y-6">
                                         {messages.map((msg) => (
                                             <div key={msg.id} className={cn("flex gap-4 max-w-3xl", msg.type === 'user' ? "ml-auto flex-row-reverse" : "")}>
                                                 <div className="flex-shrink-0">
@@ -812,8 +731,8 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                     </div>
 
                                     {/* Input Area */}
-                                    <div className="p-4 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
-                                        <div className="flex gap-4 max-w-4xl mx-auto">
+                                    <div className="sticky bottom-4 mx-4 p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg z-10 transition-all duration-200">
+                                        <div className="flex gap-4">
                                             <div className="flex-1 relative">
                                                 <input
                                                     type="text"
@@ -833,60 +752,81 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                     </div>
                                 </div>
 
-                                {/* Right Sidebar: Collaborators & Docs */}
-                                <div className="w-80 border-l border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col">
-                                    <div className="p-6 border-b border-zinc-200 dark:border-zinc-800">
-                                        <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">Collaborators</h4>
-                                        <div className="space-y-4">
-                                            {collaborators.map((c, i) => (
-                                                <div key={i} className="flex items-center gap-3">
-                                                    <div className="relative">
-                                                        {c.avatar === 'AI' ? (
-                                                            <div className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold text-white">AI</div>
-                                                        ) : (
-                                                            <img className="h-8 w-8 rounded-full object-cover" src={c.avatar} alt={c.name} />
-                                                        )}
-                                                        <span className={cn(
-                                                            "absolute bottom-0 right-0 block h-2 w-2 rounded-full ring-2 ring-white dark:ring-zinc-900",
-                                                            c.status === 'online' ? "bg-green-400" : "bg-zinc-300"
-                                                        )} />
-                                                    </div>
-                                                    <div>
-                                                        <div className="text-sm font-medium text-zinc-900 dark:text-white">{c.name}</div>
-                                                        <div className="text-xs text-zinc-500">{c.role}</div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            <button className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 font-medium hover:underline mt-2">
-                                                <span className="flex items-center justify-center h-6 w-6 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800">
-                                                    <PlusIcon className="h-3 w-3" />
-                                                </span>
-                                                Invite New
-                                            </button>
+                                {/* Contextual Quick Actions Sidebar */}
+                                <div className="w-80 border-l border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 border-l border-zinc-200 dark:border-zinc-800 flex flex-col h-full animate-in slide-in-from-right duration-500">
+                                    <div className="p-5 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <h3 className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Context</h3>
+                                            <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse"></span>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-10 w-10 rounded-full bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center border border-orange-200 dark:border-orange-500/30">
+                                                <ClockIcon className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-bold text-zinc-900 dark:text-white">Pending Review</p>
+                                                <p className="text-xs text-zinc-500">Waiting for Final Approval (2/3)</p>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="p-6 flex-1">
-                                        <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">Shared Documents</h4>
-                                        <div className="space-y-3">
-                                            {documents.map((doc, i) => (
-                                                <div key={i} className="group flex items-start gap-3 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-white dark:hover:bg-zinc-800 hover:shadow-sm transition-all cursor-pointer">
-                                                    <DocumentTextIcon className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-                                                    <div className="min-w-0">
-                                                        <p className="text-sm font-medium text-zinc-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                                            {doc.name}
-                                                        </p>
-                                                        <p className="text-xs text-zinc-500">{doc.size} • {doc.uploaded}</p>
+                                    <div className="flex-1 p-5 space-y-6 overflow-y-auto">
+                                        <div>
+                                            <h4 className="text-xs font-medium text-zinc-500 mb-3 uppercase tracking-wide">Suggested Actions</h4>
+                                            <div className="space-y-3">
+                                                <button className="w-full group relative flex items-center gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-blue-500/50 hover:shadow-md transition-all text-left">
+                                                    <div className="h-8 w-8 rounded-lg bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors text-blue-600 dark:text-blue-400">
+                                                        <DocumentTextIcon className="h-5 w-5" />
                                                     </div>
-                                                </div>
-                                            ))}
-                                            <div className="pt-2">
-                                                <button className="w-full py-2 border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors flex items-center justify-center gap-2">
-                                                    <ArrowDownTrayIcon className="h-4 w-4" />
-                                                    Upload File
+                                                    <div>
+                                                        <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Process Quote</p>
+                                                        <p className="text-[10px] text-zinc-500">Analyze PDF & Extract Data</p>
+                                                    </div>
+                                                </button>
+
+                                                <button className="w-full group relative flex items-center gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-green-500/50 hover:shadow-md transition-all text-left">
+                                                    <div className="h-8 w-8 rounded-lg bg-green-50 dark:bg-green-500/10 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-colors text-green-600 dark:text-green-400">
+                                                        <CheckIcon className="h-5 w-5" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">Approve Order</p>
+                                                        <p className="text-[10px] text-zinc-500">Move to Production</p>
+                                                    </div>
+                                                </button>
+
+                                                <button className="w-full group relative flex items-center gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-orange-500/50 hover:shadow-md transition-all text-left">
+                                                    <div className="h-8 w-8 rounded-lg bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition-colors text-orange-600 dark:text-orange-400">
+                                                        <PencilIcon className="h-5 w-5" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Request Changes</p>
+                                                        <p className="text-[10px] text-zinc-500">Send feedback to vendor</p>
+                                                    </div>
                                                 </button>
                                             </div>
                                         </div>
+
+                                        <div>
+                                            <h4 className="text-xs font-medium text-zinc-500 mb-3 uppercase tracking-wide">Live Updates</h4>
+                                            <div className="p-3 rounded-xl bg-blue-50/50 dark:bg-blue-500/5 border border-blue-100 dark:border-blue-500/10">
+                                                <div className="flex gap-2">
+                                                    <div className="h-6 w-6 rounded-full bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center shrink-0">
+                                                        <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-blue-400 opacity-75"></span>
+                                                        <div className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></div>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-xs font-medium text-blue-900 dark:text-blue-100">AI Assistant is processing the new quote...</p>
+                                                        <p className="text-[10px] text-blue-700 dark:text-blue-300 mt-1">Estimated completion: 30s</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900/50">
+                                        <button className="w-full py-2 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center justify-center gap-1">
+                                            View Activity Log <ArrowRightOnRectangleIcon className="h-3 w-3" />
+                                        </button>
                                     </div>
                                 </div>
                             </TabPanel>

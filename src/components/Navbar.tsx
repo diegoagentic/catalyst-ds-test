@@ -4,7 +4,7 @@ import {
     HomeIcon, CubeIcon, ClipboardDocumentListIcon, ArrowTrendingUpIcon,
     Squares2X2Icon, SunIcon, MoonIcon, ChevronDownIcon,
     UserIcon, DocumentTextIcon, ChartBarIcon, ExclamationCircleIcon,
-    CalendarIcon, EllipsisHorizontalIcon, ArrowRightOnRectangleIcon
+    CalendarIcon, EllipsisHorizontalIcon, ArrowRightOnRectangleIcon, BriefcaseIcon
 } from '@heroicons/react/24/outline'
 import { useTheme } from '../useTheme'
 
@@ -22,9 +22,10 @@ function NavItem({ icon, label, active = false }: { icon: React.ReactNode, label
 interface NavbarProps {
     onLogout: () => void;
     activeTab?: 'Overview' | 'Inventory' | 'Production' | 'Orders';
+    onNavigateToWorkspace: () => void;
 }
 
-export default function Navbar({ onLogout, activeTab = 'Overview' }: NavbarProps) {
+export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToWorkspace }: NavbarProps) {
     const { theme, toggleTheme } = useTheme()
 
     return (
@@ -67,6 +68,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview' }: NavbarProps
                             <PopoverPanel className="fixed top-[90px] left-1/2 -translate-x-1/2 w-[400px] p-4 bg-white/85 dark:bg-zinc-900/85 backdrop-blur-xl border border-white/20 shadow-2xl rounded-3xl z-[100] overflow-hidden">
                                 <div className="grid grid-cols-3 gap-4">
                                     {[
+                                        { icon: <BriefcaseIcon className="w-8 h-8" />, label: "My Work Space", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-100 dark:bg-blue-900/30", isHighlighted: true, onClick: onNavigateToWorkspace },
                                         { icon: <HomeIcon className="w-8 h-8" />, label: "Portal", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-500/10" },
                                         { icon: <UserIcon className="w-8 h-8" />, label: "CRM", color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-50 dark:bg-purple-500/10" },
                                         { icon: <DocumentTextIcon className="w-8 h-8" />, label: "Invoice", color: "text-green-600 dark:text-green-400", bg: "bg-green-50 dark:bg-green-500/10" },
@@ -77,11 +79,21 @@ export default function Navbar({ onLogout, activeTab = 'Overview' }: NavbarProps
                                         { icon: <CalendarIcon className="w-8 h-8" />, label: "Calendar", color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-500/10" },
                                         { icon: <EllipsisHorizontalIcon className="w-8 h-8" />, label: "More", color: "text-gray-600 dark:text-gray-400", bg: "bg-gray-100 dark:bg-gray-800" },
                                     ].map((app, i) => (
-                                        <button key={i} className="flex flex-col items-center gap-3 p-3 rounded-2xl hover:bg-black/5 dark:hover:bg-white/10 transition-all group">
+                                        <button
+                                            key={i}
+                                            // @ts-ignore
+                                            onClick={app.onClick}
+                                            className={`flex flex-col items-center gap-3 p-3 rounded-2xl hover:bg-black/5 dark:hover:bg-white/10 transition-all group ${
+                                                // @ts-ignore
+                                                app.isHighlighted ? 'ring-2 ring-blue-500/20 bg-blue-50/50 dark:bg-blue-900/10' : ''
+                                                }`}>
                                             <div className={`p-3 rounded-2xl ${app.bg} ${app.color} group-hover:scale-110 transition-transform shadow-sm`}>
                                                 {app.icon}
                                             </div>
-                                            <span className="text-xs font-semibold text-gray-700 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white">{app.label}</span>
+                                            <span className={`text-xs font-semibold group-hover:text-gray-900 dark:group-hover:text-white ${
+                                                // @ts-ignore
+                                                app.isHighlighted ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-200'
+                                                }`}>{app.label}</span>
                                         </button>
                                     ))}
                                 </div>

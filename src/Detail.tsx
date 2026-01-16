@@ -4,9 +4,9 @@ import {
     ExclamationTriangleIcon, ChevronDownIcon, ChevronUpIcon, EllipsisHorizontalIcon, SunIcon, MoonIcon,
     XMarkIcon, HomeIcon, Squares2X2Icon, ArrowTrendingUpIcon, ClipboardDocumentListIcon,
     UserIcon, CalendarIcon, ChartBarIcon, ExclamationCircleIcon, ArrowRightOnRectangleIcon, PencilSquareIcon, EnvelopeIcon, SparklesIcon, ArrowPathIcon,
-    PaperAirplaneIcon, ChatBubbleLeftRightIcon, PhotoIcon, PaperClipIcon, ClockIcon, CheckIcon, PencilIcon
+    PaperAirplaneIcon, ChatBubbleLeftRightIcon, PhotoIcon, PaperClipIcon, ClockIcon, CheckIcon, PencilIcon, DocumentChartBarIcon
 } from '@heroicons/react/24/outline'
-import { Transition, TransitionChild, Popover, PopoverButton, PopoverPanel, Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import { Transition, TransitionChild, Popover, PopoverButton, PopoverPanel, Tab, TabGroup, TabList, TabPanel, TabPanels, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { Fragment } from 'react'
 import { useState } from 'react'
 import { clsx } from 'clsx'
@@ -29,56 +29,297 @@ const items = [
     { id: "SKU-OFF-2025-008", name: "Bench Seating 3-Seat", category: "Waiting Series", properties: "Metal / Chrome", stock: 28, status: "Low Stock", statusColor: "bg-yellow-50 text-yellow-700 ring-yellow-600/20" },
 ]
 
-const messages = [
-    {
-        id: 1,
-        sender: "System",
-        avatar: "",
-        content: "Order #ORD-2055 has been flagged for manual review due to stock discrepancy.",
-        time: "2 hours ago",
-        type: "system",
-    },
-    {
-        id: 2,
-        sender: "AI Assistant",
-        avatar: "AI",
-        content: "I've detected a 5-item discrepancy between local and remote warehouse counts for SKU-OFF-2025-003. Recommended action: Synchronize with Warehouse DB or perform manual count.",
-        time: "2 hours ago",
-        type: "ai",
-    },
-    {
-        id: 3,
-        sender: "Sarah Chen",
-        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        content: "@InventoryManager I'm verifying the physical stock in Zone B. Will update shortly.",
-        time: "1 hour ago",
-        type: "user",
-    },
-    {
-        id: 4,
-        sender: "Sarah Chen",
-        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        content: "I've contacted the client. They want to proceed with the available items. I've updated the order line items accordingly.",
-        time: "15 mins ago",
-        type: "user",
-    },
-    {
-        id: 5,
-        sender: "System",
-        avatar: "",
-        content: "Sarah Chen triggered context action: Process Quote",
-        time: "Just now",
-        type: "system",
-    },
-    {
-        id: 6,
-        sender: "AI Assistant",
-        avatar: "AI",
-        content: "Quote processing initiated. Analyzing updated line items and generating revised PDF...",
-        time: "Just now",
-        type: "ai",
+interface Message {
+    id: number | string;
+    sender: string;
+    avatar: string;
+    content: React.ReactNode;
+    time: string;
+    type: 'system' | 'ai' | 'user' | 'action_processing' | 'action_success';
+}
+
+const DiscrepancyResolutionFlow = () => {
+    const [status, setStatus] = useState<'initial' | 'requesting' | 'pending' | 'approved'>('initial')
+    const [requestText, setRequestText] = useState('')
+
+    const handleRequest = () => {
+        setStatus('pending')
+        setTimeout(() => setStatus('approved'), 3000)
     }
-]
+
+    if (status === 'initial') {
+        return (
+            <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-medium">
+                    <ExclamationTriangleIcon className="w-5 h-5" />
+                    Found 3 discrepancies in recent shipments.
+                </div>
+                <ul className="list-disc pl-5 text-sm space-y-1 text-zinc-600 dark:text-zinc-300">
+                    <li>Order #ORD-2054: Weight mismatch (Logs: 50kg vs Gateway: 48kg)</li>
+                    <li>Order #ORD-2051: Timestamp sync error</li>
+                    <li>Order #ORD-2048: Missing carrier update</li>
+                </ul>
+                <div className="flex gap-2 mt-2">
+                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors">
+                        <ArrowPathIcon className="w-3.5 h-3.5" /> Sync & Report
+                    </button>
+                    <button
+                        onClick={() => setStatus('requesting')}
+                        className="flex items-center gap-1.5 px-3 py-1.5 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs font-medium rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+                    >
+                        <PencilIcon className="w-3.5 h-3.5" /> Request Changes
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
+    if (status === 'requesting') {
+        return (
+            <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-2">
+                <p className="text-sm font-medium text-zinc-900 dark:text-white">Describe required changes:</p>
+                <textarea
+                    className="w-full text-sm p-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:ring-2 ring-blue-500 outline-none transition-all placeholder:text-zinc-400"
+                    rows={3}
+                    placeholder="E.g., Update weight for ORD-2054 to 48kg..."
+                    value={requestText}
+                    onChange={(e) => setRequestText(e.target.value)}
+                />
+                <div className="flex justify-between items-center">
+                    <button className="flex items-center gap-1 text-xs text-zinc-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                        <PaperClipIcon className="w-4 h-4" /> Attach File
+                    </button>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setStatus('initial')}
+                            className="px-3 py-1.5 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleRequest}
+                            className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm transition-colors"
+                        >
+                            Submit Request
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    if (status === 'pending') {
+        return (
+            <div className="flex flex-col gap-3 animate-in fade-in">
+                <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                    <ArrowPathIcon className="w-4 h-4 animate-spin" />
+                    <span>Requesting approval from Logistics Manager...</span>
+                </div>
+            </div>
+        )
+    }
+
+    if (status === 'approved') {
+        return (
+            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
+                <div className="flex items-center gap-2 text-green-600 dark:text-green-400 font-medium">
+                    <CheckCircleIcon className="h-5 w-5" />
+                    <p>Changes approved. PO updated.</p>
+                </div>
+                <div className="bg-zinc-50 dark:bg-white/5 rounded-xl border border-zinc-200 dark:border-white/10 p-3 flex items-center gap-3">
+                    <div className="h-10 w-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center text-red-600 dark:text-red-400">
+                        <DocumentTextIcon className="h-6 w-6" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-zinc-900 dark:text-white truncate">PO_Revised_Final.pdf</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400">Updated just now</p>
+                    </div>
+                    <button className="p-2 hover:bg-zinc-200 dark:hover:bg-white/10 rounded-lg transition-colors">
+                        <ArrowDownTrayIcon className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
+    return null
+}
+
+const DiscrepancyActionCard = ({ msg }: { msg: Message }) => {
+    const [isRequesting, setIsRequesting] = useState(false)
+    const [requestText, setRequestText] = useState('')
+    const [status, setStatus] = useState<'initial' | 'pending' | 'approved'>('initial')
+
+    const handleSubmit = () => {
+        setStatus('pending')
+        setTimeout(() => {
+            setStatus('approved')
+            setIsRequesting(false)
+        }, 2000)
+    }
+
+    if (status === 'pending') {
+        return (
+            <div className={cn(
+                "rounded-2xl p-4 shadow-sm bg-green-50 dark:bg-green-900/20 text-zinc-900 dark:text-zinc-100 border border-green-100 dark:border-green-800"
+            )}>
+                <div className="flex items-center gap-2">
+                    <ArrowPathIcon className="h-5 w-5 text-green-600 dark:text-green-400 animate-spin" />
+                    <span className="text-sm font-medium text-green-700 dark:text-green-400">Requesting approval from Logistics Manager...</span>
+                </div>
+            </div>
+        )
+    }
+
+    if (status === 'approved') {
+        return (
+            <div className={cn(
+                "rounded-2xl p-4 shadow-sm bg-green-50 dark:bg-green-900/20 text-zinc-900 dark:text-zinc-100 border border-green-100 dark:border-green-800"
+            )}>
+                <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-semibold text-green-700 dark:text-green-400">{msg.sender}</span>
+                    <span className="text-xs text-zinc-400">{msg.time}</span>
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xs font-medium text-green-600 dark:text-green-400 uppercase tracking-wide">Action Updated</span>
+                </div>
+                <div className="flex items-center gap-2 text-green-600 dark:text-green-400 font-medium mb-3">
+                    <CheckCircleIcon className="h-5 w-5" />
+                    <p>Changes approved. PO updated.</p>
+                </div>
+                <div className="flex items-center gap-3 bg-white dark:bg-zinc-900/50 p-3 rounded-xl border border-green-200 dark:border-green-800/50 shadow-sm">
+                    <div className="h-10 w-10 bg-red-50 dark:bg-red-900/20 rounded-lg flex items-center justify-center border border-red-100 dark:border-red-800/30">
+                        <DocumentTextIcon className="h-5 w-5 text-red-500" />
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-sm font-medium text-zinc-900 dark:text-white">PO_Revised_Final.pdf</p>
+                        <p className="text-xs text-zinc-500">2.4 MB • Generated just now</p>
+                    </div>
+                    <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-zinc-600 transition-colors">
+                        <ArrowDownTrayIcon className="h-5 w-5" />
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div className={cn(
+            "rounded-2xl p-4 shadow-sm transition-all duration-300",
+            isRequesting ? "ring-2 ring-purple-500/20 bg-white dark:bg-zinc-900" : "bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800"
+        )}>
+            {!isRequesting ? (
+                <>
+                    <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-semibold text-green-700 dark:text-green-400">{msg.sender}</span>
+                        <span className="text-xs text-zinc-400">{msg.time}</span>
+                    </div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-medium text-green-600 dark:text-green-400 uppercase tracking-wide">Action Completed</span>
+                    </div>
+                    <p className="text-sm leading-relaxed text-zinc-900 dark:text-zinc-100">{msg.content}</p>
+
+                    <div className="mt-3 space-y-3">
+                        {/* PDF File */}
+                        <div className="flex items-center gap-3 bg-white dark:bg-zinc-900/50 p-3 rounded-xl border border-green-200 dark:border-green-800/50 shadow-sm">
+                            <div className="h-10 w-10 bg-red-50 dark:bg-red-900/20 rounded-lg flex items-center justify-center border border-red-100 dark:border-red-800/30">
+                                <DocumentTextIcon className="h-5 w-5 text-red-500" />
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-sm font-medium text-zinc-900 dark:text-white">PO_ORD-2055_Final.pdf</p>
+                                <p className="text-xs text-zinc-500">2.4 MB • Generated just now</p>
+                            </div>
+                            <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-zinc-600 transition-colors">
+                                <ArrowDownTrayIcon className="h-5 w-5" />
+                            </button>
+                        </div>
+
+                        {/* Attention Selection */}
+                        <div className="pl-4 border-l-4 border-amber-500 py-2 my-4">
+                            <div className="flex items-start gap-3">
+                                <div className="flex-1">
+                                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                                        <ExclamationTriangleIcon className="h-4 w-4 text-amber-500" />
+                                        Attention Needed
+                                    </p>
+                                    <p className="text-sm text-zinc-900 dark:text-zinc-300 mt-1">
+                                        Discrepancy detected for <span className="font-semibold text-zinc-900 dark:text-white">SKU-OFF-2025-003</span>:
+                                    </p>
+                                    <div className="mt-2 flex items-center gap-4 text-xs font-medium">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-zinc-500 uppercase tracking-wider text-[10px]">Warehouse</span>
+                                            <span className="text-zinc-900 dark:text-white font-mono text-sm bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">42</span>
+                                        </div>
+                                        <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-700"></div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-zinc-500 uppercase tracking-wider text-[10px]">Local</span>
+                                            <span className="text-zinc-900 dark:text-white font-mono text-sm bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">35</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-3 pt-2">
+                            <button className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-semibold rounded-lg shadow-sm transition-colors">
+                                Sync Database
+                            </button>
+                            <button className="px-4 py-2 bg-white dark:bg-transparent border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-medium rounded-lg transition-colors">
+                                Resolve Manually
+                            </button>
+                            <button
+                                onClick={() => setIsRequesting(true)}
+                                className="px-3 py-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 text-xs font-medium transition-colors flex items-center gap-1.5 ml-auto group"
+                            >
+                                <PencilIcon className="w-3.5 h-3.5" />
+                                Request Changes
+                            </button>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
+                    <div className="flex items-center justify-between">
+                        <h4 className="text-sm font-semibold text-zinc-900 dark:text-white">Describe required changes:</h4>
+                        <button onClick={() => setIsRequesting(false)} className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+                            <span className="sr-only">Close</span>
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                    <textarea
+                        className="w-full text-sm bg-zinc-50 dark:bg-zinc-800 border-0 rounded-lg p-3 text-zinc-900 dark:text-white placeholder:text-zinc-500 focus:ring-2 focus:ring-purple-500/20"
+                        placeholder="E.g., Update weight for ORD-2054 to 48kg..."
+                        rows={3}
+                        autoFocus
+                        value={requestText}
+                        onChange={(e) => setRequestText(e.target.value)}
+                    />
+                    <div className="flex items-center justify-between">
+                        <button className="text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 flex items-center gap-1.5 px-2 py-1.5 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                            <PaperClipIcon className="w-3.5 h-3.5" />
+                            Attach File
+                        </button>
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => setIsRequesting(false)}
+                                className="px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleSubmit}
+                                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg shadow-sm transition-colors"
+                            >
+                                Submit Request
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
 
 const collaborators = [
     { name: "Sarah Chen", role: "Logistics Mgr", status: "online", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" },
@@ -92,6 +333,64 @@ const documents = [
 ]
 
 export default function Detail({ onBack }: { onBack: () => void }) {
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            id: 1,
+            sender: "System",
+            avatar: "",
+            content: "Order #ORD-2055 has been flagged for manual review due to stock discrepancy.",
+            time: "2 hours ago",
+            type: "system",
+        },
+        {
+            id: 2,
+            sender: "AI Assistant",
+            avatar: "AI",
+            content: <DiscrepancyResolutionFlow />,
+            time: "2 hours ago",
+            type: "ai",
+        },
+        {
+            id: 3,
+            sender: "Sarah Chen",
+            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+            content: "@InventoryManager I'm verifying the physical stock in Zone B. Will update shortly.",
+            time: "1 hour ago",
+            type: "user",
+        },
+        {
+            id: 4,
+            sender: "Sarah Chen",
+            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+            content: "I've contacted the client. They want to proceed with the available items. I've updated the order line items accordingly.",
+            time: "15 mins ago",
+            type: "user",
+        },
+        {
+            id: 5,
+            sender: "System",
+            avatar: "",
+            content: "Sarah Chen triggered context action: Process Quote",
+            time: "Just now",
+            type: "system",
+        },
+        {
+            id: 6,
+            sender: "AI Assistant",
+            avatar: "AI",
+            content: "Quote processing initiated. Analyzing updated line items and generating revised PDF...",
+            time: "Just now",
+            type: "action_processing",
+        },
+        {
+            id: 7,
+            sender: "AI Assistant",
+            avatar: "AI",
+            content: "Analysis complete. I've generated the revised Purchase Order, but found stock discrepancies that require attention.",
+            time: "Just now",
+            type: "action_success",
+        }
+    ])
     const [selectedItem, setSelectedItem] = useState(items[0])
     const [sections, setSections] = useState({
         quickActions: true,
@@ -713,7 +1012,15 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                         {messages.map((msg) => (
                                             <div key={msg.id} className={cn("flex gap-4 max-w-3xl", msg.type === 'user' ? "ml-auto flex-row-reverse" : "")}>
                                                 <div className="flex-shrink-0">
-                                                    {msg.avatar === 'AI' ? (
+                                                    {msg.type === 'action_processing' ? (
+                                                        <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center border border-blue-200 dark:border-blue-800 animate-pulse">
+                                                            <DocumentTextIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                                        </div>
+                                                    ) : msg.type === 'action_success' ? (
+                                                        <div className="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center border border-green-200 dark:border-green-800">
+                                                            <CheckCircleIcon className="h-5 w-5 text-green-600 dark:text-green-400" />
+                                                        </div>
+                                                    ) : msg.avatar === 'AI' ? (
                                                         <div className="h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center border border-purple-200 dark:border-purple-800">
                                                             <SparklesIcon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                                                         </div>
@@ -725,28 +1032,28 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div className={cn(
-                                                    "flex-1 rounded-2xl p-4 shadow-sm",
-                                                    msg.type === 'system' ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300" :
-                                                        msg.type === 'ai' ? "bg-purple-50 dark:bg-purple-900/20 text-zinc-900 dark:text-zinc-100 border border-purple-100 dark:border-purple-800" :
-                                                            "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-800"
-                                                )}>
-                                                    <div className="flex items-center justify-between mb-1">
-                                                        <span className={cn(
-                                                            "text-sm font-semibold",
-                                                            msg.type === 'ai' ? "text-purple-700 dark:text-purple-400" : "text-zinc-900 dark:text-white"
-                                                        )}>{msg.sender}</span>
-                                                        <span className="text-xs text-zinc-400">{msg.time}</span>
+                                                <div className="flex-1 space-y-2">
+                                                    <div className="flex items-baseline justify-between">
+                                                        <span className="text-sm font-semibold text-zinc-900 dark:text-white">{msg.sender}</span>
+                                                        <span className="text-xs text-zinc-500 dark:text-zinc-400">{msg.time}</span>
                                                     </div>
-                                                    <p className="text-sm leading-relaxed">{msg.content}</p>
-                                                    {msg.type === 'ai' && (
-                                                        <div className="mt-3 flex gap-2">
-                                                            <button className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded shadow-sm transition-colors">
-                                                                Sync Warehouse DB
-                                                            </button>
-                                                            <button className="px-3 py-1.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs font-medium rounded hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">
-                                                                Ignore
-                                                            </button>
+
+                                                    {msg.type === 'action_success' ? (
+                                                        <DiscrepancyActionCard msg={msg} />
+                                                    ) : (
+                                                        <div className={cn(
+                                                            "p-4 rounded-2xl text-sm leading-relaxed shadow-sm",
+                                                            msg.type === 'user'
+                                                                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 rounded-tr-sm"
+                                                                : "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-tl-sm text-zinc-700 dark:text-zinc-300"
+                                                        )}>
+                                                            {msg.content}
+                                                            {msg.type === 'action_processing' && (
+                                                                <div className="mt-3 flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium">
+                                                                    <ArrowPathIcon className="h-4 w-4 animate-spin" />
+                                                                    <span>Processing request...</span>
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     )}
                                                 </div>
@@ -754,7 +1061,6 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                         ))}
                                     </div>
 
-                                    {/* Input Area */}
                                     <div className="sticky bottom-4 mx-4 p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg z-10 transition-all duration-200">
                                         <div className="flex gap-4">
                                             <div className="flex-1 relative">
@@ -798,7 +1104,7 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                         <div>
                                             <h4 className="text-xs font-medium text-zinc-500 mb-3 uppercase tracking-wide">Suggested Actions</h4>
                                             <div className="space-y-3">
-                                                <button className="w-full group relative flex items-center gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-blue-500/50 hover:shadow-md transition-all text-left">
+                                                <button onClick={() => setIsDocumentModalOpen(true)} className="w-full group relative flex items-center gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-blue-500/50 hover:shadow-md transition-all text-left">
                                                     <div className="h-8 w-8 rounded-lg bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors text-blue-600 dark:text-blue-400">
                                                         <DocumentTextIcon className="h-5 w-5" />
                                                     </div>
@@ -853,12 +1159,134 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                                         </button>
                                     </div>
                                 </div>
-                            </TabPanel>
-                        </TabPanels>
-                    </TabGroup>
-                </div>
-            </div>
-        </div>
+                            </TabPanel >
+                        </TabPanels >
+                    </TabGroup >
+                </div >
+            </div >
+
+            <Transition show={isDocumentModalOpen} as={Fragment}>
+                <Dialog as="div" className="relative z-50" onClose={setIsDocumentModalOpen}>
+                    <TransitionChild
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                    >
+                        <div className="fixed inset-0 bg-zinc-900/20 dark:bg-black/40 backdrop-blur-sm" />
+                    </TransitionChild>
+
+                    <div className="fixed inset-0 overflow-y-auto">
+                        <div className="flex min-h-full items-center justify-center p-4 text-center">
+                            <TransitionChild
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0 scale-95"
+                                enterTo="opacity-100 scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 scale-100"
+                                leaveTo="opacity-0 scale-95"
+                            >
+                                <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 p-6 text-left align-middle shadow-xl transition-all border border-zinc-200 dark:border-zinc-800">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <div>
+                                            <DialogTitle as="h3" className="text-lg font-bold leading-6 text-zinc-900 dark:text-white">
+                                                Order Document Preview
+                                            </DialogTitle>
+                                            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                                                Previewing Purchase Order #PO-2025-001
+                                            </p>
+                                        </div>
+                                        <button onClick={() => setIsDocumentModalOpen(false)} className="text-zinc-400 hover:text-zinc-500">
+                                            <XMarkIcon className="h-6 w-6" />
+                                        </button>
+                                    </div>
+
+                                    <div className="bg-white text-black p-10 rounded-lg border border-zinc-200 h-[600px] overflow-auto shadow-sm">
+                                        <div className="flex justify-between items-end mb-6 pb-4 border-b-2 border-black">
+                                            <h2 className="text-2xl font-bold uppercase">Purchase Order</h2>
+                                            <div className="text-right">
+                                                <div className="font-bold text-lg">STRATA INC.</div>
+                                                <div className="text-sm">123 Innovation Dr., Tech City</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-between mb-8">
+                                            <div>
+                                                <div className="text-xs font-bold text-zinc-500 mb-1 uppercase">VENDOR</div>
+                                                <div className="font-bold">OfficeSupplies Co.</div>
+                                                <div className="text-sm">555 Supplier Lane</div>
+                                            </div>
+                                            <div className="text-right space-y-1">
+                                                <div className="flex justify-between w-48">
+                                                    <span className="text-sm font-bold text-zinc-500">PO #:</span>
+                                                    <span className="text-sm font-bold">PO-2025-001</span>
+                                                </div>
+                                                <div className="flex justify-between w-48">
+                                                    <span className="text-sm font-bold text-zinc-500">DATE:</span>
+                                                    <span className="text-sm">Jan 12, 2026</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="mb-8">
+                                            <div className="flex bg-zinc-100 p-2 font-bold text-sm mb-2">
+                                                <div className="flex-grow-[2]">ITEM</div>
+                                                <div className="flex-1 text-right">QTY</div>
+                                                <div className="flex-1 text-right">UNIT PRICE</div>
+                                                <div className="flex-1 text-right">TOTAL</div>
+                                            </div>
+                                            <div className="flex p-2 border-b border-zinc-100">
+                                                <div className="flex-grow-[2]">
+                                                    <div className="font-bold text-sm">{selectedItem.name}</div>
+                                                    <div className="text-xs text-zinc-500">{selectedItem.id}</div>
+                                                </div>
+                                                <div className="flex-1 text-right text-sm">50</div>
+                                                <div className="flex-1 text-right text-sm">$45.00</div>
+                                                <div className="flex-1 text-right text-sm">$2,250.00</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-end">
+                                            <div className="w-64">
+                                                <div className="flex justify-between mb-2">
+                                                    <span className="text-sm text-zinc-500">Subtotal:</span>
+                                                    <span className="text-sm font-bold">$2,250.00</span>
+                                                </div>
+                                                <div className="flex justify-between items-center mt-2 pt-2 border-t border-zinc-100">
+                                                    <span className="text-lg font-bold">TOTAL:</span>
+                                                    <span className="text-xl font-bold text-blue-600">$2,250.00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-6 flex justify-end gap-3">
+                                        <button
+                                            type="button"
+                                            className="inline-flex justify-center rounded-lg border border-transparent bg-zinc-100 dark:bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 focus:outline-none"
+                                            onClick={() => setIsDocumentModalOpen(false)}
+                                        >
+                                            Close
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="inline-flex justify-center rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none"
+                                            onClick={() => { }}
+                                        >
+                                            Download PDF
+                                        </button>
+                                    </div>
+                                </DialogPanel>
+                            </TransitionChild>
+                        </div>
+                    </div>
+                </Dialog>
+            </Transition>
+        </div >
     )
 }
 

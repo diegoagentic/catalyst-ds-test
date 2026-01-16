@@ -50,7 +50,7 @@ const recentOrders = [
     { id: "#ORD-2052", customer: "Global Logistics", client: "Global Logistics", project: "Warehouse Expansion", amount: "$45,000", status: "Delivered", date: "Oct 15, 2025", initials: "GL", statusColor: "bg-gray-100 text-gray-700" },
 ]
 
-export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: () => void, onNavigateToDetail: () => void }) {
+export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWorkspace }: { onLogout: () => void, onNavigateToDetail: () => void, onNavigateToWorkspace: () => void }) {
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
     const [showMetrics, setShowMetrics] = useState(false);
     const { theme, toggleTheme } = useTheme()
@@ -148,7 +148,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail }: { onLogout: 
         <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 font-sans text-gray-900 dark:text-gray-100 pb-10">
             {/* Floating Info Navbar */}
             {/* Floating Info Navbar */}
-            <Navbar onLogout={onLogout} activeTab="Overview" />
+            <Navbar onLogout={onLogout} activeTab="Overview" onNavigateToWorkspace={onNavigateToWorkspace} />
 
             {/* Main Content Content - Padded top to account for floating nav */}
             <div className="pt-24 px-4 max-w-7xl mx-auto space-y-6">

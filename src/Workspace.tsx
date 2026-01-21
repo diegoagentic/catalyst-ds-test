@@ -219,6 +219,8 @@ const PendingOrders = () => {
 
 interface WorkspaceProps {
     onBack: () => void;
+    onLogout: () => void;
+    onNavigateToWorkspace: () => void;
 }
 
 interface Message {
@@ -244,7 +246,7 @@ interface SystemLog {
     type: 'info' | 'success' | 'warning' | 'error' | 'system';
 }
 
-export default function Workspace({ onBack }: WorkspaceProps) {
+export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: WorkspaceProps) {
     const { currentTenant } = useTenant()
     // State
     const [messages, setMessages] = useState<Message[]>([
@@ -532,7 +534,7 @@ export default function Workspace({ onBack }: WorkspaceProps) {
                 </div>
             </Dialog>
             {/* Integrated Navbar */}
-            <Navbar onLogout={() => { }} onNavigateToWorkspace={() => { }} activeTab="Overview" />
+            <Navbar onLogout={onLogout} onNavigateToWorkspace={onNavigateToWorkspace} activeTab="Overview" />
 
             {/* Main Content Container - shifted down for navbar */}
             <div className="flex-1 flex flex-col pt-[72px] h-full">

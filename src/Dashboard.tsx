@@ -13,6 +13,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts'
 
 import { useTheme } from './useTheme'
+import { useTenant } from './TenantContext'
 import Navbar from './components/Navbar'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
@@ -54,6 +55,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
     const [showMetrics, setShowMetrics] = useState(false);
     const { theme, toggleTheme } = useTheme()
+    const { currentTenant } = useTenant()
 
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedClient, setSelectedClient] = useState('All Clients')
@@ -157,7 +159,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                     <div>
                         <div className="flex items-center gap-2">
                             <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
-                                Operational Overview
+                                {currentTenant} Overview
                             </h1>
                         </div>
                         <p className="text-gray-500 dark:text-gray-400 mt-1">

@@ -23,6 +23,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { Dialog } from '@headlessui/react'
 import Navbar from './components/Navbar'
+import { useTenant } from './TenantContext'
 
 // --- Components ---
 
@@ -244,6 +245,7 @@ interface SystemLog {
 }
 
 export default function Workspace({ onBack }: WorkspaceProps) {
+    const { currentTenant } = useTenant()
     // State
     const [messages, setMessages] = useState<Message[]>([
         {
@@ -544,7 +546,7 @@ export default function Workspace({ onBack }: WorkspaceProps) {
                         </button>
                         <h1 className="text-sm font-bold flex items-center gap-2 text-gray-800 dark:text-gray-100">
                             <CpuChipIcon className="w-5 h-5 text-blue-600" />
-                            My Work Space
+                            {currentTenant} Workspace
                         </h1>
                     </div>
 

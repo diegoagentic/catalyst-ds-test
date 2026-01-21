@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { useTheme } from './useTheme'
+import { useTenant } from './TenantContext'
 import Navbar from './components/Navbar'
 
 function cn(...inputs: (string | undefined | null | false)[]) {
@@ -332,7 +333,13 @@ const documents = [
     { name: "Invoice_INV-8992.pdf", size: "1.2 MB", uploaded: "Jan 12, 2025" },
 ]
 
-export default function Detail({ onBack }: { onBack: () => void }) {
+interface DetailProps {
+    onBack: () => void;
+    onLogout: () => void;
+    onNavigateToWorkspace: () => void;
+}
+
+export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: DetailProps) {
     const [messages, setMessages] = useState<Message[]>([
         {
             id: 1,
@@ -411,13 +418,12 @@ export default function Detail({ onBack }: { onBack: () => void }) {
     }
 
     const { theme, toggleTheme } = useTheme()
-
-    const onLogout = () => { console.log('Logout') }
+    const { currentTenant } = useTenant()
 
     return (
         <div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-sans text-zinc-900 dark:text-zinc-50 transition-colors duration-200">
             {/* Floating Info Navbar */}
-            <Navbar onLogout={onLogout} activeTab="Inventory" />
+            <Navbar onLogout={onLogout} activeTab="Inventory" onNavigateToWorkspace={onNavigateToWorkspace} />
 
             {/* Page Header (moved from original header, adjusted for floating nav) */}
             <div className="pt-24 px-6 pb-4 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 bg-transparent transition-colors duration-200">
@@ -427,7 +433,7 @@ export default function Detail({ onBack }: { onBack: () => void }) {
                     </button>
                     <span className="hover:text-zinc-900 dark:hover:text-zinc-200 cursor-pointer" onClick={onBack}>Dashboard</span>
                     <ChevronRightIcon className="h-3 w-3 text-zinc-300 dark:text-zinc-600" />
-                    <span>Inventory</span>
+                    <span>{currentTenant} Inventory</span>
                     <ChevronRightIcon className="h-3 w-3 text-zinc-300 dark:text-zinc-600" />
                     <span className="font-medium text-zinc-900 dark:text-zinc-100">Seating Category</span>
                 </div>

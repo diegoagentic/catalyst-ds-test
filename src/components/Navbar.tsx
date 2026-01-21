@@ -4,9 +4,12 @@ import {
     HomeIcon, CubeIcon, ClipboardDocumentListIcon, ArrowTrendingUpIcon,
     Squares2X2Icon, SunIcon, MoonIcon, ChevronDownIcon,
     UserIcon, DocumentTextIcon, ChartBarIcon, ExclamationCircleIcon,
-    CalendarIcon, EllipsisHorizontalIcon, ArrowRightOnRectangleIcon, BriefcaseIcon
+    CalendarIcon, EllipsisHorizontalIcon, ArrowRightOnRectangleIcon, BriefcaseIcon, CheckIcon
 } from '@heroicons/react/24/outline'
 import { useTheme } from '../useTheme'
+import { useTenant } from '../TenantContext'
+
+import ActionCenter from './notifications/ActionCenter';
 
 function NavItem({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
     return (
@@ -27,6 +30,7 @@ interface NavbarProps {
 
 export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToWorkspace }: NavbarProps) {
     const { theme, toggleTheme } = useTheme()
+    const { currentTenant, tenants, setTenant } = useTenant()
 
     return (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
@@ -34,11 +38,49 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
 
                 {/* Logo */}
                 <div className="px-4">
-                    <img src="/logo-on-light.jpg" alt="Strata" className="h-5 w-auto block dark:hidden" />
-                    <img src="/logo-on-dark.jpg" alt="Strata" className="h-5 w-auto hidden dark:block" />
+                    <img src="/logo-light.png" alt="Strata" className="h-8 w-auto block dark:hidden" />
+                    <img src="/logo-dark.png" alt="Strata" className="h-8 w-auto hidden dark:block" />
                 </div>
 
                 <div className="h-6 w-px bg-gray-200 dark:bg-white/10 mx-1"></div>
+
+                {/* Tenant Selector */}
+                <Menu as="div" className="relative mr-2">
+                    <MenuButton className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors outline-none">
+                        <div className="flex flex-col items-start text-left">
+                            <span className="text-[10px] font-medium text-gray-500 uppercase tracking-wider leading-none">Tenant</span>
+                            <div className="flex items-center gap-1">
+                                <span className="text-sm font-bold text-gray-900 dark:text-white leading-tight">{currentTenant}</span>
+                                <ChevronDownIcon className="w-3 h-3 text-gray-400" />
+                            </div>
+                        </div>
+                    </MenuButton>
+                    <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                    >
+                        <MenuItems className="absolute left-0 top-full mt-2 w-48 origin-top-left rounded-xl bg-white dark:bg-zinc-900 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none border border-gray-100 dark:border-white/10 p-1 z-50">
+                            {tenants.map((tenant) => (
+                                <MenuItem key={tenant}>
+                                    {({ active }) => (
+                                        <button
+                                            onClick={() => setTenant(tenant)}
+                                            className={`${active ? 'bg-gray-100 dark:bg-white/10' : ''} group flex w-full items-center px-4 py-2 text-sm text-gray-900 dark:text-white rounded-lg transition-colors`}
+                                        >
+                                            {tenant}
+                                            {currentTenant === tenant && <CheckIcon className="ml-auto w-4 h-4 text-blue-500" />}
+                                        </button>
+                                    )}
+                                </MenuItem>
+                            ))}
+                        </MenuItems>
+                    </Transition>
+                </Menu>
 
                 {/* Navigation Items */}
                 <div className="flex items-center gap-1">
@@ -52,9 +94,14 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
 
                 {/* Right Actions */}
                 <div className="flex items-center gap-2 pr-2">
+                    {/* Action Center - New Feature */}
+                    <ActionCenter />
+
+                    <div className="h-4 w-px bg-gray-200 dark:bg-white/10 mx-1"></div>
+
                     <Popover className="relative">
                         <PopoverButton className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors outline-none">
-                            <Squares2X2Icon className="w-4 h-4" />
+                            <Squares2X2Icon className="w-5 h-5" />
                         </PopoverButton>
                         <Transition
                             as={Fragment}

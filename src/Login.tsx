@@ -40,9 +40,10 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess: () => void }
                 <div className="relative z-10 max-w-lg space-y-8">
                     <div className="flex items-center gap-3 mb-12">
                         {/* Logo */}
-                        <div className="h-10 w-auto">
-                            <img src="/logo-on-light.jpg" alt="Strata" className="h-8 w-auto block dark:hidden" />
-                            <img src="/logo-on-dark.jpg" alt="Strata" className="h-8 w-auto hidden dark:block" />
+                        {/* Logo */}
+                        <div className="mb-4">
+                            <img src="/logo-login-light.png" alt="Strata" className="h-20 w-auto block dark:hidden" />
+                            <img src="/logo-login-dark.png" alt="Strata" className="h-20 w-auto hidden dark:block" />
                         </div>
                     </div>
 

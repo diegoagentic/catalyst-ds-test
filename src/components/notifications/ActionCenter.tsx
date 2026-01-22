@@ -138,7 +138,7 @@ export default function ActionCenter() {
                     )}>
                         <BellIcon className="w-5 h-5" />
                         {totalCount > 0 && (
-                            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-zinc-900" />
+                            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary ring-2 ring-white dark:ring-zinc-900" />
                         )}
                     </PopoverButton>
 

@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { EyeIcon, EyeSlashIcon, ArrowRightIcon, ChevronDownIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline'
+import logoLightBrand from './assets/logo-light-brand.png';
+import logoDarkBrand from './assets/logo-dark-brand.png';
+import { useTheme } from './useTheme';
 
 const organizations = [
     { name: 'Strata Manufacturing HQ', users: 245, type: 'Primary workspace' },
@@ -13,6 +16,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess: () => void }
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [selectedOrg, setSelectedOrg] = useState(organizations[0])
     const dropdownRef = useRef<HTMLDivElement>(null)
+    const { theme } = useTheme();
 
     const handleAction = () => {
         onLoginSuccess()
@@ -31,35 +35,34 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess: () => void }
     }, [])
 
     return (
-        <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 font-sans bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
+        <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 font-sans bg-background transition-colors duration-300">
             {/* Left Side - Branding */}
-            <div className="relative overflow-hidden flex flex-col justify-center p-12 lg:p-20 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white transition-colors duration-300">
+            <div className="relative overflow-hidden flex flex-col justify-center p-12 lg:p-20 bg-sidebar text-sidebar-foreground transition-colors duration-300">
                 {/* Decorative background element */}
-                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-zinc-100/50 to-zinc-200/50 dark:from-zinc-800/20 dark:to-zinc-950/20 pointer-events-none" />
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-sidebar-accent/50 to-sidebar/50 pointer-events-none" />
 
                 <div className="relative z-10 max-w-lg space-y-8">
                     <div className="flex items-center gap-3 mb-12">
                         {/* Logo */}
-                        {/* Logo */}
                         <div className="mb-4">
-                            <img src="/logo-login-light.png" alt="Strata" className="h-20 w-auto block dark:hidden" />
-                            <img src="/logo-login-dark.png" alt="Strata" className="h-20 w-auto hidden dark:block" />
+                            <img src={logoLightBrand} alt="Strata" className="h-20 w-auto block dark:hidden" />
+                            <img src={logoDarkBrand} alt="Strata" className="h-20 w-auto hidden dark:block" />
                         </div>
                     </div>
 
-                    <h1 className="text-5xl font-bold leading-tight text-zinc-900 dark:text-white">
+                    <h1 className="text-5xl font-brand font-bold leading-tight text-sidebar-foreground">
                         Transform your workflow with Strata
                     </h1>
 
-                    <p className="text-zinc-600 dark:text-zinc-400 text-lg leading-relaxed">
+                    <p className="text-sidebar-foreground/70 text-lg leading-relaxed">
                         At Strata, we provide comprehensive solutions for contract dealers and manufacturers, combining sales enablement, financial services, and expert consulting with cutting-edge technology to optimize operations and drive business growth.
                     </p>
 
                     <div className="flex gap-4 pt-4">
-                        <button className="px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors flex items-center gap-2">
+                        <button className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:opacity-90 transition-opacity flex items-center gap-2">
                             Talk to an Expert <ArrowRightIcon className="w-4 h-4" />
                         </button>
-                        <button className="px-6 py-3 bg-transparent text-zinc-900 dark:text-white font-semibold rounded-full hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors border border-zinc-300 dark:border-white/30">
+                        <button className="px-6 py-3 bg-transparent text-sidebar-foreground font-semibold rounded-full hover:bg-sidebar-accent transition-colors border border-sidebar-border">
                             Browse all Services
                         </button>
                     </div>
@@ -69,9 +72,9 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess: () => void }
             {/* Right Side - Form */}
             <div className="flex items-center justify-center p-8 relative overflow-hidden bg-[url('/login-bg.jpg')] bg-cover bg-center">
                 {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
 
-                <div className="w-full max-w-[440px] p-8 rounded-2xl bg-white/10 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-2xl relative z-10 transition-all duration-300">
+                <div className="w-full max-w-[440px] p-8 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 shadow-2xl relative z-10 transition-all duration-300">
                     <div className="space-y-6">
                         <div className="space-y-2 text-center lg:text-left">
                             <h2 className="text-3xl font-bold text-white">
@@ -225,7 +228,7 @@ export default function Login({ onLoginSuccess }: { onLoginSuccess: () => void }
                                     </div>
                                 )}
 
-                                <button type="submit" className="w-full h-12 rounded-xl bg-white text-zinc-900 hover:bg-zinc-100 font-bold text-base shadow-lg shadow-black/10 transition-colors">
+                                <button type="submit" className="w-full h-12 rounded-xl bg-primary text-primary-foreground hover:opacity-90 font-bold text-base shadow-lg shadow-black/10 transition-all">
                                     {isRegistering ? 'Create Account' : 'Login Now'}
                                 </button>
                             </form>

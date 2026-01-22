@@ -147,7 +147,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
     }, [])
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 font-sans text-gray-900 dark:text-gray-100 pb-10">
+        <div className="min-h-screen bg-background font-sans text-foreground pb-10">
             {/* Floating Info Navbar */}
             {/* Floating Info Navbar */}
             <Navbar onLogout={onLogout} activeTab="Overview" onNavigateToWorkspace={onNavigateToWorkspace} />
@@ -158,11 +158,11 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
                         <div className="flex items-center gap-2">
-                            <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
+                            <h1 className="text-3xl font-brand font-bold tracking-tight text-foreground">
                                 {currentTenant} Overview
                             </h1>
                         </div>
-                        <p className="text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-muted-foreground mt-1">
                             Jan 1 - Jan 31, 2025
                         </p>
                     </div>
@@ -170,17 +170,17 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                     <div className="flex items-center gap-3">
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                                <MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground group-focus-within:text-foreground transition-colors" />
                             </div>
                             <input
                                 type="text"
-                                className="block w-full md:w-64 pl-10 pr-3 py-2 border border-gray-200 dark:border-white/10 rounded-xl leading-5 bg-white/50 dark:bg-black/20 text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 backdrop-blur-sm transition-all shadow-sm"
+                                className="block w-full md:w-64 pl-10 pr-3 py-2 border border-input rounded-xl leading-5 bg-white/50 dark:bg-black/20 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 backdrop-blur-sm transition-all shadow-sm"
                                 placeholder="Search everything..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                        <button className="p-2 rounded-xl border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/20 backdrop-blur-sm hover:bg-white dark:hover:bg-white/10 transition-all shadow-sm text-gray-500">
+                        <button className="p-2 rounded-xl border border-input bg-white/50 dark:bg-black/20 backdrop-blur-sm hover:bg-white dark:hover:bg-white/10 transition-all shadow-sm text-muted-foreground">
                             <BellIcon className="h-5 w-5" />
                         </button>
                     </div>
@@ -190,16 +190,16 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                 {showMetrics ? (
                     <>
                         <div className="flex justify-end mb-2">
-                            <button onClick={() => setShowMetrics(false)} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
+                            <button onClick={() => setShowMetrics(false)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
                                 Hide Details <ChevronUpIcon className="w-4 h-4" />
                             </button>
                         </div>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 animate-in fade-in zoom-in duration-300">
-                            <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-border shadow-sm hover:shadow-md transition-all group">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Total Inventory</p>
-                                        <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">$1.2M</p>
+                                        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Total Inventory</p>
+                                        <p className="mt-1 text-3xl font-semibold text-foreground group-hover:scale-105 transition-transform origin-left">$1.2M</p>
                                     </div>
                                     <div className="p-3 bg-blue-50 dark:bg-blue-500/10 rounded-xl text-blue-600 dark:text-blue-400">
                                         <CurrencyDollarIcon className="w-6 h-6" />
@@ -207,15 +207,15 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                 </div>
                                 <div className="mt-4 flex items-center text-sm text-green-600">
                                     <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
-                                    <span className="font-medium">+0.2%</span> <span className="text-gray-400 ml-1">vs last month</span>
+                                    <span className="font-medium">+0.2%</span> <span className="text-muted-foreground ml-1">vs last month</span>
                                 </div>
                             </div>
 
-                            <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-border shadow-sm hover:shadow-md transition-all group">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Efficiency</p>
-                                        <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">88%</p>
+                                        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Efficiency</p>
+                                        <p className="mt-1 text-3xl font-semibold text-foreground group-hover:scale-105 transition-transform origin-left">88%</p>
                                     </div>
                                     <div className="p-3 bg-purple-50 dark:bg-purple-500/10 rounded-xl text-purple-600 dark:text-purple-400">
                                         <ChartBarIcon className="w-6 h-6" />
@@ -223,30 +223,30 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                 </div>
                                 <div className="mt-4 flex items-center text-sm text-green-600">
                                     <ArrowTrendingUpIcon className="w-4 h-4 mr-1" />
-                                    <span className="font-medium">+3.5%</span> <span className="text-gray-400 ml-1">vs last month</span>
+                                    <span className="font-medium">+3.5%</span> <span className="text-muted-foreground ml-1">vs last month</span>
                                 </div>
                             </div>
 
-                            <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-border shadow-sm hover:shadow-md transition-all group">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Pending Orders</p>
-                                        <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">142</p>
+                                        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Pending Orders</p>
+                                        <p className="mt-1 text-3xl font-semibold text-foreground group-hover:scale-105 transition-transform origin-left">142</p>
                                     </div>
                                     <div className="p-3 bg-orange-50 dark:bg-orange-500/10 rounded-xl text-orange-600 dark:text-orange-400">
                                         <ClipboardDocumentListIcon className="w-6 h-6" />
                                     </div>
                                 </div>
-                                <div className="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400">
+                                <div className="mt-4 flex items-center text-sm text-muted-foreground">
                                     <span className="font-medium">-12</span> <span className="ml-1">vs yesterday</span>
                                 </div>
                             </div>
 
-                            <div className="bg-white/60 dark:bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-white/20 shadow-sm hover:shadow-md transition-all group">
+                            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-border shadow-sm hover:shadow-md transition-all group">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Low Stock</p>
-                                        <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white group-hover:scale-105 transition-transform origin-left">15</p>
+                                        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Low Stock</p>
+                                        <p className="mt-1 text-3xl font-semibold text-foreground group-hover:scale-105 transition-transform origin-left">15</p>
                                     </div>
                                     <div className="p-3 bg-red-50 dark:bg-red-500/10 rounded-xl text-red-600 dark:text-red-400">
                                         <ExclamationCircleIcon className="w-6 h-6" />
@@ -266,7 +266,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                 { icon: <DocumentTextIcon className="w-5 h-5" />, label: "Export PDF" },
                                 { icon: <EnvelopeIcon className="w-5 h-5" />, label: "Send Email" },
                             ].map((action, i) => (
-                                <button key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400 text-gray-500 dark:text-gray-400 transition-all text-xs font-medium">
+                                <button key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary/50 hover:bg-primary/5 hover:text-primary text-gray-500 dark:text-gray-400 transition-all text-xs font-medium">
                                     {action.icon}
                                     <span>{action.label}</span>
                                 </button>
@@ -309,7 +309,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                 { icon: <EnvelopeIcon className="w-4 h-4" />, label: "Email" },
                             ].map((action, i) => (
                                 <button key={i} className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors">
-                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors">
                                         {action.icon}
                                     </div>
                                     <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{action.label}</span>
@@ -321,7 +321,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                             onClick={() => setShowMetrics(true)}
                             className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors"
                         >
-                            <div className="text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            <div className="text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors">
                                 <ChevronDownIcon className="w-4 h-4" />
                             </div>
                             <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Details</span>
@@ -334,15 +334,15 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                 {/* Recent Orders - The Grid/List view handled here */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-3">
-                        <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl rounded-3xl border border-white/20 shadow-lg overflow-hidden">
+                        <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-border shadow-sm overflow-hidden">
                             {/* Header for Orders */}
-                            <div className="p-6 border-b border-gray-200 dark:border-white/10 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+                            <div className="p-6 border-b border-border flex flex-col xl:flex-row xl:items-center justify-between gap-4">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                    <h3 className="text-lg font-brand font-semibold text-foreground flex items-center gap-2">
                                         Recent Orders
                                     </h3>
                                     {/* Tabs */}
-                                    <div className="flex gap-1 mt-4 bg-gray-100 dark:bg-white/5 p-1 rounded-lg w-fit">
+                                    <div className="flex gap-1 mt-4 bg-muted p-1 rounded-lg w-fit">
                                         {[
                                             { id: 'active', label: 'Active', count: counts.active },
                                             { id: 'completed', label: 'Completed', count: counts.completed },
@@ -355,8 +355,8 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                 className={cn(
                                                     "px-4 py-1.5 text-sm font-medium rounded-md transition-all flex items-center gap-2 outline-none",
                                                     activeTab === tab.id
-                                                        ? "bg-white dark:bg-zinc-800 text-gray-900 dark:text-white shadow-sm"
-                                                        : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                                                        ? "bg-background text-foreground shadow-sm"
+                                                        : "text-muted-foreground hover:text-foreground"
                                                 )}
                                             >
                                                 {tab.id === 'metrics' && <ChartBarIcon className="w-4 h-4" />}
@@ -365,8 +365,8 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                     <span className={cn(
                                                         "text-xs px-1.5 py-0.5 rounded-full transition-colors",
                                                         activeTab === tab.id
-                                                            ? "bg-gray-100 dark:bg-zinc-700"
-                                                            : "bg-gray-200 dark:bg-zinc-800 group-hover:bg-gray-300 dark:group-hover:bg-zinc-700"
+                                                            ? "bg-muted text-foreground"
+                                                            : "bg-background text-muted-foreground group-hover:bg-muted"
                                                     )}>
                                                         {tab.count}
                                                     </span>
@@ -378,11 +378,11 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
 
                                 <div className="flex flex-wrap items-center gap-2">
                                     <div className="relative group">
-                                        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                                         <input
                                             type="text"
                                             placeholder="Search orders..."
-                                            className="pl-9 pr-4 py-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-900 dark:text-white w-full sm:w-64 focus:ring-2 focus:ring-blue-500 outline-none placeholder:text-gray-400"
+                                            className="pl-9 pr-4 py-2 bg-background border border-input rounded-lg text-sm text-foreground w-full sm:w-64 focus:ring-2 focus:ring-primary/20 outline-none placeholder:text-muted-foreground"
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                         />
@@ -391,39 +391,39 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                     {/* Client Filter */}
                                     <div className="relative group">
                                         <select
-                                            className="appearance-none pl-3 pr-8 py-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                                            className="appearance-none pl-3 pr-8 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer hover:bg-muted/50 transition-colors"
                                             value={selectedClient}
                                             onChange={(e) => setSelectedClient(e.target.value)}
                                         >
                                             {clients.map(c => <option key={c} value={c}>{c}</option>)}
                                         </select>
-                                        <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                        <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                                     </div>
 
                                     {/* Project Filter */}
                                     <div className="relative group">
                                         <select
-                                            className="appearance-none pl-3 pr-8 py-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                                            className="appearance-none pl-3 pr-8 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer hover:bg-muted/50 transition-colors"
                                             value={selectedProject}
                                             onChange={(e) => setSelectedProject(e.target.value)}
                                         >
                                             {availableProjects.map(p => <option key={p} value={p}>{p}</option>)}
                                         </select>
-                                        <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                        <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                                     </div>
 
-                                    <div className="h-6 w-px bg-gray-200 dark:bg-white/10 mx-1 hidden sm:block"></div>
+                                    <div className="h-6 w-px bg-border mx-1 hidden sm:block"></div>
 
-                                    <div className="flex bg-gray-100 dark:bg-black/30 p-1 rounded-lg">
+                                    <div className="flex bg-muted p-1 rounded-lg">
                                         <button
                                             onClick={() => setViewMode('list')}
-                                            className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-zinc-800 text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                                            className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                                         >
                                             <ListBulletIcon className="h-4 w-4" />
                                         </button>
                                         <button
                                             onClick={() => setViewMode('grid')}
-                                            className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-zinc-800 text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+                                            className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                                         >
                                             <Squares2X2Icon className="h-4 w-4" />
                                         </button>
@@ -432,13 +432,13 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                             </div>
 
                             {/* Content */}
-                            <div className="p-6 bg-gray-50/50 dark:bg-black/20 min-h-[300px]">
+                            <div className="p-6 bg-muted/30 min-h-[300px]">
                                 {activeTab === 'metrics' ? (
                                     <div className="space-y-8">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Performance Metrics</h3>
-                                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                <h3 className="text-lg font-semibold text-foreground">Performance Metrics</h3>
+                                                <p className="text-sm text-muted-foreground">
                                                     {selectedClient === 'All Clients' ? 'Overview across all clients' : `Showing analytics for ${selectedClient}`}
                                                 </p>
                                             </div>
@@ -496,8 +496,8 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                             </div>
                                         </div>
 
-                                        <div className="h-[300px] w-full bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-200 dark:border-white/10 shadow-sm">
-                                            <h4 className="text-md font-medium text-gray-900 dark:text-white mb-4">Monthly Trends</h4>
+                                        <div className="h-[300px] w-full bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-border shadow-sm">
+                                            <h4 className="text-md font-medium text-foreground mb-4">Monthly Trends</h4>
                                             <ResponsiveContainer width="100%" height="100%">
                                                 <BarChart data={salesData}>
                                                     <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} vertical={false} />
@@ -513,44 +513,44 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                     </div>
                                 ) : viewMode === 'list' ? (
                                     <div className="overflow-x-auto">
-                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-white/10">
+                                        <table className="min-w-full divide-y divide-border">
                                             <thead>
                                                 <tr>
-                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Order ID</th>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Customer</th>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount</th>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                                                    <th className="px-3 py-3.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
                                                     <th className="relative px-3 py-3.5"><span className="sr-only">Actions</span></th>
                                                 </tr>
                                             </thead>
-                                            <tbody className="divide-y divide-gray-200 dark:divide-white/10 bg-transparent">
+                                            <tbody className="divide-y divide-border bg-transparent">
                                                 {filteredOrders.map((order) => (
                                                     <Fragment key={order.id}>
                                                         <tr
-                                                            className={`hover:bg-white/50 dark:hover:bg-white/5 transition-colors cursor-pointer ${expandedIds.has(order.id) ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''}`}
+                                                            className={`hover:bg-muted/50 transition-colors cursor-pointer ${expandedIds.has(order.id) ? 'bg-primary/5' : ''}`}
                                                             onClick={() => toggleExpand(order.id)}
                                                         >
-                                                            <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-white flex items-center gap-2">
-                                                                {expandedIds.has(order.id) ? <ChevronDownIcon className="h-4 w-4 text-blue-500" /> : <ChevronRightIcon className="h-4 w-4 text-gray-400" />}
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-foreground flex items-center gap-2">
+                                                                {expandedIds.has(order.id) ? <ChevronDownIcon className="h-4 w-4 text-foreground" /> : <ChevronRightIcon className="h-4 w-4 text-muted-foreground" />}
                                                                 {order.id}
                                                             </td>
-                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-foreground/80">
                                                                 <div className="flex items-center gap-2">
-                                                                    <div className="h-6 w-6 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-xs font-medium text-gray-700 dark:text-gray-200">{order.initials}</div>
+                                                                    <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground">{order.initials}</div>
                                                                     {order.customer}
                                                                 </div>
                                                             </td>
-                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">{order.amount}</td>
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-foreground/80">{order.amount}</td>
                                                             <td className="whitespace-nowrap px-3 py-4 text-sm">
                                                                 <span className={cn("inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset", order.statusColor)}>
                                                                     {order.status}
                                                                 </span>
                                                             </td>
-                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">{order.date}</td>
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-foreground/80">{order.date}</td>
                                                             <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-medium">
                                                                 <Menu as="div" className="relative inline-block text-left">
-                                                                    <MenuButton onClick={(e) => e.stopPropagation()} className="bg-transparent p-1 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                                                                    <MenuButton onClick={(e) => e.stopPropagation()} className="bg-transparent p-1 rounded-full text-muted-foreground hover:text-foreground">
                                                                         <EllipsisHorizontalIcon className="h-5 w-5" />
                                                                     </MenuButton>
                                                                     <Transition
@@ -562,11 +562,11 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                                         leaveFrom="transform opacity-100 scale-100"
                                                                         leaveTo="transform opacity-0 scale-95"
                                                                     >
-                                                                        <MenuItems className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-xl bg-white dark:bg-zinc-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none border border-gray-100 dark:border-white/10">
+                                                                        <MenuItems className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-xl bg-popover shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none border border-border">
                                                                             <div className="py-1">
                                                                                 <MenuItem>
                                                                                     {({ active }) => (
-                                                                                        <button onClick={(e) => { e.stopPropagation(); onNavigateToDetail(); }} className={`${active ? 'bg-gray-50 dark:bg-white/5' : ''} group flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}>
+                                                                                        <button onClick={(e) => { e.stopPropagation(); onNavigateToDetail(); }} className={`${active ? 'bg-muted' : ''} group flex w-full items-center px-4 py-2 text-sm text-foreground`}>
                                                                                             <span className="w-4 h-4 mr-2" ><DocumentTextIcon /></span> View Details
                                                                                         </button>
                                                                                     )}
@@ -634,7 +634,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                                                         <div>
                                                                                             <p className="text-sm font-medium text-orange-700 dark:text-orange-400">Customs Delay</p>
                                                                                             <p className="text-xs text-gray-500 mt-1">Shipment held at port. ETA +24h.</p>
-                                                                                            <button onClick={() => setTrackingOrder(order)} className="mt-2 text-xs font-medium text-blue-600 hover:underline">Track Shipment</button>
+                                                                                            <button onClick={() => setTrackingOrder(order)} className="mt-2 text-xs font-medium text-primary hover:underline">Track Shipment</button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -757,7 +757,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                                         <div>
                                                                             <h5 className="text-sm font-bold text-orange-700 dark:text-orange-400">Alert: Customs Delay</h5>
                                                                             <p className="mt-1 text-xs text-orange-600/80 dark:text-orange-400/70">Held at port. ETA +24h.</p>
-                                                                            <button onClick={(e) => { e.stopPropagation(); setTrackingOrder(order); }} className="mt-2 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                                                                            <button onClick={(e) => { e.stopPropagation(); setTrackingOrder(order); }} className="mt-2 text-xs font-medium text-primary hover:underline">
                                                                                 Track Shipment
                                                                             </button>
                                                                         </div>
@@ -782,7 +782,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                         </div>
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); setTrackingOrder(order); }}
-                                                            className="mt-4 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium shadow-md transition-all flex items-center justify-center gap-2"
+                                                            className="mt-4 w-full py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg text-xs font-medium shadow-md transition-all flex items-center justify-center gap-2"
                                                         >
                                                             <MapPinIcon className="h-3 w-3" /> Track Shipment
                                                         </button>
@@ -798,41 +798,41 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                 </div >
 
                 {/* Charts Area */}
-                < div className="grid grid-cols-1 lg:grid-cols-2 gap-6" >
-                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl rounded-2xl border border-white/20 shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Revenue Trend</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-border shadow-sm p-6">
+                        <h3 className="text-lg font-brand font-semibold text-foreground mb-4">Revenue Trend</h3>
                         <div className="h-80 w-full">
                             <ResponsiveContainer width="100%" height="100%">
                                 <LineChart data={salesData}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} vertical={false} />
-                                    <XAxis dataKey="name" stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
-                                    <YAxis stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
+                                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.5} vertical={false} />
+                                    <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                                    <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
                                     <Tooltip
-                                        contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '12px', borderColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)' }}
-                                        itemStyle={{ color: '#1F2937' }}
+                                        contentStyle={{ backgroundColor: 'var(--popover)', borderRadius: '12px', borderColor: 'var(--border)', color: 'var(--popover-foreground)' }}
+                                        itemStyle={{ color: 'var(--popover-foreground)' }}
                                     />
-                                    <Line type="monotone" dataKey="sales" stroke="#3B82F6" strokeWidth={3} dot={{ r: 4, strokeWidth: 2, fill: '#fff' }} activeDot={{ r: 6 }} />
-                                    <Line type="monotone" dataKey="costs" stroke="#9CA3AF" strokeWidth={2} strokeDasharray="5 5" dot={false} />
+                                    <Line type="monotone" dataKey="sales" stroke="var(--primary)" strokeWidth={3} dot={{ r: 4, strokeWidth: 2, fill: 'var(--background)' }} activeDot={{ r: 6 }} />
+                                    <Line type="monotone" dataKey="costs" stroke="var(--muted-foreground)" strokeWidth={2} strokeDasharray="5 5" dot={false} />
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
                     </div>
 
-                    <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl rounded-2xl border border-white/20 shadow-sm p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Inventory Breakdown</h3>
+                    <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-border shadow-sm p-6">
+                        <h3 className="text-lg font-brand font-semibold text-foreground mb-4">Inventory Breakdown</h3>
                         <div className="h-80 w-full">
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart data={inventoryData}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} vertical={false} />
-                                    <XAxis dataKey="name" stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
-                                    <YAxis stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
-                                    <Tooltip cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', borderRadius: '12px', border: 'none', color: '#fff' }} />
+                                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.5} vertical={false} />
+                                    <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                                    <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                                    <Tooltip cursor={{ fill: 'var(--muted)' }} contentStyle={{ backgroundColor: 'var(--popover)', borderRadius: '12px', border: '1px solid var(--border)', color: 'var(--popover-foreground)' }} />
                                     <Bar dataKey="value" fill="#8B5CF6" radius={[6, 6, 0, 0]} barSize={40} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
                     </div>
-                </div >
+                </div>
 
             </div >
 

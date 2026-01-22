@@ -1,3 +1,5 @@
+@import './styles/theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,12 +15,12 @@
     }
 
     .scrollbar-minimal::-webkit-scrollbar-thumb {
-        @apply bg-gray-200 dark:bg-white/10 rounded-full transition-colors;
+        @apply bg-muted rounded-full transition-colors;
         background-clip: padding-box;
         border: 2px solid transparent;
     }
 
     .scrollbar-minimal::-webkit-scrollbar-thumb:hover {
-        @apply bg-gray-300 dark:bg-white/20;
+        @apply bg-zinc-400 dark:bg-zinc-600;
     }
 }

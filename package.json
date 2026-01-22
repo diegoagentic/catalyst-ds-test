@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync:tokens": "node scripts/sync-tokens.mjs",
+    "promote": "node scripts/promote-component.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",

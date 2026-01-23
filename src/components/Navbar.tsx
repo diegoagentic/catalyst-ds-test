@@ -71,10 +71,10 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                         <MenuItems className="absolute left-0 top-full mt-2 w-48 origin-top-left rounded-xl bg-popover shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none border border-border p-1 z-50">
                             {tenants.map((tenant) => (
                                 <MenuItem key={tenant}>
-                                    {({ active }) => (
+                                    {({ focus }) => (
                                         <button
                                             onClick={() => setTenant(tenant)}
-                                            className={`${active ? 'bg-muted' : ''} group flex w-full items-center px-4 py-2 text-sm text-foreground rounded-lg transition-colors`}
+                                            className={`${focus ? 'bg-zinc-200 dark:bg-zinc-800' : ''} group flex w-full items-center px-4 py-2 text-sm text-foreground rounded-lg transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800`}
                                         >
                                             {tenant}
                                             {currentTenant === tenant && <CheckIcon className="ml-auto w-4 h-4 text-foreground" />}
@@ -134,16 +134,34 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                                             key={i}
                                             // @ts-ignore
                                             onClick={app.onClick}
-                                            className={`flex flex-col items-center gap-3 p-3 rounded-2xl hover:bg-primary/5 hover:ring-1 hover:ring-primary/20 transition-all group ${
+                                            className={`relative flex flex-col items-center gap-3 p-3 rounded-2xl transition-all group outline-none focus:ring-2 focus:ring-primary ${
                                                 // @ts-ignore
-                                                app.isHighlighted ? 'ring-2 ring-primary/20 bg-primary/5' : ''
+                                                app.isHighlighted
+                                                    ? 'ring-2 ring-primary bg-primary/10'
+                                                    : 'hover:bg-primary hover:text-primary-foreground hover:shadow-md'
                                                 }`}>
-                                            <div className={`p-3 rounded-2xl ${app.bg} ${app.color} group-hover:scale-110 transition-transform shadow-sm`}>
+
+                                            {/* Badge */}
+                                            {/* @ts-ignore */}
+                                            {app.isHighlighted && (
+                                                <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-[10px] font-bold shadow-sm">
+                                                    New
+                                                </span>
+                                            )}
+
+                                            <div className={`p-3 rounded-2xl ${app.bg} ${app.color} transition-all shadow-sm ${
+                                                // @ts-ignore
+                                                app.isHighlighted
+                                                    ? ''
+                                                    : 'group-hover:bg-transparent group-hover:text-primary-foreground group-hover:shadow-none'
+                                                }`}>
                                                 {app.icon}
                                             </div>
-                                            <span className={`text-xs font-semibold group-hover:text-foreground ${
+                                            <span className={`text-xs font-semibold ${
                                                 // @ts-ignore
-                                                app.isHighlighted ? 'text-foreground' : 'text-muted-foreground'
+                                                app.isHighlighted
+                                                    ? 'text-foreground'
+                                                    : 'text-muted-foreground group-hover:text-primary-foreground'
                                                 }`}>{app.label}</span>
                                         </button>
                                     ))}
@@ -168,7 +186,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                             <ChevronDownIcon className="w-3 h-3 text-muted-foreground" />
                         </button>
                         {/* User Dropdown */}
-                        <div className="absolute top-full right-0 mt-2 w-48 py-1 rounded-xl bg-popover/90 backdrop-blur-xl border border-border shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
+                        <div className="absolute top-full right-0 mt-2 w-48 py-1 rounded-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border border-border shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
                             <div className="px-4 py-2 border-b border-border">
                                 <p className="text-sm font-medium">Jhon Doe</p>
                                 <p className="text-xs text-muted-foreground">Admin</p>

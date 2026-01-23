@@ -15,6 +15,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, L
 import { useTheme } from './useTheme'
 import { useTenant } from './TenantContext'
 import Navbar from './components/Navbar'
+import Select from './components/Select'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -250,7 +251,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                 { icon: <DocumentTextIcon className="w-5 h-5" />, label: "Export PDF" },
                                 { icon: <EnvelopeIcon className="w-5 h-5" />, label: "Send Email" },
                             ].map((action, i) => (
-                                <button key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary hover:bg-primary hover:text-zinc-900 dark:hover:text-zinc-900 text-gray-500 dark:text-gray-400 transition-all text-xs font-medium">
+                                <button key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary dark:hover:border-primary/50 hover:bg-primary dark:hover:bg-primary/10 hover:text-zinc-900 dark:hover:text-primary text-gray-500 dark:text-gray-400 transition-all text-xs font-medium">
                                     {action.icon}
                                     <span>{action.label}</span>
                                 </button>
@@ -320,13 +321,13 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                     <div className="lg:col-span-3">
                         <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-border shadow-sm overflow-hidden">
                             {/* Header for Orders */}
-                            <div className="p-6 border-b border-border flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                                <div>
-                                    <h3 className="text-lg font-brand font-semibold text-foreground flex items-center gap-2">
-                                        Recent Orders
-                                    </h3>
+                            <div className="p-6 border-b border-border">
+                                <h3 className="text-lg font-brand font-semibold text-foreground flex items-center gap-2 mb-4">
+                                    Recent Orders
+                                </h3>
+                                <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
                                     {/* Tabs */}
-                                    <div className="flex gap-1 mt-4 bg-muted p-1 rounded-lg w-fit">
+                                    <div className="flex gap-1 bg-muted p-1 rounded-lg w-fit">
                                         {[
                                             { id: 'active', label: 'Active', count: counts.active },
                                             { id: 'completed', label: 'Completed', count: counts.completed },
@@ -358,59 +359,53 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                             </button>
                                         ))}
                                     </div>
-                                </div>
 
-                                <div className="flex flex-wrap items-center gap-2">
-                                    <div className="relative group">
-                                        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                        <input
-                                            type="text"
-                                            placeholder="Search orders..."
-                                            className="pl-9 pr-4 py-2 bg-background border border-input rounded-lg text-sm text-foreground w-full sm:w-64 focus:ring-2 focus:ring-primary outline-none placeholder:text-muted-foreground"
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                        />
-                                    </div>
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <div className="relative group">
+                                            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                            <input
+                                                type="text"
+                                                placeholder="Search orders..."
+                                                className="pl-9 pr-4 py-2 bg-background border border-input rounded-lg text-sm text-foreground w-full sm:w-64 focus:ring-2 focus:ring-primary outline-none placeholder:text-muted-foreground"
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                            />
+                                        </div>
 
-                                    {/* Client Filter */}
-                                    <div className="relative group">
-                                        <select
-                                            className="appearance-none pl-3 pr-8 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:ring-2 focus:ring-primary outline-none cursor-pointer hover:bg-muted/50 transition-colors"
-                                            value={selectedClient}
-                                            onChange={(e) => setSelectedClient(e.target.value)}
-                                        >
-                                            {clients.map(c => <option key={c} value={c}>{c}</option>)}
-                                        </select>
-                                        <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                                    </div>
+                                        {/* Client Filter */}
+                                        <div className="w-48">
+                                            <Select
+                                                value={selectedClient}
+                                                onChange={setSelectedClient}
+                                                options={clients}
+                                            />
+                                        </div>
 
-                                    {/* Project Filter */}
-                                    <div className="relative group">
-                                        <select
-                                            className="appearance-none pl-3 pr-8 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:ring-2 focus:ring-primary outline-none cursor-pointer hover:bg-muted/50 transition-colors"
-                                            value={selectedProject}
-                                            onChange={(e) => setSelectedProject(e.target.value)}
-                                        >
-                                            {availableProjects.map(p => <option key={p} value={p}>{p}</option>)}
-                                        </select>
-                                        <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                                    </div>
+                                        {/* Project Filter */}
+                                        <div className="w-48">
+                                            <Select
+                                                value={selectedProject}
+                                                onChange={setSelectedProject}
+                                                options={availableProjects}
+                                            />
+                                        </div>
 
-                                    <div className="h-6 w-px bg-border mx-1 hidden sm:block"></div>
+                                        <div className="h-6 w-px bg-border mx-1 hidden sm:block"></div>
 
-                                    <div className="flex bg-muted p-1 rounded-lg">
-                                        <button
-                                            onClick={() => setViewMode('list')}
-                                            className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-                                        >
-                                            <ListBulletIcon className="h-4 w-4" />
-                                        </button>
-                                        <button
-                                            onClick={() => setViewMode('grid')}
-                                            className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-                                        >
-                                            <Squares2X2Icon className="h-4 w-4" />
-                                        </button>
+                                        <div className="flex bg-muted p-1 rounded-lg">
+                                            <button
+                                                onClick={() => setViewMode('list')}
+                                                className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                                            >
+                                                <ListBulletIcon className="h-4 w-4" />
+                                            </button>
+                                            <button
+                                                onClick={() => setViewMode('grid')}
+                                                className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                                            >
+                                                <Squares2X2Icon className="h-4 w-4" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -800,7 +795,14 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                         contentStyle={{ backgroundColor: 'var(--popover)', borderRadius: '12px', borderColor: 'var(--border)', color: 'var(--popover-foreground)' }}
                                         itemStyle={{ color: 'var(--popover-foreground)' }}
                                     />
-                                    <Line type="monotone" dataKey="sales" stroke="var(--primary)" strokeWidth={3} dot={{ r: 4, strokeWidth: 2, fill: 'var(--background)' }} activeDot={{ r: 6 }} />
+                                    <Line
+                                        type="monotone"
+                                        dataKey="sales"
+                                        stroke="var(--chart-trend-line)"
+                                        strokeWidth={3}
+                                        dot={{ r: 4, strokeWidth: 2, fill: 'var(--chart-trend-dot-fill)', stroke: 'var(--chart-trend-dot-stroke)' }}
+                                        activeDot={{ r: 6, stroke: 'var(--chart-trend-dot-stroke)', fill: 'var(--chart-trend-dot-fill)', strokeWidth: 2 }}
+                                    />
                                     <Line type="monotone" dataKey="costs" stroke="var(--muted-foreground)" strokeWidth={2} strokeDasharray="5 5" dot={false} />
                                 </LineChart>
                             </ResponsiveContainer>

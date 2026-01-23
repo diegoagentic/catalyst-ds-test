@@ -46,7 +46,7 @@ const trackingSteps = [
 
 const recentOrders = [
     { id: "#ORD-2055", customer: "AutoManfacture Co.", client: "AutoManfacture Co.", project: "Office Renovation", amount: "$385,000", status: "Pending Review", date: "Dec 20, 2025", initials: "AC", statusColor: "bg-zinc-100 text-zinc-700" },
-    { id: "#ORD-2054", customer: "TechDealer Solutions", client: "TechDealer Solutions", project: "HQ Upgrade", amount: "$62,500", status: "In Production", date: "Nov 15, 2025", initials: "TS", statusColor: "bg-blue-50 text-blue-700 ring-blue-600/20" },
+    { id: "#ORD-2054", customer: "TechDealer Solutions", client: "TechDealer Solutions", project: "HQ Upgrade", amount: "$62,500", status: "In Production", date: "Nov 15, 2025", initials: "TS", statusColor: "bg-brand-50 text-brand-700 ring-brand-600/20" },
     { id: "#ORD-2053", customer: "Urban Living Inc.", client: "Urban Living Inc.", project: "Lobby Refresh", amount: "$112,000", status: "Shipped", date: "Oct 30, 2025", initials: "UL", statusColor: "bg-green-50 text-green-700 ring-green-600/20" },
     { id: "#ORD-2052", customer: "Global Logistics", client: "Global Logistics", project: "Warehouse Expansion", amount: "$45,000", status: "Delivered", date: "Oct 15, 2025", initials: "GL", statusColor: "bg-gray-100 text-gray-700" },
 ]
@@ -167,23 +167,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                        <div className="relative group">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground group-focus-within:text-foreground transition-colors" />
-                            </div>
-                            <input
-                                type="text"
-                                className="block w-full md:w-64 pl-10 pr-3 py-2 border border-input rounded-xl leading-5 bg-white/50 dark:bg-black/20 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 backdrop-blur-sm transition-all shadow-sm"
-                                placeholder="Search everything..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                        </div>
-                        <button className="p-2 rounded-xl border border-input bg-white/50 dark:bg-black/20 backdrop-blur-sm hover:bg-white dark:hover:bg-white/10 transition-all shadow-sm text-muted-foreground">
-                            <BellIcon className="h-5 w-5" />
-                        </button>
-                    </div>
+
                 </div>
 
                 {/* KPI Cards */}
@@ -266,7 +250,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                 { icon: <DocumentTextIcon className="w-5 h-5" />, label: "Export PDF" },
                                 { icon: <EnvelopeIcon className="w-5 h-5" />, label: "Send Email" },
                             ].map((action, i) => (
-                                <button key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary/50 hover:bg-primary/5 hover:text-primary text-gray-500 dark:text-gray-400 transition-all text-xs font-medium">
+                                <button key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary hover:bg-primary hover:text-zinc-900 dark:hover:text-zinc-900 text-gray-500 dark:text-gray-400 transition-all text-xs font-medium">
                                     {action.icon}
                                     <span>{action.label}</span>
                                 </button>
@@ -309,7 +293,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                 { icon: <EnvelopeIcon className="w-4 h-4" />, label: "Email" },
                             ].map((action, i) => (
                                 <button key={i} className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors">
-                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors">
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
                                         {action.icon}
                                     </div>
                                     <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{action.label}</span>
@@ -321,7 +305,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                             onClick={() => setShowMetrics(true)}
                             className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors"
                         >
-                            <div className="text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors">
+                            <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
                                 <ChevronDownIcon className="w-4 h-4" />
                             </div>
                             <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Details</span>
@@ -355,7 +339,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                 className={cn(
                                                     "px-4 py-1.5 text-sm font-medium rounded-md transition-all flex items-center gap-2 outline-none",
                                                     activeTab === tab.id
-                                                        ? "bg-background text-foreground shadow-sm"
+                                                        ? "bg-primary text-primary-foreground shadow-sm"
                                                         : "text-muted-foreground hover:text-foreground"
                                                 )}
                                             >
@@ -365,7 +349,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                     <span className={cn(
                                                         "text-xs px-1.5 py-0.5 rounded-full transition-colors",
                                                         activeTab === tab.id
-                                                            ? "bg-muted text-foreground"
+                                                            ? "bg-primary-foreground/10 text-primary-foreground"
                                                             : "bg-background text-muted-foreground group-hover:bg-muted"
                                                     )}>
                                                         {tab.count}
@@ -382,7 +366,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                         <input
                                             type="text"
                                             placeholder="Search orders..."
-                                            className="pl-9 pr-4 py-2 bg-background border border-input rounded-lg text-sm text-foreground w-full sm:w-64 focus:ring-2 focus:ring-primary/20 outline-none placeholder:text-muted-foreground"
+                                            className="pl-9 pr-4 py-2 bg-background border border-input rounded-lg text-sm text-foreground w-full sm:w-64 focus:ring-2 focus:ring-primary outline-none placeholder:text-muted-foreground"
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                         />
@@ -391,7 +375,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                     {/* Client Filter */}
                                     <div className="relative group">
                                         <select
-                                            className="appearance-none pl-3 pr-8 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer hover:bg-muted/50 transition-colors"
+                                            className="appearance-none pl-3 pr-8 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:ring-2 focus:ring-primary outline-none cursor-pointer hover:bg-muted/50 transition-colors"
                                             value={selectedClient}
                                             onChange={(e) => setSelectedClient(e.target.value)}
                                         >
@@ -403,7 +387,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                     {/* Project Filter */}
                                     <div className="relative group">
                                         <select
-                                            className="appearance-none pl-3 pr-8 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer hover:bg-muted/50 transition-colors"
+                                            className="appearance-none pl-3 pr-8 py-2 bg-background border border-input rounded-lg text-sm text-foreground focus:ring-2 focus:ring-primary outline-none cursor-pointer hover:bg-muted/50 transition-colors"
                                             value={selectedProject}
                                             onChange={(e) => setSelectedProject(e.target.value)}
                                         >
@@ -618,8 +602,8 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                                                     <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-700 -translate-y-1/2"></div>
                                                                                     <div className="relative flex justify-between">
                                                                                         {['Placed', 'Mfg', 'Qual', 'Ship'].map((step, i) => (
-                                                                                            <div key={i} className={`flex flex-col items-center gap-2 ${i < 2 ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400'}`}>
-                                                                                                <div className={`w-3 h-3 rounded-full ${i < 2 ? 'bg-blue-600 ring-4 ring-blue-50 dark:ring-blue-900/30' : 'bg-gray-300 dark:bg-gray-600'}`}></div>
+                                                                                            <div key={i} className={`flex flex-col items-center gap-2 ${i < 2 ? 'text-zinc-900 dark:text-white' : 'text-gray-400'}`}>
+                                                                                                <div className={`w-3 h-3 rounded-full ${i < 2 ? 'bg-primary ring-4 ring-brand-100 dark:ring-brand-900/30' : 'bg-gray-300 dark:bg-gray-600'}`}></div>
                                                                                                 <span className="text-xs font-medium">{step}</span>
                                                                                             </div>
                                                                                         ))}
@@ -634,7 +618,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                                                         <div>
                                                                                             <p className="text-sm font-medium text-orange-700 dark:text-orange-400">Customs Delay</p>
                                                                                             <p className="text-xs text-gray-500 mt-1">Shipment held at port. ETA +24h.</p>
-                                                                                            <button onClick={() => setTrackingOrder(order)} className="mt-2 text-xs font-medium text-primary hover:underline">Track Shipment</button>
+                                                                                            <button onClick={() => setTrackingOrder(order)} className="mt-2 text-xs font-medium text-zinc-900 dark:text-primary decoration-primary underline-offset-2 hover:underline">Track Shipment</button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -654,13 +638,13 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                         {filteredOrders.map((order) => (
                                             <div
                                                 key={order.id}
-                                                className={`group relative bg-white dark:bg-zinc-900 rounded-2xl border ${expandedIds.has(order.id) ? 'border-blue-500 ring-1 ring-blue-500' : 'border-gray-200 dark:border-white/10'} shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden`}
+                                                className={`group relative bg-white dark:bg-zinc-900 rounded-2xl border ${expandedIds.has(order.id) ? 'border-zinc-300 dark:border-zinc-600 ring-1 ring-zinc-300 dark:ring-zinc-600' : 'border-gray-200 dark:border-white/10'} shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden flex flex-col`}
                                                 onClick={() => toggleExpand(order.id)}
                                             >
                                                 <div className="p-5">
                                                     <div className="flex items-center justify-between mb-4">
                                                         <div className="flex items-center gap-3">
-                                                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-md">
+                                                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-md">
                                                                 {order.initials}
                                                             </div>
                                                             <div>
@@ -722,7 +706,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                 </div>
 
                                                 {expandedIds.has(order.id) && (
-                                                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/5">
+                                                    <div className="mt-4 pt-4 px-5 border-t border-gray-100 dark:border-white/5">
                                                         <div className="flex flex-col md:flex-row gap-8">
                                                             <div className="flex-1 space-y-6">
                                                                 <div className="flex items-center gap-3">
@@ -740,10 +724,10 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                                     <div className="relative z-10 flex justify-between">
                                                                         {['Placed', 'Mfg', 'Qual', 'Ship'].map((step, i) => (
                                                                             <div key={i} className="flex flex-col items-center bg-white dark:bg-zinc-900 px-1">
-                                                                                <div className={`h-6 w-6 rounded-full flex items-center justify-center ${i <= 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-zinc-700 text-gray-400'}`}>
-                                                                                    {i < 1 ? <CheckIcon className="h-4 w-4" /> : <div className={`h-2 w-2 rounded-full ${i <= 1 ? 'bg-white' : 'bg-white/50'}`} />}
+                                                                                <div className={`h-6 w-6 rounded-full flex items-center justify-center ${i <= 1 ? 'bg-primary text-primary-foreground' : 'bg-gray-200 dark:bg-zinc-700 text-gray-400'}`}>
+                                                                                    {i < 1 ? <CheckIcon className="h-4 w-4" /> : <div className={`h-2 w-2 rounded-full ${i <= 1 ? 'bg-primary-foreground' : 'bg-white/50'}`} />}
                                                                                 </div>
-                                                                                <span className={`mt-2 text-xs font-medium ${i <= 1 ? 'text-blue-500' : 'text-gray-500'}`}>{step}</span>
+                                                                                <span className={`mt-2 text-xs font-medium ${i <= 1 ? 'text-zinc-900 dark:text-zinc-100' : 'text-gray-500'}`}>{step}</span>
                                                                             </div>
                                                                         ))}
                                                                     </div>
@@ -757,7 +741,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                                         <div>
                                                                             <h5 className="text-sm font-bold text-orange-700 dark:text-orange-400">Alert: Customs Delay</h5>
                                                                             <p className="mt-1 text-xs text-orange-600/80 dark:text-orange-400/70">Held at port. ETA +24h.</p>
-                                                                            <button onClick={(e) => { e.stopPropagation(); setTrackingOrder(order); }} className="mt-2 text-xs font-medium text-primary hover:underline">
+                                                                            <button onClick={(e) => { e.stopPropagation(); setTrackingOrder(order); }} className="mt-2 text-xs font-medium text-zinc-900 dark:text-primary decoration-primary underline-offset-2 hover:underline">
                                                                                 Track Shipment
                                                                             </button>
                                                                         </div>
@@ -766,8 +750,10 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                             </div>
                                                         </div>
                                                     </div>
-                                                )}                                                {expandedIds.has(order.id) && (
-                                                    <div className="bg-gray-50 dark:bg-white/5 p-4 border-t border-gray-200 dark:border-white/10">
+                                                )}
+
+                                                {expandedIds.has(order.id) && (
+                                                    <div className="mt-6 bg-gray-50 dark:bg-white/5 p-4 border-t border-gray-200 dark:border-white/10">
                                                         <div className="flex items-center gap-2 mb-3">
                                                             <ShoppingBagIcon className="h-4 w-4 text-gray-400" />
                                                             <span className="text-xs font-medium text-gray-600 dark:text-gray-300">Order Items (3)</span>
@@ -780,14 +766,17 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                                 </div>
                                                             ))}
                                                         </div>
-                                                        <button
-                                                            onClick={(e) => { e.stopPropagation(); setTrackingOrder(order); }}
-                                                            className="mt-4 w-full py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg text-xs font-medium shadow-md transition-all flex items-center justify-center gap-2"
-                                                        >
-                                                            <MapPinIcon className="h-3 w-3" /> Track Shipment
-                                                        </button>
                                                     </div>
                                                 )}
+
+                                                <div className="p-4 pt-0 mt-auto">
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); setTrackingOrder(order); }}
+                                                        className="w-full py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg text-xs font-medium shadow-sm transition-all flex items-center justify-center gap-2"
+                                                    >
+                                                        <MapPinIcon className="h-3 w-3" /> Track Shipment
+                                                    </button>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
@@ -887,7 +876,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                     <div key={idx} className="relative pl-6">
                                                         <div className={cn(
                                                             "absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full ring-4 ring-white dark:ring-zinc-900",
-                                                            step.completed ? "bg-zinc-900 dark:bg-white" : "bg-zinc-300 dark:bg-zinc-700",
+                                                            step.completed ? "bg-primary" : "bg-zinc-300 dark:bg-zinc-700",
                                                             step.alert && "bg-red-500 dark:bg-red-500"
                                                         )} />
                                                         <p className="text-sm font-medium text-zinc-900 dark:text-white">{step.status}</p>
@@ -917,7 +906,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                             <div className="mt-auto pt-6 border-t border-zinc-100 dark:border-zinc-800">
                                                 <button
                                                     type="button"
-                                                    className="w-full inline-flex justify-center items-center gap-2 rounded-md bg-zinc-900 dark:bg-white px-3 py-2 text-sm font-semibold text-white dark:text-zinc-900 shadow-sm hover:bg-zinc-700 dark:hover:bg-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-600"
+                                                    className="w-full inline-flex justify-center items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-zinc-900 shadow-sm hover:bg-brand-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
                                                     onClick={() => console.log('Contacting support...')}
                                                 >
                                                     <EnvelopeIcon className="h-4 w-4" />

@@ -61,7 +61,7 @@ const DiscrepancyResolutionFlow = () => {
                     <li>Order #ORD-2048: Missing carrier update</li>
                 </ul>
                 <div className="flex gap-2 mt-2">
-                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20 text-xs font-medium rounded-lg transition-colors">
+                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-zinc-900 dark:text-primary hover:bg-primary/20 text-xs font-medium rounded-lg transition-colors">
                         <ArrowPathIcon className="w-3.5 h-3.5" /> Sync & Report
                     </button>
                     <button
@@ -112,7 +112,7 @@ const DiscrepancyResolutionFlow = () => {
     if (status === 'pending') {
         return (
             <div className="flex flex-col gap-3 animate-in fade-in">
-                <div className="flex items-center gap-2 text-primary">
+                <div className="flex items-center gap-2 text-zinc-900 dark:text-primary">
                     <ArrowPathIcon className="w-4 h-4 animate-spin" />
                     <span>Requesting approval from Logistics Manager...</span>
                 </div>
@@ -624,7 +624,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                 <thead className="bg-muted/50">
                                                     <tr>
                                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-10">
-                                                            <input type="checkbox" className="h-4 w-4 rounded border-input text-primary focus:ring-primary bg-background" />
+                                                            <input type="checkbox" className="h-4 w-4 rounded border-input text-zinc-900 dark:text-primary focus:ring-primary bg-background" />
                                                         </th>
                                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">SKU ID</th>
                                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Image</th>
@@ -645,7 +645,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                             )}
                                                         >
                                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                                <input type="checkbox" className="h-4 w-4 rounded border-input text-primary focus:ring-primary bg-background" />
+                                                                <input type="checkbox" className="h-4 w-4 rounded border-input text-zinc-900 dark:text-primary focus:ring-primary bg-background" />
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">{item.id}</td>
                                                             <td className="px-6 py-4 whitespace-nowrap">
@@ -1020,7 +1020,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                 <div className="flex-shrink-0">
                                                     {msg.type === 'action_processing' ? (
                                                         <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 animate-pulse">
-                                                            <DocumentTextIcon className="h-5 w-5 text-primary" />
+                                                            <DocumentTextIcon className="h-5 w-5 text-zinc-900 dark:text-primary" />
                                                         </div>
                                                     ) : msg.type === 'action_success' ? (
                                                         <div className="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center border border-green-200 dark:border-green-800">
@@ -1034,7 +1034,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                         <img className="h-10 w-10 rounded-full object-cover" src={msg.avatar} alt={msg.sender} />
                                                     ) : (
                                                         <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
-                                                            <ExclamationTriangleIcon className="h-5 w-5 text-primary" />
+                                                            <ExclamationTriangleIcon className="h-5 w-5 text-zinc-900 dark:text-primary" />
                                                         </div>
                                                     )}
                                                 </div>
@@ -1055,7 +1055,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                         )}>
                                                             {msg.content}
                                                             {msg.type === 'action_processing' && (
-                                                                <div className="mt-3 flex items-center gap-2 text-primary font-medium">
+                                                                <div className="mt-3 flex items-center gap-2 text-zinc-900 dark:text-primary font-medium">
                                                                     <ArrowPathIcon className="h-4 w-4 animate-spin" />
                                                                     <span>Processing request...</span>
                                                                 </div>
@@ -1111,11 +1111,11 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                             <h4 className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">Suggested Actions</h4>
                                             <div className="space-y-3">
                                                 <button onClick={() => setIsDocumentModalOpen(true)} className="w-full group relative flex items-center gap-3 p-3 rounded-xl border border-border bg-card hover:border-primary/50 hover:shadow-md transition-all text-left">
-                                                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors text-primary">
+                                                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors text-zinc-900 dark:text-primary">
                                                         <DocumentTextIcon className="h-5 w-5" />
                                                     </div>
                                                     <div>
-                                                        <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">Process Quote</p>
+                                                        <p className="text-sm font-medium text-foreground group-hover:text-zinc-900 dark:group-hover:text-primary transition-colors">Process Quote</p>
                                                         <p className="text-[10px] text-muted-foreground">Analyze PDF & Extract Data</p>
                                                     </div>
                                                 </button>
@@ -1151,8 +1151,8 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                         <div className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></div>
                                                     </div>
                                                     <div>
-                                                        <p className="text-xs font-medium text-primary">AI Assistant is processing the new quote...</p>
-                                                        <p className="text-[10px] text-primary/80 mt-1">Estimated completion: 30s</p>
+                                                        <p className="text-xs font-medium text-zinc-900 dark:text-primary">AI Assistant is processing the new quote...</p>
+                                                        <p className="text-[10px] text-zinc-700 dark:text-primary/80 mt-1">Estimated completion: 30s</p>
                                                     </div>
                                                 </div>
                                             </div>

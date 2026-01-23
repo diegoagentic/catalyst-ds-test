@@ -57,7 +57,7 @@ const DiscrepancyResolutionFlow = () => {
                     <li>Order #ORD-2048: Missing carrier update</li>
                 </ul>
                 <div className="flex gap-2 mt-2">
-                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20 text-xs font-medium rounded-lg transition-colors">
+                    <button className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-zinc-900 dark:text-primary hover:bg-primary/20 text-xs font-medium rounded-lg transition-colors">
                         <ArrowPathIcon className="w-3.5 h-3.5" /> Sync & Report
                     </button>
                     <button
@@ -108,7 +108,7 @@ const DiscrepancyResolutionFlow = () => {
     if (status === 'pending') {
         return (
             <div className="flex flex-col gap-3 animate-in fade-in">
-                <div className="flex items-center gap-2 text-primary">
+                <div className="flex items-center gap-2 text-zinc-900 dark:text-primary">
                     <ArrowPathIcon className="w-4 h-4 animate-spin" />
                     <span>Requesting approval from Logistics Manager...</span>
                 </div>
@@ -133,7 +133,7 @@ const DiscrepancyResolutionFlow = () => {
                             <p className="text-xs text-gray-500">Updated just now</p>
                         </div>
                     </div>
-                    <button className="text-xs font-medium text-primary hover:underline">Download</button>
+                    <button className="text-xs font-medium text-zinc-900 dark:text-primary hover:underline">Download</button>
                 </div>
             </div>
         )
@@ -384,7 +384,7 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                 content: (
                     <div className="flex flex-col gap-2">
                         <span className="flex items-center gap-2">
-                            <SparklesIcon className="w-4 h-4 animate-pulse text-primary" />
+                            <SparklesIcon className="w-4 h-4 animate-pulse text-zinc-900 dark:text-primary" />
                             Analyzing recent activity for "TechDealer Solutions"...
                         </span>
                     </div>
@@ -439,7 +439,7 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                             <ArrowPathIcon className="w-4 h-4" />
                             <span>Syncing 3 records to Central DB... Done.</span>
                         </div>
-                        <div className="flex items-center gap-2 text-primary">
+                        <div className="flex items-center gap-2 text-zinc-900 dark:text-primary">
                             <DocumentChartBarIcon className="w-4 h-4" />
                             <span>Generating Reconciliation Report... Done.</span>
                         </div>
@@ -453,7 +453,7 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                                     <p className="text-xs text-gray-500">1.2 MB • Generated just now</p>
                                 </div>
                             </div>
-                            <button className="text-xs font-medium text-primary hover:underline">Download</button>
+                            <button className="text-xs font-medium text-zinc-900 dark:text-primary hover:underline">Download</button>
                         </div>
                     </div>
                 ),
@@ -485,7 +485,7 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                             <CpuChipIcon className="w-4 h-4" />
                             <span>Logistics Provider "FastTrack" assigned.</span>
                         </div>
-                        <div className="flex items-center gap-2 text-primary">
+                        <div className="flex items-center gap-2 text-zinc-900 dark:text-primary">
                             <PaperAirplaneIcon className="w-4 h-4" />
                             <span>Dispatch signal sent to warehouse. Order is now processing.</span>
                         </div>
@@ -623,7 +623,7 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                             {appActivities.map((activity, i) => (
                                 <div key={activity.id} className="relative pl-0 pb-2 border-b border-gray-100 dark:border-white/5 last:border-0 hover:bg-gray-50 dark:hover:bg-white/5 p-3 rounded transition-colors group">
                                     <div className="flex items-center gap-3 mb-1">
-                                        <div className="p-1.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+                                        <div className="p-1.5 rounded-md bg-primary/10 text-zinc-900 dark:text-primary group-hover:bg-primary/20 transition-colors">
                                             <activity.icon className="w-4 h-4" />
                                         </div>
                                         <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">{activity.app}</span>
@@ -649,7 +649,7 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                                         }
                                     `}>
                                         {msg.role === 'assistant' && (
-                                            <div className="flex items-center gap-2 mb-2 text-primary font-medium text-xs">
+                                            <div className="flex items-center gap-2 mb-2 text-zinc-900 dark:text-primary font-medium text-xs">
                                                 <SparklesIcon className="w-3 h-3" />
                                                 <span>AI Copilot</span>
                                             </div>
@@ -661,14 +661,14 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                                         {/* Action Buttons for specific messages */}
                                         {msg.role === 'assistant' && msg.id === 'step-2' && (
                                             <div className="mt-4 flex gap-2">
-                                                <button onClick={handleSyncAndReport} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20 text-xs font-medium rounded-lg transition-colors">
+                                                <button onClick={handleSyncAndReport} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-zinc-900 dark:text-primary hover:bg-primary/20 text-xs font-medium rounded-lg transition-colors">
                                                     <ArrowPathIcon className="w-3.5 h-3.5" /> Sync & Report
                                                 </button>
                                             </div>
                                         )}
                                         {msg.role === 'assistant' && msg.id === 'summary-step-2' && (
                                             <div className="mt-4 flex gap-2">
-                                                <button onClick={handleAssignAndDispatch} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20 text-xs font-medium rounded-lg transition-colors">
+                                                <button onClick={handleAssignAndDispatch} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-zinc-900 dark:text-primary hover:bg-primary/20 text-xs font-medium rounded-lg transition-colors">
                                                     <PaperAirplaneIcon className="w-3.5 h-3.5" /> Assign & Execute
                                                 </button>
                                             </div>

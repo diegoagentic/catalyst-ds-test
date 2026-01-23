@@ -36,20 +36,20 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
     const { currentTenant, tenants, setTenant } = useTenant()
 
     return (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-            <div className="flex items-center px-6 py-2 rounded-full gap-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-border shadow-lg dark:shadow-glow-md">
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 max-w-[95vw]">
+            <div className="flex items-center px-4 py-2 rounded-full gap-2 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-border shadow-lg dark:shadow-glow-md">
 
                 {/* Logo */}
-                <div className="px-4">
-                    <img src={logoLightBrand} alt="Strata" className="h-8 w-32 object-contain block dark:hidden" />
-                    <img src={logoDarkBrand} alt="Strata" className="h-8 w-32 object-contain hidden dark:block" />
+                <div className="px-2 shrink-0">
+                    <img src={logoLightBrand} alt="Strata" className="h-8 w-24 object-contain block dark:hidden" />
+                    <img src={logoDarkBrand} alt="Strata" className="h-8 w-24 object-contain hidden dark:block" />
                 </div>
 
 
                 <div className="h-6 w-px bg-border mx-1"></div>
 
                 {/* Tenant Selector */}
-                <Menu as="div" className="relative mr-2">
+                <Menu as="div" className="relative">
                     <MenuButton className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-muted transition-colors outline-none">
                         <div className="flex flex-col items-start text-left">
                             <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider leading-none">Tenant</span>
@@ -97,7 +97,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                 <div className="h-6 w-px bg-border mx-1"></div>
 
                 {/* Right Actions */}
-                <div className="flex items-center gap-2 pr-2">
+                <div className="flex items-center gap-1">
                     {/* Action Center - New Feature */}
                     <ActionCenter />
 
@@ -119,8 +119,8 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                             <PopoverPanel className="fixed top-[90px] left-1/2 -translate-x-1/2 w-[400px] p-4 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-border shadow-2xl rounded-3xl z-[100] overflow-hidden">
                                 <div className="grid grid-cols-3 gap-4">
                                     {[
-                                        { icon: <BriefcaseIcon className="w-8 h-8" />, label: "My Work Space", color: "text-primary", bg: "bg-primary/10", isHighlighted: true, onClick: onNavigateToWorkspace },
-                                        { icon: <HomeIcon className="w-8 h-8" />, label: "Portal", color: "text-primary", bg: "bg-primary/10" },
+                                        { icon: <BriefcaseIcon className="w-8 h-8" />, label: "My Work Space", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10", isHighlighted: true, onClick: onNavigateToWorkspace },
+                                        { icon: <HomeIcon className="w-8 h-8" />, label: "Portal", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10" },
                                         { icon: <UserIcon className="w-8 h-8" />, label: "CRM", color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-50 dark:bg-purple-500/10" },
                                         { icon: <DocumentTextIcon className="w-8 h-8" />, label: "Invoice", color: "text-green-600 dark:text-green-400", bg: "bg-green-50 dark:bg-green-500/10" },
                                         { icon: <CubeIcon className="w-8 h-8" />, label: "Inventory", color: "text-orange-600 dark:text-orange-400", bg: "bg-orange-50 dark:bg-orange-500/10" },

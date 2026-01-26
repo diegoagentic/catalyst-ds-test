@@ -4,6 +4,9 @@
 - **Navbar Layout (Tablet/Mobile):**
     - **Overflow Fix:** Applied `min-w-[60vw] max-w-fit` to the desktop container to prevent clipping while allowing natural expansion.
     - **Tenant Name:** Implemented smart truncation (`max-w-[140px]` + `truncate`) to prevent the user menu from breaking the layout on medium screens.
+- **Navbar Layout (Desktop):**
+    - **Split Distribution:** Refactored to a **Left (Logo/Tenant) / Center (Nav) / Right (Actions)** layout for better balance.
+    - **Centered Navigation:** Navigation links are now absolutely positioned in the exact center of the bar.
 - **Action Center:**
     - **Mobile/Tablet Layout:** Centered the panel (`95vw` width) for better visibility.
     - **Optimized Navigation:** Switched to **Icon-Only Tabs** on mobile/tablet to save horizontal space.

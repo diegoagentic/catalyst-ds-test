@@ -454,58 +454,75 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                 {/* Collapsible Summary */}
                 {isSummaryExpanded ? (
                     <>
-                        <div className="flex justify-end mb-2">
-                            <button onClick={() => setIsSummaryExpanded(false)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                                Hide Details <ChevronUpIcon className="w-4 h-4" />
-                            </button>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 animate-in fade-in zoom-in duration-300">
-                            {[
-                                { label: 'TOTAL SKUs', value: '450' },
-                                { label: 'IN PRODUCTION', value: '50' },
-                                { label: 'AVAILABLE', value: '400' },
-                                { label: 'LOW STOCK', value: '15' },
-                                { label: 'OUT OF STOCK', value: '8', color: 'text-red-600 dark:text-red-400' },
-                            ].map((stat, i) => (
-                                <div key={i} className="bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-sm border border-border">
-                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">{stat.label}</p>
-                                    <p className={cn("text-2xl font-bold", stat.color || "text-foreground")}>{stat.value}</p>
-                                </div>
-                            ))}
-                        </div>
+                        <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-zinc-200 dark:border-white/10 ring-1 ring-black/5 dark:ring-0 transition-all duration-300">
+                            <div className="flex justify-end mb-4">
+                                <button onClick={() => setIsSummaryExpanded(false)} className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1.5 rounded-lg">
+                                    Hide Details <ChevronUpIcon className="w-3.5 h-3.5" />
+                                </button>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 animate-in fade-in zoom-in duration-300">
+                                {[
+                                    { label: 'TOTAL SKUs', value: '450' },
+                                    { label: 'IN PRODUCTION', value: '50' },
+                                    { label: 'AVAILABLE', value: '400' },
+                                    { label: 'LOW STOCK', value: '15' },
+                                    { label: 'OUT OF STOCK', value: '8', color: 'text-red-600 dark:text-red-400' },
+                                ].map((stat, i) => (
+                                    <div key={i} className="bg-zinc-50 dark:bg-zinc-900/50 p-4 rounded-xl border border-zinc-100 dark:border-white/5">
+                                        <p className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{stat.label}</p>
+                                        <p className={cn("text-2xl font-bold tracking-tight", stat.color || "text-zinc-900 dark:text-white")}>{stat.value}</p>
+                                    </div>
+                                ))}
+                            </div>
 
-                        {/* Integrated Stepper */}
-                        <div className="mt-8 pt-6 border-t border-border animate-in fade-in slide-in-from-top-4 duration-500">
-                            <div className="relative pb-2">
-                                <div className="absolute top-[15px] left-0 w-full h-[2px] bg-muted" />
-                                <div className="relative z-10 flex justify-between w-full max-w-4xl mx-auto px-4">
-                                    {[
-                                        { name: 'Category Selected', status: 'completed' },
-                                        { name: 'Item List Viewing', status: 'current' },
-                                        { name: 'Details Pending', status: 'pending' },
-                                        { name: 'Edit Pending', status: 'pending' },
-                                        { name: 'Complete Pending', status: 'pending' }
-                                    ].map((step, i) => (
-                                        <div key={i} className="flex flex-col items-center group cursor-default">
-                                            <div className={cn(
-                                                "w-8 h-8 rounded-full flex items-center justify-center ring-4 ring-background transition-all duration-300",
-                                                step.status === 'completed' ? 'bg-primary text-primary-foreground' :
-                                                    step.status === 'current' ? 'bg-background border-2 border-primary text-foreground' :
-                                                        'bg-muted text-muted-foreground'
-                                            )}>
-                                                {step.status === 'completed' ? <CheckCircleIcon className="w-5 h-5" /> :
-                                                    step.status === 'current' ? <div className="w-2.5 h-2.5 rounded-full bg-primary" /> :
-                                                        <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />}
-                                            </div>
-                                            <div className="mt-3 text-center">
-                                                <p className={cn(
-                                                    "text-xs font-semibold transition-colors duration-300",
-                                                    step.status === 'completed' || step.status === 'current' ? 'text-foreground' : 'text-muted-foreground'
-                                                )}>{step.name.split(' ')[0]}</p>
-                                                <p className="text-[10px] text-muted-foreground mt-0.5">{step.name.split(' ').slice(1).join(' ')}</p>
-                                            </div>
-                                        </div>
-                                    ))}
+                            {/* Integrated Stepper - Matched to Dashboard */}
+                            <div className="mt-8 pt-6 border-t border-zinc-100 dark:border-white/10 animate-in fade-in slide-in-from-top-4 duration-500">
+                                <div className="relative pb-2">
+                                    <div className="absolute top-3 left-0 w-full h-0.5 bg-zinc-200 dark:bg-zinc-700" />
+                                    <div className="relative z-10 flex justify-between w-full max-w-4xl mx-auto px-4">
+                                        {[
+                                            { name: 'Category Selected', status: 'completed' },
+                                            { name: 'Item List Viewing', status: 'current' },
+                                            { name: 'Details Pending', status: 'pending' },
+                                            { name: 'Edit Pending', status: 'pending' },
+                                            { name: 'Complete Pending', status: 'pending' }
+                                        ].map((step, i) => {
+                                            const isCompleted = step.status === 'completed';
+                                            const isCurrent = step.status === 'current';
+                                            // Matching Dashboard logic: Completed & Current (active) use primary/brand colors. 
+                                            // Dashboard uses index logic (i <= 1), here we use status.
+                                            // Dashboard classes: h-6 w-6 rounded-full flex items-center justify-center
+                                            // Active/Completed: bg-primary text-primary-foreground
+                                            // Pending: bg-gray-200 dark:bg-zinc-700 text-gray-400
+
+                                            // However, for correct visual flow in this context:
+                                            // Completed: Primary Background, Check Icon
+                                            // Current: Primary Background, Dot
+                                            // Pending: Gray Background
+
+                                            return (
+                                                <div key={i} className="flex flex-col items-center bg-white dark:bg-zinc-900 px-1 group cursor-default">
+                                                    <div className={cn(
+                                                        "h-6 w-6 rounded-full flex items-center justify-center transition-all duration-300",
+                                                        isCompleted || isCurrent
+                                                            ? 'bg-primary text-primary-foreground'
+                                                            : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-400'
+                                                    )}>
+                                                        {isCompleted ? <CheckIcon className="w-4 h-4" /> :
+                                                            isCurrent ? <div className="w-2 h-2 rounded-full bg-primary-foreground" /> :
+                                                                <div className="w-2 h-2 rounded-full bg-white/50 dark:bg-zinc-600" />}
+                                                    </div>
+                                                    <span className={cn(
+                                                        "mt-2 text-xs font-medium transition-colors duration-300",
+                                                        isCompleted || isCurrent ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 dark:text-zinc-500'
+                                                    )}>
+                                                        {step.name.split(' ')[0]}
+                                                    </span>
+                                                    <p className="text-[10px] text-zinc-400 dark:text-zinc-600 mt-0.5">{step.name.split(' ').slice(1).join(' ')}</p>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -568,7 +585,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                         cn(
                                             "py-4 text-sm font-medium border-b-2 outline-none transition-colors",
                                             selected
-                                                ? "border-primary text-foreground"
+                                                ? "border-zinc-500 text-zinc-900 dark:border-primary dark:text-foreground"
                                                 : "border-transparent text-muted-foreground hover:text-foreground"
                                         )
                                     }
@@ -580,7 +597,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                         cn(
                                             "py-4 text-sm font-medium border-b-2 outline-none transition-colors",
                                             selected
-                                                ? "border-primary text-foreground"
+                                                ? "border-zinc-500 text-zinc-900 dark:border-primary dark:text-foreground"
                                                 : "border-transparent text-muted-foreground hover:text-foreground"
                                         )
                                     }
@@ -619,7 +636,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                         </div>
 
                                         {/* Table */}
-                                        <div className="">
+                                        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700 scrollbar-track-transparent">
                                             <table className="min-w-full divide-y divide-border">
                                                 <thead className="bg-muted/50">
                                                     <tr>
@@ -672,10 +689,10 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">{item.properties}</td>
                                                             <td className="px-6 py-4 whitespace-nowrap">
                                                                 <div className="flex items-center gap-3">
-                                                                    <div className="flex-1 w-24 bg-muted rounded-full h-1.5 overflow-hidden">
+                                                                    <div className="h-8 w-1.5 bg-muted rounded-full relative overflow-hidden">
                                                                         <div
-                                                                            className="bg-foreground h-1.5 rounded-full"
-                                                                            style={{ width: `${(item.stock / 600) * 100}%` }}
+                                                                            className="absolute bottom-0 left-0 w-full bg-foreground rounded-full"
+                                                                            style={{ height: `${(item.stock / 600) * 100}%` }}
                                                                         />
                                                                     </div>
                                                                     <span className="text-xs text-muted-foreground">{Math.floor((item.stock / 600) * 100)}%</span>
@@ -750,7 +767,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
 
                                                     {sections.aiSuggestions && (
                                                         selectedItem.aiStatus === 'info' ? (
-                                                            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                                                            <div className="bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
                                                                 <h4 className="text-sm font-bold text-foreground mb-2">Optimization Opportunity</h4>
                                                                 <div className="space-y-2">
                                                                     <div className="p-2 bg-background border border-border rounded cursor-pointer hover:border-primary transition-colors">
@@ -789,19 +806,19 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                                 </div>
                                                             </div>
                                                         ) : (
-                                                            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800 rounded-lg p-3">
+                                                            <div className="bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-700 rounded-lg p-3">
                                                                 <div className="flex gap-3">
-                                                                    <ExclamationTriangleIcon className="h-5 w-5 text-amber-600 dark:text-amber-500 flex-shrink-0" />
+                                                                    <ExclamationTriangleIcon className="h-5 w-5 text-amber-500 flex-shrink-0" />
                                                                     <div className="w-full">
                                                                         <div className="flex justify-between items-start">
                                                                             <div>
-                                                                                <h4 className="text-sm font-bold text-amber-800 dark:text-amber-100">Database Discrepancy</h4>
-                                                                                <p className="text-xs text-amber-700 dark:text-amber-200 mt-1">Stock count mismatch detected.</p>
+                                                                                <h4 className="text-sm font-bold text-foreground">Database Discrepancy</h4>
+                                                                                <p className="text-xs text-muted-foreground mt-1">Stock count mismatch detected.</p>
                                                                             </div>
                                                                             {!isManualFixMode && (
                                                                                 <button
                                                                                     onClick={() => setIsManualFixMode(true)}
-                                                                                    className="text-xs text-amber-700 dark:text-amber-200 underline hover:text-amber-900 dark:hover:text-amber-100"
+                                                                                    className="text-xs text-muted-foreground underline hover:text-foreground"
                                                                                 >
                                                                                     Resolve Manually
                                                                                 </button>
@@ -902,7 +919,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                     />
                                                 </button>
                                                 {sections.productOverview && (
-                                                    <div className="space-y-4 animate-in fade-in slide-in-from-top-1 duration-200">
+                                                    <div className="space-y-4 animate-in fade-in slide-in-from-top-1 duration-200 bg-zinc-50 dark:bg-zinc-900 border border-border rounded-lg p-4">
                                                         <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
                                                             <CubeIcon className="h-12 w-12 text-muted-foreground/50" />
                                                         </div>
@@ -942,7 +959,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                     />
                                                 </button>
                                                 {sections.lifecycle && (
-                                                    <div className="pl-4 border-l border-border ml-2 space-y-4 animate-in fade-in slide-in-from-top-1 duration-200">
+                                                    <div className="pl-4 border-l border-border ml-2 space-y-4 animate-in fade-in slide-in-from-top-1 duration-200 bg-zinc-50 dark:bg-zinc-900 border-r border-y border-border rounded-r-lg p-4">
                                                         {['Material Sourced', 'Manufacturing', 'Quality Control'].map((step, i) => (
                                                             <div key={i} className="relative pb-2 last:pb-0">
                                                                 <div className="absolute -left-[21px] top-1 h-2 w-2 rounded-full bg-primary" />
@@ -951,7 +968,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                             </div>
                                                         ))}
                                                         <div className="relative">
-                                                            <div className="absolute -left-[21px] top-0 h-4 w-4 rounded-full bg-background border-2 border-primary ring-4 ring-background" />
+                                                            <div className="absolute -left-[21px] top-0 h-4 w-4 rounded-full bg-background border-2 border-zinc-400 dark:border-primary ring-4 ring-background" />
                                                             <p className="font-medium text-foreground leading-none">Warehouse Storage</p>
                                                             <p className="text-xs text-muted-foreground mt-1">In Progress</p>
                                                         </div>
@@ -1050,7 +1067,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                                         <div className={cn(
                                                             "p-4 rounded-2xl text-sm leading-relaxed shadow-sm",
                                                             msg.type === 'user'
-                                                                ? "bg-primary text-primary-foreground rounded-tr-sm"
+                                                                ? "bg-brand-400 text-primary-foreground rounded-tr-sm"
                                                                 : "bg-card border border-border rounded-tl-sm text-foreground"
                                                         )}>
                                                             {msg.content}

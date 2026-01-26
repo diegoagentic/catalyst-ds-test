@@ -16,7 +16,7 @@ import logoDarkBrand from '../assets/logo-dark-brand.png';
 
 function NavItem({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
     return (
-        <button className={`relative flex items-center justify-center h-9 px-3 rounded-full transition-all duration-300 group overflow-hidden ${active ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}>
+        <button className={`relative flex items-center justify-center h-9 px-2 rounded-full transition-all duration-300 group overflow-hidden ${active ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}>
             <span className="relative z-10">{icon}</span>
             <span className={`ml-2 text-sm font-medium whitespace-nowrap max-w-0 opacity-0 group-hover:max-w-xs group-hover:opacity-100 transition-all duration-300 ease-in-out ${active ? 'max-w-xs opacity-100' : ''}`}>
                 {label}
@@ -36,21 +36,23 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
     const { currentTenant, tenants, setTenant } = useTenant()
 
     return (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 max-w-[95vw]">
-            <div className="flex items-center px-4 py-2 rounded-full gap-2 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-border shadow-lg dark:shadow-glow-md">
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 min-w-[60vw] max-w-fit">
+            <div className="flex items-center px-3 py-2 rounded-full gap-1 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-border shadow-lg dark:shadow-glow-md">
 
                 {/* Logo */}
                 <div className="px-2 shrink-0">
-                    <img src={logoLightBrand} alt="Strata" className="h-8 w-24 object-contain block dark:hidden" />
-                    <img src={logoDarkBrand} alt="Strata" className="h-8 w-24 object-contain hidden dark:block" />
+                    <img src={logoLightBrand} alt="Strata" className="h-8 w-20 object-contain block dark:hidden" />
+                    <img src={logoDarkBrand} alt="Strata" className="h-8 w-20 object-contain hidden dark:block" />
                 </div>
 
 
-                <div className="h-6 w-px bg-border mx-1"></div>
 
-                {/* Tenant Selector */}
-                <Menu as="div" className="relative">
-                    <MenuButton className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-muted transition-colors outline-none">
+
+                <div className="h-6 w-px bg-border mx-1 hidden lg:block"></div>
+
+                {/* Tenant Selector - Desktop Only */}
+                <Menu as="div" className="relative hidden lg:block">
+                    <MenuButton className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-muted transition-colors outline-none">
                         <div className="flex flex-col items-start text-left">
                             <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider leading-none">Tenant</span>
                             <div className="flex items-center gap-1">
@@ -86,15 +88,17 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                     </Transition>
                 </Menu>
 
+
+
                 {/* Navigation Items */}
-                <div className="flex items-center gap-1">
+                <div className="hidden lg:flex items-center gap-1">
                     <NavItem icon={<HomeIcon className="w-4 h-4" />} label="Overview" active={activeTab === 'Overview'} />
                     <NavItem icon={<CubeIcon className="w-4 h-4" />} label="Inventory" active={activeTab === 'Inventory'} />
                     <NavItem icon={<ArrowTrendingUpIcon className="w-4 h-4" />} label="Production" active={activeTab === 'Production'} />
                     <NavItem icon={<ClipboardDocumentListIcon className="w-4 h-4" />} label="Orders" active={activeTab === 'Orders'} />
                 </div>
 
-                <div className="h-6 w-px bg-border mx-1"></div>
+                <div className="h-6 w-px bg-border mx-1 hidden lg:block"></div>
 
                 {/* Right Actions */}
                 <div className="flex items-center gap-1">
@@ -116,81 +120,211 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                             leaveFrom="opacity-100 translate-y-0"
                             leaveTo="opacity-0 translate-y-1"
                         >
-                            <PopoverPanel className="fixed top-[90px] left-1/2 -translate-x-1/2 w-[400px] p-4 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-border shadow-2xl rounded-3xl z-[100] overflow-hidden">
-                                <div className="grid grid-cols-3 gap-4">
-                                    {[
-                                        { icon: <BriefcaseIcon className="w-8 h-8" />, label: "My Work Space", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10", isHighlighted: true, onClick: onNavigateToWorkspace },
-                                        { icon: <HomeIcon className="w-8 h-8" />, label: "Portal", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10" },
-                                        { icon: <UserIcon className="w-8 h-8" />, label: "CRM", color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-50 dark:bg-purple-500/10" },
-                                        { icon: <DocumentTextIcon className="w-8 h-8" />, label: "Invoice", color: "text-green-600 dark:text-green-400", bg: "bg-green-50 dark:bg-green-500/10" },
-                                        { icon: <CubeIcon className="w-8 h-8" />, label: "Inventory", color: "text-orange-600 dark:text-orange-400", bg: "bg-orange-50 dark:bg-orange-500/10" },
-                                        { icon: <ChartBarIcon className="w-8 h-8" />, label: "Analytics", color: "text-pink-600 dark:text-pink-400", bg: "bg-pink-50 dark:bg-pink-500/10" },
-                                        { icon: <ExclamationCircleIcon className="w-8 h-8" />, label: "Support", color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-50 dark:bg-cyan-500/10" },
-                                        { icon: <Squares2X2Icon className="w-8 h-8" />, label: "Board", color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-50 dark:bg-indigo-500/10" },
-                                        { icon: <CalendarIcon className="w-8 h-8" />, label: "Calendar", color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-500/10" },
-                                        { icon: <EllipsisHorizontalIcon className="w-8 h-8" />, label: "More", color: "text-gray-600 dark:text-gray-400", bg: "bg-muted" },
-                                    ].map((app, i) => (
-                                        <button
-                                            key={i}
-                                            // @ts-ignore
-                                            onClick={app.onClick}
-                                            className={`relative flex flex-col items-center gap-3 p-3 rounded-2xl transition-all group outline-none focus:ring-2 focus:ring-primary ${
-                                                // @ts-ignore
-                                                app.isHighlighted
-                                                    ? 'ring-2 ring-primary bg-primary/10'
-                                                    : 'hover:bg-primary hover:text-primary-foreground hover:shadow-md'
-                                                }`}>
+                            <PopoverPanel className="fixed top-[90px] left-1/2 -translate-x-1/2 w-[320px] max-h-[80vh] overflow-y-auto p-3 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-border shadow-2xl rounded-3xl z-[100] lg:absolute lg:top-full lg:left-auto lg:right-0 lg:translate-x-0 lg:mt-4 scrollbar-minimal">
+                                <div className="space-y-4">
+                                    {/* Mobile Navigation List - Hidden on Desktop */}
+                                    <div className="lg:hidden space-y-1">
+                                        <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2 px-1">Navigation</h3>
+                                        {[
+                                            { icon: <HomeIcon className="w-5 h-5" />, label: "Overview", active: activeTab === 'Overview' },
+                                            { icon: <CubeIcon className="w-5 h-5" />, label: "Inventory", active: activeTab === 'Inventory' },
+                                            { icon: <ArrowTrendingUpIcon className="w-5 h-5" />, label: "Production", active: activeTab === 'Production' },
+                                            { icon: <ClipboardDocumentListIcon className="w-5 h-5" />, label: "Orders", active: activeTab === 'Orders' },
+                                        ].map((item, i) => (
+                                            <button key={i} className={`flex items-center gap-3 w-full p-2 rounded-xl text-sm font-medium transition-colors ${item.active ? 'bg-primary text-primary-foreground shadow-sm dark:bg-primary/10 dark:text-primary dark:shadow-none' : 'hover:bg-muted text-foreground'}`}>
+                                                {item.icon}
+                                                {item.label}
+                                            </button>
+                                        ))}
+                                        <div className="h-px bg-border my-2 mx-1"></div>
+                                    </div>
 
-                                            {/* Badge */}
-                                            {/* @ts-ignore */}
-                                            {app.isHighlighted && (
-                                                <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-[10px] font-bold shadow-sm">
-                                                    New
-                                                </span>
-                                            )}
-
-                                            <div className={`p-3 rounded-2xl ${app.bg} ${app.color} transition-all shadow-sm ${
-                                                // @ts-ignore
-                                                app.isHighlighted
-                                                    ? ''
-                                                    : 'group-hover:bg-transparent group-hover:text-primary-foreground group-hover:shadow-none'
-                                                }`}>
-                                                {app.icon}
+                                    {/* Mobile View: Categorized Grid with Titles */}
+                                    <div className="lg:hidden space-y-4">
+                                        {[
+                                            {
+                                                title: "Platform",
+                                                apps: [
+                                                    { icon: <BriefcaseIcon className="w-6 h-6" />, label: "My Work Space", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10", isHighlighted: true, onClick: onNavigateToWorkspace },
+                                                    { icon: <HomeIcon className="w-6 h-6" />, label: "Portal", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10" },
+                                                ]
+                                            },
+                                            {
+                                                title: "Apps",
+                                                apps: [
+                                                    { icon: <UserIcon className="w-6 h-6" />, label: "CRM", color: "text-purple-600 dark:text-violet-400", bg: "bg-purple-50 dark:bg-purple-500/10" },
+                                                    { icon: <DocumentTextIcon className="w-6 h-6" />, label: "Invoice", color: "text-green-600 dark:text-green-400", bg: "bg-green-50 dark:bg-green-500/10" },
+                                                    { icon: <CubeIcon className="w-6 h-6" />, label: "Inventory", color: "text-orange-600 dark:text-orange-400", bg: "bg-orange-50 dark:bg-orange-500/10", desktopHidden: true },
+                                                    { icon: <ChartBarIcon className="w-6 h-6" />, label: "Analytics", color: "text-pink-600 dark:text-pink-400", bg: "bg-pink-50 dark:bg-pink-500/10" },
+                                                ]
+                                            },
+                                            {
+                                                title: "Tools",
+                                                apps: [
+                                                    { icon: <ExclamationCircleIcon className="w-6 h-6" />, label: "Support", color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-50 dark:bg-cyan-500/10" },
+                                                    { icon: <Squares2X2Icon className="w-6 h-6" />, label: "Board", color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-50 dark:bg-indigo-500/10" },
+                                                    { icon: <CalendarIcon className="w-6 h-6" />, label: "Calendar", color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-500/10" },
+                                                ]
+                                            }
+                                        ].map((category, idx) => (
+                                            <div key={idx}>
+                                                <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2 px-1">{category.title}</h3>
+                                                <div className="grid grid-cols-3 gap-2">
+                                                    {category.apps.map((app, i) => (
+                                                        <button
+                                                            key={i}
+                                                            // @ts-ignore
+                                                            onClick={app.onClick}
+                                                            className={`relative flex flex-col items-center gap-2 p-2 rounded-2xl transition-all group outline-none focus:ring-2 focus:ring-primary ${
+                                                                // @ts-ignore
+                                                                app.isHighlighted
+                                                                    ? 'bg-primary text-primary-foreground shadow-md'
+                                                                    : 'hover:bg-primary hover:text-primary-foreground hover:shadow-md'
+                                                                }`}>
+                                                            {/* Badge */}
+                                                            {/* @ts-ignore */}
+                                                            {app.isHighlighted && (
+                                                                <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded-md bg-white/20 text-primary-foreground text-[9px] font-bold shadow-sm backdrop-blur-sm">
+                                                                    New
+                                                                </span>
+                                                            )}
+                                                            <div className={`p-2 rounded-2xl transition-all shadow-sm ${
+                                                                // @ts-ignore
+                                                                app.isHighlighted
+                                                                    ? 'bg-transparent text-primary-foreground'
+                                                                    : `${app.bg} ${app.color} group-hover:bg-transparent group-hover:text-primary-foreground group-hover:shadow-none`
+                                                                }`}>
+                                                                {app.icon}
+                                                            </div>
+                                                            <span className={`text-[10px] font-semibold ${
+                                                                // @ts-ignore
+                                                                app.isHighlighted
+                                                                    ? 'text-primary-foreground'
+                                                                    : 'text-muted-foreground group-hover:text-primary-foreground'
+                                                                }`}>{app.label}</span>
+                                                        </button>
+                                                    ))}
+                                                </div>
                                             </div>
-                                            <span className={`text-xs font-semibold ${
-                                                // @ts-ignore
-                                                app.isHighlighted
-                                                    ? 'text-foreground'
-                                                    : 'text-muted-foreground group-hover:text-primary-foreground'
-                                                }`}>{app.label}</span>
+                                        ))}
+                                        <button className="w-full flex items-center justify-center gap-2 p-2 rounded-xl text-xs font-medium text-muted-foreground hover:bg-muted transition-colors mt-2">
+                                            <EllipsisHorizontalIcon className="w-4 h-4" />
+                                            <span>View All Apps</span>
                                         </button>
-                                    ))}
+                                    </div>
+
+                                    {/* Desktop View: Unified Grid without Titles */}
+                                    <div className="hidden lg:grid grid-cols-3 gap-2">
+                                        {[
+                                            { icon: <BriefcaseIcon className="w-6 h-6" />, label: "My Work Space", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10", isHighlighted: true, onClick: onNavigateToWorkspace },
+                                            { icon: <HomeIcon className="w-6 h-6" />, label: "Portal", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10" },
+                                            { icon: <UserIcon className="w-6 h-6" />, label: "CRM", color: "text-purple-600 dark:text-violet-400", bg: "bg-purple-50 dark:bg-purple-500/10" },
+                                            { icon: <DocumentTextIcon className="w-6 h-6" />, label: "Invoice", color: "text-green-600 dark:text-green-400", bg: "bg-green-50 dark:bg-green-500/10" },
+                                            { icon: <CubeIcon className="w-6 h-6" />, label: "Inventory", color: "text-orange-600 dark:text-orange-400", bg: "bg-orange-50 dark:bg-orange-500/10", desktopHidden: true },
+                                            { icon: <ChartBarIcon className="w-6 h-6" />, label: "Analytics", color: "text-pink-600 dark:text-pink-400", bg: "bg-pink-50 dark:bg-pink-500/10" },
+                                            { icon: <ExclamationCircleIcon className="w-6 h-6" />, label: "Support", color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-50 dark:bg-cyan-500/10" },
+                                            { icon: <Squares2X2Icon className="w-6 h-6" />, label: "Board", color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-50 dark:bg-indigo-500/10" },
+                                            { icon: <CalendarIcon className="w-6 h-6" />, label: "Calendar", color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-500/10" },
+                                        ]
+                                            // @ts-ignore
+                                            .filter(app => !app.desktopHidden)
+                                            .map((app, i) => (
+                                                <button
+                                                    key={i}
+                                                    // @ts-ignore
+                                                    onClick={app.onClick}
+                                                    className={`relative flex flex-col items-center gap-2 p-2 rounded-2xl transition-all group outline-none focus:ring-2 focus:ring-primary ${
+                                                        // @ts-ignore
+                                                        app.isHighlighted
+                                                            ? 'ring-2 ring-primary bg-primary/10'
+                                                            : 'hover:bg-primary hover:text-primary-foreground hover:shadow-md'
+                                                        }`}>
+                                                    {/* Badge */}
+                                                    {/* @ts-ignore */}
+                                                    {app.isHighlighted && (
+                                                        <span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-[9px] font-bold shadow-sm">
+                                                            New
+                                                        </span>
+                                                    )}
+                                                    <div className={`p-2 rounded-2xl ${app.bg} ${app.color} transition-all shadow-sm ${
+                                                        // @ts-ignore
+                                                        app.isHighlighted
+                                                            ? ''
+                                                            : 'group-hover:bg-transparent group-hover:text-primary-foreground group-hover:shadow-none'
+                                                        }`}>
+                                                        {app.icon}
+                                                    </div>
+                                                    <span className={`text-[10px] font-semibold ${
+                                                        // @ts-ignore
+                                                        app.isHighlighted
+                                                            ? 'text-foreground'
+                                                            : 'text-muted-foreground group-hover:text-primary-foreground'
+                                                        }`}>{app.label}</span>
+                                                </button>
+                                            ))}
+                                        {/* More Button - Desktop Only */}
+                                        <button className="relative flex flex-col items-center gap-2 p-2 rounded-2xl transition-all group outline-none hover:bg-primary hover:text-primary-foreground hover:shadow-md">
+                                            <div className="p-2 rounded-2xl bg-zinc-100 dark:bg-zinc-800 text-muted-foreground group-hover:bg-transparent group-hover:text-primary-foreground transition-all shadow-sm">
+                                                <EllipsisHorizontalIcon className="w-6 h-6" />
+                                            </div>
+                                            <span className="text-[10px] font-semibold text-muted-foreground group-hover:text-primary-foreground">More</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </PopoverPanel>
                         </Transition>
                     </Popover>
 
-                    <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
+                    <button onClick={toggleTheme} className="hidden lg:flex p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
                         {theme === 'dark' ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
                     </button>
 
                     <div className="relative group">
-                        <button className="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-muted transition-colors">
+                        <button className="flex items-center gap-2 p-1 pr-3 rounded-full hover:bg-muted transition-colors text-left outline-none">
+                            <div className="flex flex-col items-end mr-1 hidden sm:flex lg:hidden max-w-[140px]">
+                                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider leading-none">Tenant</span>
+                                <span className="text-sm font-bold text-foreground leading-tight truncate w-full text-right">{currentTenant}</span>
+                            </div>
                             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm shrink-0">
                                 JD
-                            </div>
-                            <div className="text-left hidden md:block">
-                                <p className="text-xs font-semibold text-foreground group-hover:text-foreground">Jhon Doe</p>
-                                <p className="text-[10px] text-muted-foreground">Admin</p>
                             </div>
                             <ChevronDownIcon className="w-3 h-3 text-muted-foreground" />
                         </button>
                         {/* User Dropdown */}
-                        <div className="absolute top-full right-0 mt-2 w-48 py-1 rounded-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border border-border shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
-                            <div className="px-4 py-2 border-b border-border">
+                        <div className="absolute top-full right-0 mt-2 w-56 py-2 rounded-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border border-border shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
+
+                            {/* User Info */}
+                            <div className="px-4 py-2 border-b border-border mb-1">
                                 <p className="text-sm font-medium">Jhon Doe</p>
                                 <p className="text-xs text-muted-foreground">Admin</p>
                             </div>
+
+                            {/* Tenant Selector Section */}
+                            <div className="px-2 py-1 lg:hidden">
+                                <p className="px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Switch Tenant</p>
+                                {tenants.map((tenant) => (
+                                    <button
+                                        key={tenant}
+                                        onClick={() => setTenant(tenant)}
+                                        className="w-full flex items-center justify-between px-2 py-1.5 text-xs text-foreground rounded-lg hover:bg-muted transition-colors"
+                                    >
+                                        <span>{tenant}</span>
+                                        {currentTenant === tenant && <CheckIcon className="w-3 h-3 text-primary" />}
+                                    </button>
+                                ))}
+                                <div className="h-px bg-border my-1 mx-2"></div>
+                            </div>
+
+                            {/* Theme Toggle */}
+                            <div className="p-1 lg:hidden">
+                                <button onClick={toggleTheme} className="w-full text-left px-3 py-2 text-xs font-medium text-foreground hover:bg-muted rounded-lg flex items-center gap-2 transition-colors">
+                                    {theme === 'dark' ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
+                                    <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                                </button>
+                                <div className="h-px bg-border my-1 mx-2"></div>
+                            </div>
+
+                            {/* Sign Out */}
                             <button onClick={onLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-muted flex items-center gap-2">
                                 <ArrowRightOnRectangleIcon className="w-4 h-4" />
                                 Sign Out

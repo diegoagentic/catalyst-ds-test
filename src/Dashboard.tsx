@@ -260,7 +260,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                     </>
                 ) : (
                     <div className="bg-white/60 dark:bg-black/40 backdrop-blur-md rounded-2xl p-4 border border-gray-200 dark:border-white/10 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-300">
-                        <div className="flex items-center gap-6 overflow-x-auto w-full scrollbar-hide">
+                        <div className="flex items-center gap-6 overflow-x-auto w-full scrollbar-minimal">
                             <div className="flex items-center gap-2 whitespace-nowrap">
                                 <span className="text-sm text-gray-500 dark:text-gray-400">Inventory:</span>
                                 <span className="text-lg font-semibold text-gray-900 dark:text-white">$1.2M</span>

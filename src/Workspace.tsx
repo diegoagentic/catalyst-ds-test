@@ -537,7 +537,7 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
             <Navbar onLogout={onLogout} onNavigateToWorkspace={onNavigateToWorkspace} activeTab="Overview" />
 
             {/* Main Content Container - shifted down for navbar */}
-            <div className="flex-1 flex flex-col pt-[72px] h-full">
+            <div className="flex-1 flex flex-col pt-[110px] h-full">
 
                 {/* Horizontal Quick Actions Panel & Status */}
                 {/* Horizontal Quick Actions Panel & Status */}
@@ -554,52 +554,67 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
 
                     <div className="flex items-center gap-6">
                         {/* Frequent Actions */}
-                        <div className="flex items-center gap-3">
-                            <span className="text-xs font-medium text-gray-500 hidden lg:inline">Frequent Actions:</span>
-                            <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-medium text-gray-500 hidden lg:inline mr-2">Frequent Actions:</span>
+                            <div className="flex items-center gap-1">
                                 <button
                                     onClick={() => handleSendMessage("Analyze orders for TechDealer Solutions with discrepancies")}
-                                    className="flex items-center gap-2 px-2 py-1 text-xs font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                                    className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-brand-50 dark:hover:bg-white/5 rounded-lg transition-colors w-16"
                                     title="Analyze Discrepancies"
                                 >
-                                    <ExclamationTriangleIcon className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Analyze</span>
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
+                                        <ExclamationTriangleIcon className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Analyze</span>
                                 </button>
                                 <button
                                     onClick={() => handleSendMessage("Summarize recent activity")}
-                                    className="flex items-center gap-2 px-2 py-1 text-xs font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                                    className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-brand-50 dark:hover:bg-white/5 rounded-lg transition-colors w-16"
                                     title="Summarize Activity"
                                 >
-                                    <SparklesIcon className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Summarize</span>
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
+                                        <SparklesIcon className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Summarize</span>
                                 </button>
                                 <button
                                     onClick={() => handleSendMessage("Check inventory levels")}
-                                    className="flex items-center gap-2 px-2 py-1 text-xs font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                                    className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-brand-50 dark:hover:bg-white/5 rounded-lg transition-colors w-16"
                                     title="Check Inventory"
                                 >
-                                    <ArchiveBoxIcon className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Inventory</span>
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
+                                        <ArchiveBoxIcon className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Inventory</span>
                                 </button>
                             </div>
                         </div>
 
-                        <div className="w-px h-6 bg-gray-200 dark:bg-zinc-800 hidden sm:block"></div>
+                        <div className="w-px h-8 bg-gray-200 dark:bg-zinc-800 hidden sm:block"></div>
 
                         {/* Status Buttons */}
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
                             <button
                                 onClick={() => handleSendMessage("Show pending orders")}
-                                className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 rounded-md text-xs font-bold shadow-sm transition-colors flex items-center gap-1.5"
+                                className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-orange-50 dark:hover:bg-orange-900/10 rounded-lg transition-colors w-16"
+                                title="Show Pending"
                             >
-                                <ExclamationCircleIcon className="w-4 h-4" />
-                                3 Pending
+                                <div className="text-orange-500 group-hover:text-orange-600 dark:text-orange-400 dark:group-hover:text-orange-300 transition-colors">
+                                    <ExclamationCircleIcon className="w-5 h-5" />
+                                </div>
+                                <span className="text-[10px] font-bold text-orange-600 dark:text-orange-400 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors">3 Pending</span>
                             </button>
                             <button
                                 onClick={() => handleSendMessage("Show pending orders")}
-                                className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md text-xs font-bold shadow-sm transition-colors flex items-center gap-1.5"
+                                className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors w-16"
+                                title="Show Urgent"
                             >
-                                <ExclamationTriangleIcon className="w-4 h-4" />
-                                1 Urgent
+                                <div className="text-red-500 group-hover:text-red-600 dark:text-red-400 dark:group-hover:text-red-300 transition-colors">
+                                    <ExclamationTriangleIcon className="w-5 h-5" />
+                                </div>
+                                <span className="text-[10px] font-bold text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors">1 Urgent</span>
                             </button>
-                            <div className="w-px h-6 bg-gray-200 dark:bg-zinc-800 mx-2"></div>
+                            <div className="w-px h-8 bg-gray-200 dark:bg-zinc-800 mx-2"></div>
                             <button
                                 onClick={() => setIsLogsOpen(true)}
                                 className="p-2 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
@@ -620,18 +635,25 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                             </h3>
                         </div>
                         <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                            {appActivities.map((activity, i) => (
-                                <div key={activity.id} className="relative pl-0 pb-2 border-b border-gray-100 dark:border-white/5 last:border-0 hover:bg-gray-50 dark:hover:bg-white/5 p-3 rounded transition-colors group">
-                                    <div className="flex items-center gap-3 mb-1">
-                                        <div className="p-1.5 rounded-md bg-primary/10 text-zinc-900 dark:text-primary group-hover:bg-primary/20 transition-colors">
-                                            <activity.icon className="w-4 h-4" />
+                            {appActivities.map((activity, i) => {
+                                let iconColorClass = "bg-primary/10 text-zinc-900 dark:text-primary" // Default
+                                if (activity.app === 'Inventory') iconColorClass = "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
+                                if (activity.app === 'Analytics') iconColorClass = "bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400"
+                                if (activity.app === 'CRM') iconColorClass = "bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400"
+
+                                return (
+                                    <div key={activity.id} className="relative pl-0 pb-2 border-b border-gray-100 dark:border-white/5 last:border-0 hover:bg-gray-50 dark:hover:bg-white/5 p-3 rounded transition-colors group">
+                                        <div className="flex items-center gap-3 mb-1">
+                                            <div className={`p-1.5 rounded-md ${iconColorClass} transition-colors`}>
+                                                <activity.icon className="w-4 h-4" />
+                                            </div>
+                                            <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">{activity.app}</span>
                                         </div>
-                                        <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">{activity.app}</span>
+                                        <p className="text-sm font-medium leading-tight text-gray-700 dark:text-gray-200">{activity.text}</p>
+                                        <p className="text-[10px] text-gray-400 mt-1.5 font-mono">{activity.time}</p>
                                     </div>
-                                    <p className="text-sm font-medium leading-tight text-gray-700 dark:text-gray-200">{activity.text}</p>
-                                    <p className="text-[10px] text-gray-400 mt-1.5 font-mono">{activity.time}</p>
-                                </div>
-                            ))}
+                                )
+                            })}
                         </div>
                     </div>
 
@@ -644,7 +666,7 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                                     <div className={`
                                         max-w-[85%] sm:max-w-[70%] rounded-2xl p-4 shadow-sm backdrop-blur-sm border
                                         ${msg.role === 'user'
-                                            ? 'bg-primary text-primary-foreground rounded-br-none border-primary'
+                                            ? 'bg-brand-400 text-primary-foreground rounded-br-none border-primary'
                                             : 'bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-100 rounded-bl-none border-gray-100 dark:border-white/10'
                                         }
                                     `}>

@@ -151,7 +151,7 @@ export default function ActionCenter() {
                         leaveFrom="opacity-100 translate-y-0 scale-100"
                         leaveTo="opacity-0 translate-y-2 scale-95"
                     >
-                        <PopoverPanel className="fixed top-[90px] right-4 md:right-8 w-[90vw] md:w-[600px] p-0 z-50 focus:outline-none">
+                        <PopoverPanel className="fixed top-[90px] left-1/2 -translate-x-1/2 w-[95vw] max-h-[85vh] lg:w-[600px] lg:left-auto lg:right-8 lg:translate-x-0 p-0 z-50 focus:outline-none">
                             <div className="bg-white/85 dark:bg-zinc-900/85 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-2xl rounded-3xl overflow-hidden flex flex-col max-h-[80vh]">
 
                                 {currentView === 'chat' ? (

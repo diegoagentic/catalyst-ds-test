@@ -41,7 +41,7 @@ export default function FilterTabs({ tabs, activeTab, onTabChange }: FilterTabsP
                                         initial={{ opacity: 0, width: 0 }}
                                         animate={{ opacity: 1, width: 'auto' }}
                                         exit={{ opacity: 0, width: 0 }}
-                                        className={clsx("text-sm font-medium whitespace-nowrap", tab.colorTheme.activeText)}
+                                        className={clsx("text-sm font-medium whitespace-nowrap hidden lg:inline-block", tab.colorTheme.activeText)}
                                     >
                                         {tab.label}
                                     </motion.span>

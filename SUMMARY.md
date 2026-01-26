@@ -1,3 +1,19 @@
+# Catalyst UI Refinements - Summary Jan 26, 2026
+
+## 📱 Responsive & Mobile Refinements
+- **Navbar Layout (Tablet/Mobile):**
+    - **Overflow Fix:** Applied `min-w-[60vw] max-w-fit` to the desktop container to prevent clipping while allowing natural expansion.
+    - **Tenant Name:** Implemented smart truncation (`max-w-[140px]` + `truncate`) to prevent the user menu from breaking the layout on medium screens.
+- **Action Center:**
+    - **Mobile/Tablet Layout:** Centered the panel (`95vw` width) for better visibility.
+    - **Optimized Navigation:** Switched to **Icon-Only Tabs** on mobile/tablet to save horizontal space.
+- **Mobile Apps Menu:**
+    - **Active State:** Applied **Solid Brand Background** (`bg-primary`) to the active item in Light Mode for clearer indication.
+- **Global UI:**
+    - **Scrollbars:** Implemented `.scrollbar-minimal` (Zinc-300/700) and `.scrollbar-none` utilities for a cleaner aesthetic.
+
+---
+
 # Catalyst UI Refinements - Summary Jan 23, 2026
 
 ## Features & Implementation

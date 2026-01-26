@@ -15,12 +15,21 @@
     }
 
     .scrollbar-minimal::-webkit-scrollbar-thumb {
-        @apply bg-muted rounded-full transition-colors;
+        @apply bg-zinc-300 dark:bg-zinc-700 rounded-full transition-colors;
         background-clip: padding-box;
         border: 2px solid transparent;
     }
 
     .scrollbar-minimal::-webkit-scrollbar-thumb:hover {
         @apply bg-zinc-400 dark:bg-zinc-600;
+    }
+
+    .scrollbar-none::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-none {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 }

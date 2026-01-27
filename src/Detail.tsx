@@ -66,7 +66,7 @@ const DiscrepancyResolutionFlow = () => {
                     </button>
                     <button
                         onClick={() => setStatus('requesting')}
-                        className="flex items-center gap-1.5 px-3 py-1.5 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs font-medium rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs font-medium rounded-lg hover:bg-primary hover:text-zinc-900 dark:hover:bg-primary dark:hover:text-zinc-900 transition-colors"
                     >
                         <PencilIcon className="w-3.5 h-3.5" /> Request Changes
                     </button>
@@ -135,8 +135,8 @@ const DiscrepancyResolutionFlow = () => {
                         <p className="text-sm font-medium text-zinc-900 dark:text-white truncate">PO_Revised_Final.pdf</p>
                         <p className="text-xs text-zinc-500 dark:text-zinc-400">Updated just now</p>
                     </div>
-                    <button className="p-2 hover:bg-zinc-200 dark:hover:bg-white/10 rounded-lg transition-colors">
-                        <ArrowDownTrayIcon className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
+                    <button className="p-2 hover:bg-primary hover:text-zinc-900 dark:hover:bg-primary dark:hover:text-zinc-900 rounded-lg transition-colors group">
+                        <ArrowDownTrayIcon className="h-5 w-5 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900" />
                     </button>
                 </div>
             </div>
@@ -230,8 +230,8 @@ const DiscrepancyActionCard = ({ msg }: { msg: Message }) => {
                                 <p className="text-sm font-medium text-zinc-900 dark:text-white">PO_ORD-2055_Final.pdf</p>
                                 <p className="text-xs text-zinc-500">2.4 MB • Generated just now</p>
                             </div>
-                            <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-zinc-600 transition-colors">
-                                <ArrowDownTrayIcon className="h-5 w-5" />
+                            <button className="p-2 hover:bg-primary hover:text-zinc-900 dark:hover:bg-primary dark:hover:text-zinc-900 rounded-lg text-zinc-400 transition-colors group">
+                                <ArrowDownTrayIcon className="h-5 w-5 group-hover:text-zinc-900" />
                             </button>
                         </div>
 
@@ -266,12 +266,12 @@ const DiscrepancyActionCard = ({ msg }: { msg: Message }) => {
                             <button className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-semibold rounded-lg shadow-sm transition-colors">
                                 Sync Database
                             </button>
-                            <button className="px-4 py-2 bg-white dark:bg-transparent border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-medium rounded-lg transition-colors">
+                            <button className="px-4 py-2 bg-white dark:bg-transparent border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-primary hover:text-zinc-900 dark:hover:bg-primary dark:hover:text-zinc-900 text-xs font-medium rounded-lg transition-colors">
                                 Resolve Manually
                             </button>
                             <button
                                 onClick={() => setIsRequesting(true)}
-                                className="px-3 py-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 text-xs font-medium transition-colors flex items-center gap-1.5 ml-auto group"
+                                className="px-3 py-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-900 hover:bg-primary dark:hover:bg-primary rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ml-auto group"
                             >
                                 <PencilIcon className="w-3.5 h-3.5" />
                                 Request Changes
@@ -428,8 +428,8 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
             {/* Page Header (moved from original header, adjusted for floating nav) */}
             <div className="pt-24 px-6 pb-4 flex items-center justify-between border-b border-border bg-transparent transition-colors duration-200">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <button onClick={onBack} className="p-1 hover:bg-muted rounded-md transition-colors">
-                        <ChevronRightIcon className="h-4 w-4 rotate-180 text-muted-foreground" />
+                    <button onClick={onBack} className="p-1 hover:bg-primary hover:text-zinc-900 dark:hover:text-zinc-900 rounded-md transition-colors">
+                        <ChevronRightIcon className="h-4 w-4 rotate-180" />
                     </button>
                     <span className="hover:text-foreground cursor-pointer" onClick={onBack}>Dashboard</span>
                     <ChevronRightIcon className="h-3 w-3 text-muted-foreground/50" />
@@ -438,11 +438,11 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                     <span className="font-medium text-foreground">Seating Category</span>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-foreground bg-background border border-input rounded-md hover:bg-muted">
-                        <FunnelIcon className="h-4 w-4 text-muted-foreground" /> Filter
+                    <button className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-foreground bg-background border border-input rounded-md hover:bg-primary hover:text-zinc-900 group transition-colors">
+                        <FunnelIcon className="h-4 w-4 text-muted-foreground group-hover:text-zinc-900" /> Filter
                     </button>
-                    <button className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-foreground bg-background border border-input rounded-md hover:bg-muted">
-                        <ArrowDownTrayIcon className="h-4 w-4 text-muted-foreground" /> Export
+                    <button className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-foreground bg-background border border-input rounded-md hover:bg-primary hover:text-zinc-900 group transition-colors">
+                        <ArrowDownTrayIcon className="h-4 w-4 text-muted-foreground group-hover:text-zinc-900" /> Export
                     </button>
                     <button className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:opacity-90">
                         <PlusIcon className="h-4 w-4" /> Add New Item
@@ -456,7 +456,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                     <>
                         <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border border-zinc-200 dark:border-white/10 ring-1 ring-black/5 dark:ring-0 transition-all duration-300">
                             <div className="flex justify-end mb-4">
-                                <button onClick={() => setIsSummaryExpanded(false)} className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1.5 rounded-lg">
+                                <button onClick={() => setIsSummaryExpanded(false)} className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-900 transition-colors bg-zinc-100 dark:bg-zinc-800 hover:bg-primary dark:hover:bg-primary px-2.5 py-1.5 rounded-lg">
                                     Hide Details <ChevronUpIcon className="w-3.5 h-3.5" />
                                 </button>
                             </div>
@@ -477,6 +477,7 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
 
                             {/* Integrated Stepper - Matched to Dashboard */}
                             <div className="mt-8 pt-6 border-t border-zinc-100 dark:border-white/10 animate-in fade-in slide-in-from-top-4 duration-500">
+                                <h4 className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-4 ml-1">Workflow Progress</h4>
                                 <div className="relative pb-2">
                                     <div className="absolute top-3 left-0 w-full h-0.5 bg-zinc-200 dark:bg-zinc-700" />
                                     <div className="relative z-10 flex justify-between w-full max-w-4xl mx-auto px-4">
@@ -562,12 +563,12 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
 
                             <button
                                 onClick={() => setIsSummaryExpanded(true)}
-                                className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                                className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-primary dark:hover:bg-primary rounded-lg transition-colors"
                             >
-                                <div className="text-zinc-500 dark:text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                <div className="text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">
                                     <ChevronDownIcon className="w-4 h-4" />
                                 </div>
-                                <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">Show Details</span>
+                                <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">Show Details</span>
                             </button>
                         </div>
                     </div>
@@ -721,21 +722,21 @@ export default function Detail({ onBack, onLogout, onNavigateToWorkspace }: Deta
                                         <div className="flex items-center justify-between p-4 border-b border-border">
                                             <h3 className="text-lg font-semibold text-foreground">Item Details</h3>
                                             <div className="flex gap-1">
-                                                <button onClick={() => setIsDocumentModalOpen(true)} className="p-1 text-muted-foreground hover:text-foreground rounded hover:bg-muted">
+                                                <button onClick={() => setIsDocumentModalOpen(true)} className="p-1 text-muted-foreground hover:text-zinc-900 rounded hover:bg-primary transition-colors">
                                                     <PencilSquareIcon className="h-4 w-4" />
                                                 </button>
-                                                <button className="p-1 text-muted-foreground hover:text-foreground rounded hover:bg-muted">
+                                                <button className="p-1 text-muted-foreground hover:text-zinc-900 rounded hover:bg-primary transition-colors">
                                                     <ArrowDownTrayIcon className="h-4 w-4" />
                                                 </button>
-                                                <button className="p-1 text-muted-foreground hover:text-foreground rounded hover:bg-muted">
+                                                <button className="p-1 text-muted-foreground hover:text-zinc-900 rounded hover:bg-primary transition-colors">
                                                     <PaperAirplaneIcon className="h-4 w-4" />
                                                 </button>
-                                                <button onClick={() => setIsAiDiagnosisOpen(true)} className="relative p-1 text-purple-600 hover:text-purple-700 rounded hover:bg-purple-50">
+                                                <button onClick={() => setIsAiDiagnosisOpen(true)} className="relative p-1 text-purple-600 hover:text-zinc-900 rounded hover:bg-primary transition-colors">
                                                     <SparklesIcon className="h-4 w-4" />
                                                     <span className="absolute top-1 right-1 block h-1.5 w-1.5 rounded-full bg-purple-500 ring-2 ring-white dark:ring-zinc-900" />
                                                 </button>
                                                 <div className="w-px h-4 bg-border mx-1 self-center" />
-                                                <button className="p-1 text-muted-foreground hover:text-foreground rounded hover:bg-muted">
+                                                <button className="p-1 text-muted-foreground hover:text-zinc-900 rounded hover:bg-primary transition-colors">
                                                     <EllipsisHorizontalIcon className="h-4 w-4" />
                                                 </button>
                                             </div>

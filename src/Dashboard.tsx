@@ -251,7 +251,7 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                 { icon: <DocumentTextIcon className="w-5 h-5" />, label: "Export PDF" },
                                 { icon: <EnvelopeIcon className="w-5 h-5" />, label: "Send Email" },
                             ].map((action, i) => (
-                                <button key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary dark:hover:border-primary/50 hover:bg-primary dark:hover:bg-primary/10 hover:text-zinc-900 dark:hover:text-primary text-gray-500 dark:text-gray-400 transition-all text-xs font-medium">
+                                <button key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary dark:hover:border-primary hover:bg-primary dark:hover:bg-primary hover:text-zinc-900 dark:hover:text-zinc-900 text-gray-500 dark:text-gray-400 transition-all text-xs font-medium">
                                     {action.icon}
                                     <span>{action.label}</span>
                                 </button>
@@ -293,23 +293,23 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                 { icon: <DocumentTextIcon className="w-4 h-4" />, label: "PDF" },
                                 { icon: <EnvelopeIcon className="w-4 h-4" />, label: "Email" },
                             ].map((action, i) => (
-                                <button key={i} className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors">
-                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
+                                <button key={i} className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-primary dark:hover:bg-primary rounded-lg transition-colors">
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">
                                         {action.icon}
                                     </div>
-                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">{action.label}</span>
+                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">{action.label}</span>
                                 </button>
                             ))}
                         </div>
                         <div className="w-px h-12 bg-gray-200 dark:bg-white/10 hidden xl:block mx-2"></div>
                         <button
                             onClick={() => setShowMetrics(true)}
-                            className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors"
+                            className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-primary dark:hover:bg-primary rounded-lg transition-colors"
                         >
-                            <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
+                            <div className="text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">
                                 <ChevronDownIcon className="w-4 h-4" />
                             </div>
-                            <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Details</span>
+                            <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">Details</span>
                         </button>
                     </div>
                 )}
@@ -648,14 +648,14 @@ export default function Dashboard({ onLogout, onNavigateToDetail, onNavigateToWo
                                                             </div>
                                                         </div>
                                                         <div className="flex items-center gap-1">
-                                                            <button onClick={(e) => { e.stopPropagation(); onNavigateToDetail(); }} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                                                            <button onClick={(e) => { e.stopPropagation(); onNavigateToDetail(); }} className="p-1 rounded-full hover:bg-primary hover:text-zinc-900 dark:hover:bg-primary text-gray-400 hover:text-zinc-900 dark:hover:text-zinc-900 transition-colors">
                                                                 <DocumentTextIcon className="h-5 w-5" />
                                                             </button>
-                                                            <button onClick={(e) => e.stopPropagation()} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                                                            <button onClick={(e) => e.stopPropagation()} className="p-1 rounded-full hover:bg-primary hover:text-zinc-900 dark:hover:bg-primary text-gray-400 hover:text-zinc-900 dark:hover:text-zinc-900 transition-colors">
                                                                 <PencilSquareIcon className="h-5 w-5" />
                                                             </button>
                                                             <Menu as="div" className="relative inline-block text-left">
-                                                                <MenuButton onClick={(e) => e.stopPropagation()} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400">
+                                                                <MenuButton onClick={(e) => e.stopPropagation()} className="p-1 rounded-full hover:bg-primary hover:text-zinc-900 dark:hover:bg-primary text-gray-400 dark:hover:text-zinc-900">
                                                                     <EllipsisHorizontalIcon className="h-5 w-5" />
                                                                 </MenuButton>
                                                                 <Transition

@@ -36,7 +36,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
     const { currentTenant, tenants, setTenant } = useTenant()
 
     return (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 min-w-[60vw] max-w-fit lg:min-w-0 lg:max-w-7xl lg:w-[95vw]">
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 min-w-[60vw] max-w-fit lg:min-w-0 lg:max-w-7xl lg:w-[80vw]">
             <div className="relative flex items-center lg:justify-between px-3 py-2 rounded-full gap-1 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-border shadow-lg dark:shadow-glow-md">
 
                 {/* Left Group (Logo + Tenant) */}
@@ -120,7 +120,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                             leaveFrom="opacity-100 translate-y-0"
                             leaveTo="opacity-0 translate-y-1"
                         >
-                            <PopoverPanel className="fixed top-[90px] left-1/2 -translate-x-1/2 w-[320px] max-h-[80vh] overflow-y-auto p-3 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-border shadow-2xl rounded-3xl z-[100] lg:absolute lg:top-full lg:left-auto lg:right-0 lg:translate-x-0 lg:mt-4 scrollbar-minimal">
+                            <PopoverPanel className="fixed top-[90px] left-1/2 -translate-x-1/2 w-[320px] max-h-[80vh] overflow-y-auto p-3 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-border shadow-2xl rounded-3xl z-[100] lg:fixed lg:top-[90px] lg:left-1/2 lg:-translate-x-1/2 lg:mt-4 scrollbar-minimal">
                                 <div className="space-y-4">
                                     {/* Mobile Navigation List - Hidden on Desktop */}
                                     <div className="lg:hidden space-y-1">
@@ -145,7 +145,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                                             {
                                                 title: "Platform",
                                                 apps: [
-                                                    { icon: <BriefcaseIcon className="w-6 h-6" />, label: "My Work Space", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10", isHighlighted: true, onClick: onNavigateToWorkspace },
+                                                    { icon: <BriefcaseIcon className="w-6 h-6" />, label: "My Work Space", color: "text-zinc-900", bg: "bg-primary", isHighlighted: true, onClick: onNavigateToWorkspace },
                                                     { icon: <HomeIcon className="w-6 h-6" />, label: "Portal", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10" },
                                                 ]
                                             },
@@ -178,7 +178,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                                                             className={`relative flex flex-col items-center gap-2 p-2 rounded-2xl transition-all group outline-none focus:ring-2 focus:ring-primary ${
                                                                 // @ts-ignore
                                                                 app.isHighlighted
-                                                                    ? 'bg-primary text-primary-foreground shadow-md'
+                                                                    ? 'ring-1 ring-gray-200 dark:ring-zinc-700 hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:ring-0'
                                                                     : 'hover:bg-primary hover:text-primary-foreground hover:shadow-md'
                                                                 }`}>
                                                             {/* Badge */}
@@ -191,7 +191,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                                                             <div className={`p-2 rounded-2xl transition-all shadow-sm ${
                                                                 // @ts-ignore
                                                                 app.isHighlighted
-                                                                    ? 'bg-transparent text-primary-foreground'
+                                                                    ? 'bg-primary text-zinc-900 group-hover:bg-transparent group-hover:text-primary-foreground'
                                                                     : `${app.bg} ${app.color} group-hover:bg-transparent group-hover:text-primary-foreground group-hover:shadow-none`
                                                                 }`}>
                                                                 {app.icon}
@@ -216,7 +216,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                                     {/* Desktop View: Unified Grid without Titles */}
                                     <div className="hidden lg:grid grid-cols-3 gap-2">
                                         {[
-                                            { icon: <BriefcaseIcon className="w-6 h-6" />, label: "My Work Space", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10", isHighlighted: true, onClick: onNavigateToWorkspace },
+                                            { icon: <BriefcaseIcon className="w-6 h-6" />, label: "My Work Space", color: "text-zinc-900", bg: "bg-primary", isHighlighted: true, onClick: onNavigateToWorkspace },
                                             { icon: <HomeIcon className="w-6 h-6" />, label: "Portal", color: "text-zinc-900 dark:text-primary", bg: "bg-primary/10" },
                                             { icon: <UserIcon className="w-6 h-6" />, label: "CRM", color: "text-purple-600 dark:text-violet-400", bg: "bg-purple-50 dark:bg-purple-500/10" },
                                             { icon: <DocumentTextIcon className="w-6 h-6" />, label: "Invoice", color: "text-green-600 dark:text-green-400", bg: "bg-green-50 dark:bg-green-500/10" },
@@ -236,7 +236,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                                                     className={`relative flex flex-col items-center gap-2 p-2 rounded-2xl transition-all group outline-none focus:ring-2 focus:ring-primary ${
                                                         // @ts-ignore
                                                         app.isHighlighted
-                                                            ? 'ring-2 ring-primary bg-primary/10'
+                                                            ? 'ring-1 ring-gray-200 dark:ring-zinc-700 hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:ring-0'
                                                             : 'hover:bg-primary hover:text-primary-foreground hover:shadow-md'
                                                         }`}>
                                                     {/* Badge */}
@@ -249,7 +249,7 @@ export default function Navbar({ onLogout, activeTab = 'Overview', onNavigateToW
                                                     <div className={`p-2 rounded-2xl ${app.bg} ${app.color} transition-all shadow-sm ${
                                                         // @ts-ignore
                                                         app.isHighlighted
-                                                            ? ''
+                                                            ? 'bg-primary text-zinc-900 group-hover:bg-transparent group-hover:text-primary-foreground'
                                                             : 'group-hover:bg-transparent group-hover:text-primary-foreground group-hover:shadow-none'
                                                         }`}>
                                                         {app.icon}

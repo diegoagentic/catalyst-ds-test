@@ -547,7 +547,9 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                             <ChevronLeftIcon className="w-5 h-5" />
                         </button>
                         <h1 className="text-sm font-bold flex items-center gap-2 text-gray-800 dark:text-gray-100">
-                            <CpuChipIcon className="w-5 h-5 text-primary" />
+                            <div className="bg-primary text-zinc-900 p-1 rounded-md">
+                                <CpuChipIcon className="w-5 h-5" />
+                            </div>
                             {currentTenant} Workspace
                         </h1>
                     </div>
@@ -559,33 +561,33 @@ export default function Workspace({ onBack, onLogout, onNavigateToWorkspace }: W
                             <div className="flex items-center gap-1">
                                 <button
                                     onClick={() => handleSendMessage("Analyze orders for TechDealer Solutions with discrepancies")}
-                                    className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-brand-50 dark:hover:bg-white/5 rounded-lg transition-colors w-16"
+                                    className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-primary dark:hover:bg-primary rounded-lg transition-colors w-16"
                                     title="Analyze Discrepancies"
                                 >
-                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">
                                         <ExclamationTriangleIcon className="w-5 h-5" />
                                     </div>
-                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Analyze</span>
+                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">Analyze</span>
                                 </button>
                                 <button
                                     onClick={() => handleSendMessage("Summarize recent activity")}
-                                    className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-brand-50 dark:hover:bg-white/5 rounded-lg transition-colors w-16"
+                                    className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-primary dark:hover:bg-primary rounded-lg transition-colors w-16"
                                     title="Summarize Activity"
                                 >
-                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">
                                         <SparklesIcon className="w-5 h-5" />
                                     </div>
-                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Summarize</span>
+                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">Summarize</span>
                                 </button>
                                 <button
                                     onClick={() => handleSendMessage("Check inventory levels")}
-                                    className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-brand-50 dark:hover:bg-white/5 rounded-lg transition-colors w-16"
+                                    className="flex flex-col items-center justify-center gap-1 group p-2 hover:bg-primary dark:hover:bg-primary rounded-lg transition-colors w-16"
                                     title="Check Inventory"
                                 >
-                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-foreground dark:group-hover:text-primary transition-colors">
+                                    <div className="text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">
                                         <ArchiveBoxIcon className="w-5 h-5" />
                                     </div>
-                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Inventory</span>
+                                    <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-900 transition-colors">Inventory</span>
                                 </button>
                             </div>
                         </div>
